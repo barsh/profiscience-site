@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Contact &amp; Demo — Profiscience</title>
+<meta name="description" content="Request a demo, talk to sales, or ask a question. We'll get back within one business day." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+<link rel="icon" href="assets/favicon.ico" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<div id="site-header"></div>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="eyebrow">Contact</span>
+    <h1>Let's build your <span class="gradient-text">learning platform.</span></h1>
+    <p>Tell us a bit about your team and goals. A specialist will reach out within one business day.</p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <h3>Talk to us</h3>
+        <div class="info-card">
+          <div class="ico">✉️</div>
+          <div>
+            <b>Sales &amp; demos</b>
+            <small>sales@profiscience.com</small>
+          </div>
+        </div>
+        <div class="info-card">
+          <div class="ico">🛟</div>
+          <div>
+            <b>Customer support</b>
+            <small>support@profiscience.com · 24/7 for Enterprise</small>
+          </div>
+        </div>
+        <div class="info-card">
+          <div class="ico">🤝</div>
+          <div>
+            <b>Partnerships</b>
+            <small>partners@profiscience.com</small>
+          </div>
+        </div>
+        <div class="info-card">
+          <div class="ico">📞</div>
+          <div>
+            <b>By phone</b>
+            <small>1-800-PROFI-00 · Mon–Fri, 7a–7p PT</small>
+          </div>
+        </div>
+        <div class="info-card">
+          <div class="ico">🌎</div>
+          <div>
+            <b>Headquarters</b>
+            <small>Seattle, WA · with teams across NA &amp; EU</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-card reveal">
+        <h3 style="margin-bottom:20px">Request a demo</h3>
+        <form data-track="demo_request">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="f-first">First name</label>
+              <input id="f-first" name="first_name" type="text" required />
+            </div>
+            <div class="form-group">
+              <label for="f-last">Last name</label>
+              <input id="f-last" name="last_name" type="text" required />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="f-email">Work email</label>
+              <input id="f-email" name="email" type="email" required />
+            </div>
+            <div class="form-group">
+              <label for="f-phone">Phone</label>
+              <input id="f-phone" name="phone" type="tel" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="f-company">Company</label>
+              <input id="f-company" name="company" type="text" required />
+            </div>
+            <div class="form-group">
+              <label for="f-size">Company size</label>
+              <select id="f-size" name="company_size" required>
+                <option value="">Select…</option>
+                <option>1–100</option>
+                <option>101–500</option>
+                <option>501–2,000</option>
+                <option>2,001–10,000</option>
+                <option>10,000+</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="f-interest">Primary interest</label>
+            <select id="f-interest" name="interest">
+              <option>Corporate L&amp;D</option>
+              <option>Legal &amp; CLE</option>
+              <option>Compliance training</option>
+              <option>AI Knowledge Check</option>
+              <option>AI Connector</option>
+              <option>Extended enterprise / customer training</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="f-msg">What's on your mind?</label>
+            <textarea id="f-msg" name="message" placeholder="Tell us about your org, timeline, or current setup…"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-arrow" style="width:100%; justify-content:center" data-cta="contact_submit">Request a demo</button>
+          <div class="form-success" style="display:none; color:var(--pf-success); margin-top:14px; font-weight:600">
+            ✓ Request received. A specialist will reach out within one business day.
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="container">
+    <div class="reveal">
+      <h2>Prefer a quick question first?</h2>
+      <p>Ask our AI assistant in the corner — it can answer most platform and pricing questions instantly.</p>
+    </div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+
+<script src="js/main.js"></script>
+</body>
+</html>
