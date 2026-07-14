@@ -2194,3 +2194,101 @@ footer .foot-bot {
 /* Utility */
 .center-text { text-align: center; }
 .max-600 { max-width: 600px; margin-left: auto; margin-right: auto; }
+
+/* =========================================================
+   PRINT / PDF
+   Turns a case-study page into a branded document.
+   Used by "Print → Save as PDF" and by the generated downloads
+   in assets/case-studies/.
+   ========================================================= */
+@media print {
+  @page {
+    size: Letter;
+    margin: 0.55in 0.6in;
+  }
+
+  html, body {
+    background: white !important;
+    font-size: 11pt;
+  }
+
+  /* Keep brand gradients instead of printing them as white boxes. */
+  .page-hero,
+  .avatar,
+  .cs-doc-icon,
+  .eyebrow,
+  .gradient-text,
+  .cs-prose ul li::before,
+  .cs-card ul li::before {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Screen furniture that has no business in a document. */
+  .nav,
+  footer,
+  .cta-band,
+  .cs-back,
+  .cs-hero-meta,
+  .cs-doc,
+  .bot-launcher,
+  .bot-panel,
+  #site-header,
+  #site-footer {
+    display: none !important;
+  }
+
+  /* Scroll-reveal leaves content at opacity 0 until JS marks it visible.
+     Print must never depend on that having run. */
+  .reveal,
+  .reveal.in {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .container { max-width: none; padding: 0; }
+
+  /* Collapse section spacing — but not the hero, which needs its own
+     inset or the title sits flush against the paper edge. */
+  section:not(.page-hero) { padding: 0 !important; }
+
+  .page-hero {
+    border-radius: 10px;
+    padding: 30px 34px 28px !important;
+    margin-bottom: 26px;
+  }
+  .page-hero h1 { font-size: 21pt; margin-bottom: 8px; }
+  .page-hero p  { font-size: 10.5pt; margin: 0; }
+
+  /* One column — the sticky sidebar becomes a block at the end. */
+  .cs-layout { display: block; }
+  .cs-side {
+    position: static;
+    display: block;
+    margin-top: 26px;
+  }
+  .cs-card {
+    box-shadow: none;
+    break-inside: avoid;
+    margin-bottom: 16px;
+  }
+
+  .cs-prose h2 {
+    font-size: 14pt;
+    margin: 22px 0 10px;
+    break-after: avoid;
+  }
+  .cs-prose p, .cs-prose li { font-size: 10.5pt; line-height: 1.55; }
+  .cs-prose p { orphans: 3; widows: 3; }
+
+  .cs-quote {
+    break-inside: avoid;
+    padding: 18px 22px;
+    margin: 20px 0;
+  }
+  .cs-quote blockquote { font-size: 12.5pt; }
+
+  /* Links shouldn't look like links on paper. */
+  a { color: inherit !important; text-decoration: none !important; }
+}
