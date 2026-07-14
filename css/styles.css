@@ -1866,6 +1866,11 @@ footer .foot-bot {
   margin: 6px 0 26px;
 }
 
+/* Pipedrive embedded web form.
+   Reserve height so the card doesn't collapse then jump when the iframe loads. */
+.pd-form-card .pipedriveWebForms { min-height: 780px; }
+.pd-form-card iframe { width: 100% !important; border: 0; }
+
 /* =========================================================
    FORM (contact)
    ========================================================= */
@@ -2186,7 +2191,7 @@ footer .foot-bot {
 
 /* Back link */
 .cs-back {
-  display: inline-flex;
+  display: block;
   align-items: center;
   gap: 8px;
   color: rgba(255,255,255,.75);

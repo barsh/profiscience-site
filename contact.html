@@ -65,67 +65,25 @@
         </div>
       </div>
 
-      <div class="form-card reveal">
+      <!-- Pipedrive Web Form — submissions land directly in the CRM.
+           Same form the old site used on request-demo.aspx.
+           Note: no .reveal here on purpose — the reveal animation starts at
+           opacity:0 with a transform, which makes the embedded iframe
+           mis-measure its own height. -->
+      <div class="form-card pd-form-card">
         <h3 style="margin-bottom:20px">Request a demo</h3>
-        <form data-track="demo_request">
-          <div class="form-row">
-            <div class="form-group">
-              <label for="f-first">First name</label>
-              <input id="f-first" name="first_name" type="text" required />
-            </div>
-            <div class="form-group">
-              <label for="f-last">Last name</label>
-              <input id="f-last" name="last_name" type="text" required />
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="f-email">Work email</label>
-              <input id="f-email" name="email" type="email" required />
-            </div>
-            <div class="form-group">
-              <label for="f-phone">Phone</label>
-              <input id="f-phone" name="phone" type="tel" />
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="f-company">Company</label>
-              <input id="f-company" name="company" type="text" required />
-            </div>
-            <div class="form-group">
-              <label for="f-size">Company size</label>
-              <select id="f-size" name="company_size" required>
-                <option value="">Select…</option>
-                <option>1–100</option>
-                <option>101–500</option>
-                <option>501–2,000</option>
-                <option>2,001–10,000</option>
-                <option>10,000+</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="f-interest">Primary interest</label>
-            <select id="f-interest" name="interest">
-              <option>Corporate L&amp;D</option>
-              <option>Legal &amp; CLE</option>
-              <option>Compliance training</option>
-              <option>AI Knowledge Check</option>
-              <option>AI Connector</option>
-              <option>Extended enterprise / customer training</option>
-              <option>Other</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="f-msg">What's on your mind?</label>
-            <textarea id="f-msg" name="message" placeholder="Tell us about your org, timeline, or current setup…"></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary btn-arrow" style="width:100%; justify-content:center" data-cta="contact_submit">Request a demo</button>
-          <div class="form-success" style="display:none; color:var(--pf-success); margin-top:14px; font-weight:600">
-            ✓ Request received. A specialist will reach out within one business day.
-          </div>
-        </form>
+        <div
+          class="pipedriveWebForms"
+          data-pd-webforms="https://webforms.pipedrive.com/f/1rq7zGXFwnf0kiRu5WUdyYzHoVOH1gWQfUHHfV7MHe4HVhAsR1bpY9Wtr7g6KGy2v"
+          data-cta="demo_form"
+        ></div>
+        <noscript>
+          <p>
+            This form needs JavaScript. Email
+            <a href="mailto:sales@profiscience.com">sales@profiscience.com</a>
+            or call <a href="tel:+18009403656">1 800 940 3656</a> and we'll set up your demo.
+          </p>
+        </noscript>
       </div>
     </div>
   </div>
@@ -143,5 +101,6 @@
 <div id="site-footer"></div>
 
 <script src="js/main.js"></script>
+<script src="https://webforms.pipedrive.com/f/loader"></script>
 </body>
 </html>
