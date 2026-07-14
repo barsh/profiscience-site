@@ -12,6 +12,21 @@
 (function () {
   "use strict";
 
+  // --- Leadfeeder / Dealfront visitor tracking ---
+  // Identifies visiting companies and feeds Pipedrive. Same tracker the old
+  // ASP.NET site used (MasterPage.master). Loaded once here so it applies to
+  // every page without repeating the snippet in 16 HTML files.
+  (function (ss, s, d) {
+    var lf = function () {
+      var sc = d.createElement(s);
+      sc.async = true;
+      sc.src = ss;
+      var fs = d.getElementsByTagName(s)[0];
+      fs.parentNode.insertBefore(sc, fs);
+    };
+    lf();
+  })("https://sc.lfeeder.com/lftracker_v1_DzLR5a50zgn4BoQ2.js", "script", document);
+
   // --- Lightweight tracker scaffold ---
   window.pfTrack = function track(event, data) {
     data = data || {};
