@@ -1,0 +1,71 @@
+{
+  "_comment": "Resource articles shown on resources.html. Edit here or use admin/resources.html to generate entries. 'subject' and 'type' must come from the lists below. 'featured: true' pins a card to the top. Order in this array is the display order within each featured/non-featured group.",
+  "subjects": [
+    "Legal & CLE",
+    "AI & Product",
+    "Onboarding",
+    "Integrations",
+    "Compliance",
+    "Research"
+  ],
+  "types": [
+    "Case Study",
+    "Whitepaper",
+    "Guide",
+    "Webinar",
+    "Blog",
+    "Playbook"
+  ],
+  "articles": [
+    {
+      "id": "steptoe-johnson-case-study",
+      "title": "Steptoe & Johnson",
+      "type": "Case Study",
+      "subject": "Legal & CLE",
+      "excerpt": "How a national firm standardizes training and CLE tracking on Profiscience.",
+      "readTime": "",
+      "url": "https://www.profiscience.com/CaseStudies/Steptoe%20Johnson%20Case%20Study.pdf",
+      "featured": true
+    },
+    {
+      "id": "verrill-equips-for-growth",
+      "title": "Verrill Equips for Growth",
+      "type": "Case Study",
+      "subject": "Onboarding",
+      "excerpt": "Scaling onboarding and continuing education as the firm grows.",
+      "readTime": "",
+      "url": "https://www.profiscience.com/CaseStudies/Verrill%20Equips%20for%20Growth.pdf",
+      "featured": true
+    },
+    {
+      "id": "wbd-closed-captioning",
+      "title": "Womble Bond Dickinson: Closed Captioning at Scale",
+      "type": "Case Study",
+      "subject": "AI & Product",
+      "excerpt": "Delivering accessible, captioned video learning across the firm.",
+      "readTime": "",
+      "url": "https://www.profiscience.com/CaseStudies/WBD%20Close%20Captioning%20Case%20Study.pdf",
+      "featured": true
+    },
+    {
+      "id": "haynes-boone-sdk-extension",
+      "title": "Haynes Boone: Extending the Platform with the SDK",
+      "type": "Case Study",
+      "subject": "Integrations",
+      "excerpt": "A look at how the firm tailored Profiscience to its own systems.",
+      "readTime": "",
+      "url": "https://www.profiscience.com/CaseStudies/Haynes%20Boone%20-%20SDK%20Extension.pdf",
+      "featured": false
+    },
+    {
+      "id": "bond-schoeneck-king-case-study",
+      "title": "Bond, Schoeneck & King",
+      "type": "Case Study",
+      "subject": "Legal & CLE",
+      "excerpt": "Managing attorney CLE and compliance in one place.",
+      "readTime": "",
+      "url": "https://www.profiscience.com/CaseStudies/Bond,%20Schoeneck%20King%20Case%20Study.pdf",
+      "featured": false
+    }
+  ]
+}

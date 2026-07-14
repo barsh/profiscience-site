@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="robots" content="noindex,nofollow" />
+<title>Resource Articles — Admin | Profiscience</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../css/styles.css" />
+<style>
+  body { background: var(--pf-mist); font-family: var(--font-sans); color: var(--pf-ink); }
+  .admin-wrap { max-width: 1100px; margin: 0 auto; padding: 32px 20px 80px; }
+  .admin-head h1 { font-family: var(--font-display); font-size: 1.6rem; margin-bottom: 6px; }
+  .admin-head p { color: var(--pf-mute); font-size: .95rem; margin-bottom: 4px; }
+  .admin-note { background: #FFF8E6; border: 1px solid #F5D98B; color: #7a5b00; padding: 12px 16px; border-radius: var(--r-md); font-size: .86rem; margin: 18px 0 26px; }
+  .admin-cols { display: grid; grid-template-columns: 420px 1fr; gap: 28px; align-items: start; }
+  @media (max-width: 860px) { .admin-cols { grid-template-columns: 1fr; } }
+  .card { background: white; border: 1px solid var(--pf-line); border-radius: var(--r-lg); padding: 22px; box-shadow: var(--sh-sm); }
+  .card h2 { font-family: var(--font-display); font-size: 1.1rem; margin-bottom: 16px; }
+  label { display: block; font-size: .82rem; font-weight: 600; color: var(--pf-slate); margin: 12px 0 5px; }
+  input[type=text], input[type=url], textarea, select {
+    width: 100%; padding: 10px 12px; border: 1px solid var(--pf-line); border-radius: var(--r-sm);
+    font-family: var(--font-sans); font-size: .9rem; color: var(--pf-ink); background: white;
+  }
+  input:focus, textarea:focus, select:focus { outline: none; border-color: var(--pf-blue); box-shadow: 0 0 0 3px rgba(20,99,255,.12); }
+  textarea { min-height: 74px; resize: vertical; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .check { display: flex; align-items: center; gap: 8px; margin-top: 14px; }
+  .check input { width: auto; }
+  .check label { margin: 0; }
+  .hint { font-size: .76rem; color: var(--pf-mute); margin-top: 4px; }
+  .form-actions { display: flex; gap: 10px; margin-top: 18px; }
+  .btn2 { padding: 10px 18px; border-radius: 999px; border: 1px solid transparent; font-weight: 600; font-size: .88rem; cursor: pointer; font-family: var(--font-sans); }
+  .btn2.primary { background: var(--grad-btn); color: white; }
+  .btn2.ghost { background: white; border-color: var(--pf-line); color: var(--pf-slate); }
+  .btn2.danger { background: white; border-color: #f0c2c2; color: #b42318; }
+  .btn2:hover { transform: translateY(-1px); }
+  .list-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--pf-line); }
+  .list-item:last-child { border-bottom: none; }
+  .li-main { flex: 1; min-width: 0; }
+  .li-title { font-weight: 600; font-size: .92rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .li-sub { font-size: .78rem; color: var(--pf-mute); }
+  .li-badges { display: inline-flex; gap: 6px; margin-left: 6px; }
+  .li-badge { font-size: .66rem; font-weight: 700; letter-spacing: .05em; padding: 2px 7px; border-radius: 999px; background: var(--pf-mist); color: var(--pf-slate); }
+  .li-badge.feat { background: #FFF2CC; color: #8a6d00; }
+  .li-actions { display: flex; gap: 6px; flex-shrink: 0; }
+  .icon-btn { width: 30px; height: 30px; border: 1px solid var(--pf-line); background: white; border-radius: 8px; cursor: pointer; font-size: .8rem; color: var(--pf-slate); }
+  .icon-btn:hover { border-color: var(--pf-blue); color: var(--pf-blue); }
+  .export-bar { margin-top: 26px; }
+  .export-bar .btn2 { margin-right: 10px; }
+  #jsonPreview { width: 100%; min-height: 200px; margin-top: 14px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .78rem; white-space: pre; overflow: auto; background: #0f172a; color: #cbd5e1; border: none; border-radius: var(--r-md); padding: 16px; }
+  .toast { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); background: var(--pf-ink); color: white; padding: 10px 18px; border-radius: 999px; font-size: .85rem; opacity: 0; transition: opacity .2s ease; pointer-events: none; }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+<div class="admin-wrap">
+  <div class="admin-head">
+    <h1>Resource Articles</h1>
+    <p>Create and edit the articles shown on the <a href="../resources" target="_blank" rel="noopener">Resources</a> page.</p>
+  </div>
+
+  <div class="admin-note">
+    <strong>How publishing works (Phase 1):</strong> This editor builds the content file in your browser. When you're done, click
+    <em>Download articles.json</em> (or Copy) and replace <code>content/articles.json</code> in the site, then commit &amp; deploy.
+    A one-click online “Publish” (no file handling) is the planned Phase 2.
+  </div>
+
+  <div class="admin-cols">
+    <!-- FORM -->
+    <div class="card">
+      <h2 id="formTitle">Add article</h2>
+      <form id="articleForm">
+        <input type="hidden" id="editIndex" value="-1" />
+
+        <label for="f-title">Title</label>
+        <input type="text" id="f-title" required placeholder="e.g. How Verrill scaled onboarding" />
+
+        <label for="f-url">Link (URL)</label>
+        <input type="url" id="f-url" required placeholder="https://…  (PDF, blog post, webinar registration…)" />
+
+        <div class="row2">
+          <div>
+            <label for="f-type">Type</label>
+            <select id="f-type" required></select>
+          </div>
+          <div>
+            <label for="f-subject">Subject</label>
+            <select id="f-subject" required></select>
+          </div>
+        </div>
+
+        <label for="f-newsubject">…or add a new subject</label>
+        <input type="text" id="f-newsubject" placeholder="Type a new subject to create it" />
+        <div class="hint">Leave blank to use the Subject dropdown above.</div>
+
+        <label for="f-excerpt">Excerpt</label>
+        <textarea id="f-excerpt" placeholder="One or two sentences describing the piece."></textarea>
+
+        <label for="f-readtime">Read time / length <span style="font-weight:400;color:var(--pf-mute)">(optional)</span></label>
+        <input type="text" id="f-readtime" placeholder="e.g. 12 min read  ·  45 min webinar" />
+
+        <div class="check">
+          <input type="checkbox" id="f-featured" />
+          <label for="f-featured">Featured (pin to the top of the grid)</label>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn2 primary" id="saveBtn">Add article</button>
+          <button type="button" class="btn2 ghost" id="clearBtn">Clear</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- LIST + EXPORT -->
+    <div>
+      <div class="card">
+        <h2>Current articles (<span id="count">0</span>)</h2>
+        <div id="list"></div>
+      </div>
+
+      <div class="export-bar">
+        <button type="button" class="btn2 primary" id="downloadBtn">Download articles.json</button>
+        <button type="button" class="btn2 ghost" id="copyBtn">Copy to clipboard</button>
+        <button type="button" class="btn2 ghost" id="reloadBtn">Reload from file</button>
+        <textarea id="jsonPreview" readonly></textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+  "use strict";
+  var SUBJECTS = [], TYPES = [], ARTICLES = [];
+  var $ = function (id) { return document.getElementById(id); };
+
+  function toast(msg) {
+    var t = $("toast"); t.textContent = msg; t.classList.add("show");
+    setTimeout(function () { t.classList.remove("show"); }, 1800);
+  }
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function slug(s) {
+    return String(s || "").toLowerCase().trim()
+      .replace(/&/g, " and ").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60) || "article";
+  }
+  function uniqueId(base, ignoreIdx) {
+    var id = base, n = 2;
+    while (ARTICLES.some(function (a, i) { return a.id === id && i !== ignoreIdx; })) { id = base + "-" + n++; }
+    return id;
+  }
+
+  function fillSelect(sel, values, selected) {
+    sel.innerHTML = values.map(function (v) {
+      return '<option value="' + esc(v) + '"' + (v === selected ? " selected" : "") + ">" + esc(v) + "</option>";
+    }).join("");
+  }
+
+  function refreshSelects() {
+    fillSelect($("f-type"), TYPES, $("f-type").value);
+    fillSelect($("f-subject"), SUBJECTS, $("f-subject").value);
+  }
+
+  function renderList() {
+    $("count").textContent = ARTICLES.length;
+    if (!ARTICLES.length) { $("list").innerHTML = '<p style="color:var(--pf-mute);font-size:.9rem">No articles yet — add one on the left.</p>'; }
+    else {
+      $("list").innerHTML = ARTICLES.map(function (a, i) {
+        return '<div class="list-item">' +
+          '<div class="li-main">' +
+            '<div class="li-title">' + esc(a.title) +
+              '<span class="li-badges">' +
+                (a.featured ? '<span class="li-badge feat">FEATURED</span>' : "") +
+              "</span>" +
+            "</div>" +
+            '<div class="li-sub">' + esc(a.type) + " · " + esc(a.subject) + "</div>" +
+          "</div>" +
+          '<div class="li-actions">' +
+            '<button class="icon-btn" data-act="up" data-i="' + i + '" title="Move up">↑</button>' +
+            '<button class="icon-btn" data-act="down" data-i="' + i + '" title="Move down">↓</button>' +
+            '<button class="icon-btn" data-act="edit" data-i="' + i + '" title="Edit">✎</button>' +
+            '<button class="icon-btn" data-act="del" data-i="' + i + '" title="Delete">🗑</button>' +
+          "</div>" +
+        "</div>";
+      }).join("");
+    }
+    updatePreview();
+  }
+
+  function buildJSON() {
+    return {
+      _comment: "Resource articles shown on resources.html. Edit here or use admin/resources.html. 'subject' and 'type' must come from the lists below.",
+      subjects: SUBJECTS,
+      types: TYPES,
+      articles: ARTICLES
+    };
+  }
+  function updatePreview() { $("jsonPreview").value = JSON.stringify(buildJSON(), null, 2); }
+
+  function resetForm() {
+    $("editIndex").value = "-1";
+    $("articleForm").reset();
+    $("f-newsubject").value = "";
+    $("formTitle").textContent = "Add article";
+    $("saveBtn").textContent = "Add article";
+    refreshSelects();
+  }
+
+  function loadForm(a, i) {
+    $("editIndex").value = i;
+    $("f-title").value = a.title || "";
+    $("f-url").value = a.url || "";
+    $("f-excerpt").value = a.excerpt || "";
+    $("f-readtime").value = a.readTime || "";
+    $("f-featured").checked = !!a.featured;
+    if (TYPES.indexOf(a.type) === -1 && a.type) { TYPES.push(a.type); }
+    if (SUBJECTS.indexOf(a.subject) === -1 && a.subject) { SUBJECTS.push(a.subject); }
+    refreshSelects();
+    $("f-type").value = a.type || TYPES[0];
+    $("f-subject").value = a.subject || SUBJECTS[0];
+    $("f-newsubject").value = "";
+    $("formTitle").textContent = "Edit article";
+    $("saveBtn").textContent = "Save changes";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  // --- Events ---
+  $("articleForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var idx = parseInt($("editIndex").value, 10);
+    var newSubject = $("f-newsubject").value.trim();
+    var subject = newSubject || $("f-subject").value;
+    if (newSubject && SUBJECTS.indexOf(newSubject) === -1) { SUBJECTS.push(newSubject); }
+
+    var title = $("f-title").value.trim();
+    var base = slug(title);
+    var article = {
+      id: uniqueId(base, idx),
+      title: title,
+      type: $("f-type").value,
+      subject: subject,
+      excerpt: $("f-excerpt").value.trim(),
+      readTime: $("f-readtime").value.trim(),
+      url: $("f-url").value.trim(),
+      featured: $("f-featured").checked
+    };
+    if (idx >= 0) { ARTICLES[idx] = article; toast("Article updated"); }
+    else { ARTICLES.push(article); toast("Article added"); }
+    resetForm();
+    renderList();
+  });
+
+  $("clearBtn").addEventListener("click", resetForm);
+
+  $("list").addEventListener("click", function (e) {
+    var btn = e.target.closest(".icon-btn"); if (!btn) return;
+    var i = parseInt(btn.getAttribute("data-i"), 10);
+    var act = btn.getAttribute("data-act");
+    if (act === "edit") { loadForm(ARTICLES[i], i); }
+    else if (act === "del") { if (confirm("Delete “" + ARTICLES[i].title + "”?")) { ARTICLES.splice(i, 1); resetForm(); renderList(); } }
+    else if (act === "up" && i > 0) { var t = ARTICLES[i - 1]; ARTICLES[i - 1] = ARTICLES[i]; ARTICLES[i] = t; renderList(); }
+    else if (act === "down" && i < ARTICLES.length - 1) { var d = ARTICLES[i + 1]; ARTICLES[i + 1] = ARTICLES[i]; ARTICLES[i] = d; renderList(); }
+  });
+
+  $("downloadBtn").addEventListener("click", function () {
+    var blob = new Blob([JSON.stringify(buildJSON(), null, 2)], { type: "application/json" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url; a.download = "articles.json";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast("Downloaded — replace content/articles.json, then commit");
+  });
+
+  $("copyBtn").addEventListener("click", function () {
+    var text = JSON.stringify(buildJSON(), null, 2);
+    if (navigator.clipboard) { navigator.clipboard.writeText(text).then(function () { toast("Copied to clipboard"); }); }
+    else { $("jsonPreview").select(); document.execCommand("copy"); toast("Copied"); }
+  });
+
+  $("reloadBtn").addEventListener("click", load);
+
+  function load() {
+    fetch("../content/articles.json?_=" + new Date().getTime())
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (data) {
+        SUBJECTS = data.subjects || [];
+        TYPES = data.types || [];
+        ARTICLES = data.articles || [];
+        resetForm();
+        renderList();
+        toast("Loaded " + ARTICLES.length + " articles");
+      })
+      .catch(function () {
+        SUBJECTS = ["Legal & CLE", "AI & Product", "Onboarding", "Integrations", "Compliance", "Research"];
+        TYPES = ["Case Study", "Whitepaper", "Guide", "Webinar", "Blog", "Playbook"];
+        ARTICLES = [];
+        resetForm();
+        renderList();
+        toast("Couldn't load file — starting empty");
+      });
+  }
+
+  load();
+})();
+</script>
+</body>
+</html>

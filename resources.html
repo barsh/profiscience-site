@@ -25,60 +25,16 @@
 
 <section>
   <div class="container">
-    <div class="section-head reveal left">
-      <span class="eyebrow">Featured</span>
-      <h2>This month's reads.</h2>
-    </div>
-    <div class="res-grid">
-      <a href="#" class="res-card reveal">
-        <div class="thumb"><span class="tag">WHITEPAPER</span></div>
-        <div class="body">
-          <h3>The 2026 State of Enterprise L&amp;D</h3>
-          <p>Benchmarks, spend, and what the top 10% are doing differently.</p>
-          <div class="meta">24 min read · Research</div>
-        </div>
-      </a>
-      <a href="#" class="res-card reveal">
-        <div class="thumb"><span class="tag">CASE STUDY</span></div>
-        <div class="body">
-          <h3>How Hexagon Health cut compliance training time 63%</h3>
-          <p>An inside look at their rollout, integration stack, and measured outcomes.</p>
-          <div class="meta">10 min read · Healthcare</div>
-        </div>
-      </a>
-      <a href="#" class="res-card reveal">
-        <div class="thumb"><span class="tag">GUIDE</span></div>
-        <div class="body">
-          <h3>AI-generated assessments: a buyer's checklist</h3>
-          <p>What to look for, what to avoid, and how to validate AI-built learning content.</p>
-          <div class="meta">14 min read · Guide</div>
-        </div>
-      </a>
-      <a href="#" class="res-card reveal">
-        <div class="thumb"><span class="tag">WEBINAR</span></div>
-        <div class="body">
-          <h3>CLE automation for law firm L&amp;D</h3>
-          <p>Live walkthrough with Northwind Law's Director of L&amp;D.</p>
-          <div class="meta">45 min · Legal</div>
-        </div>
-      </a>
-      <a href="#" class="res-card reveal">
-        <div class="thumb"><span class="tag">BLOG</span></div>
-        <div class="body">
-          <h3>Why BYO-LLM matters for learning platforms</h3>
-          <p>A technical look at the Profiscience AI Connector architecture.</p>
-          <div class="meta">6 min read · Engineering</div>
-        </div>
-      </a>
-      <a href="#" class="res-card reveal">
-        <div class="thumb"><span class="tag">PLAYBOOK</span></div>
-        <div class="body">
-          <h3>Cutting onboarding ramp time in half</h3>
-          <p>A 12-week field-tested playbook from our customer success team.</p>
-          <div class="meta">18 min read · Playbook</div>
-        </div>
-      </a>
-    </div>
+    <!-- Subject filter chips (populated from content/articles.json) -->
+    <div class="res-filters" id="resFilters" role="tablist" aria-label="Filter resources by subject"></div>
+
+    <!-- Cards rendered client-side from content/articles.json by js/main.js -->
+    <div class="res-grid" id="resGrid"></div>
+
+    <!-- Shown only if articles.json fails to load -->
+    <p class="res-empty" id="resEmpty" style="display:none; color:var(--pf-mute)">
+      Resources are loading&hellip; if this persists, please check back shortly.
+    </p>
   </div>
 </section>
 

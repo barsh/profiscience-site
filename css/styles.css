@@ -84,19 +84,31 @@ p  { margin: 0 0 1rem; color: var(--pf-slate); }
   display: inline-block;
   font-family: var(--font-sans);
   font-size: .8rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: .12em;
   text-transform: uppercase;
-  color: var(--pf-blue);
+  color: var(--pf-navy);
   padding: 6px 12px;
-  border: 1px solid rgba(20,99,255,.25);
+  border: 1px solid rgba(20,99,255,.34);
   border-radius: 999px;
-  background: rgba(20,99,255,.06);
+  background: rgba(20,99,255,.08);
   margin-bottom: 18px;
 }
 
-.hero .eyebrow {
+.eyebrow.inverse {
   color: #BEE1FF;
+  background: rgba(255,255,255,.10);
+  border-color: rgba(255,255,255,.28);
+}
+
+.hero .eyebrow {
+  color: var(--pf-mist);
+  background: rgba(255,255,255,.08);
+  border-color: rgba(255,255,255,.2);
+}
+
+.page-hero .eyebrow {
+  color: var(--pf-mist);
   background: rgba(255,255,255,.08);
   border-color: rgba(255,255,255,.2);
 }
@@ -116,7 +128,7 @@ p  { margin: 0 0 1rem; color: var(--pf-slate); }
   top: 0;
   z-index: 50;
   backdrop-filter: saturate(180%) blur(14px);
-  background: rgba(255,255,255,.82);
+  background: rgba(255,255,255,1);
   border-bottom: 1px solid var(--pf-line);
 }
 .nav-inner {
@@ -1054,6 +1066,13 @@ section.dark p { color: rgba(255,255,255,.75); }
 /* =========================================================
    TESTIMONIALS
    ========================================================= */
+/* Offset anchor targets so they clear the 72px sticky nav when linked from the footer, etc. */
+#testimonials,
+.feature-detail,
+#ai-knowledge-check,
+.feat-card[id] {
+  scroll-margin-top: 90px;
+}
 .test-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1120,9 +1139,18 @@ footer {
 }
 footer .foot-grid {
   display: grid;
-  grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr;
-  gap: 30px;
+  grid-template-columns: 1.8fr repeat(5, 1fr);
+  gap: 44px 30px;
 }
+footer .foot-contact {
+  font-style: normal;
+  color: rgba(255,255,255,.55);
+  font-size: .86rem;
+  line-height: 1.7;
+  margin-bottom: 18px;
+}
+footer .foot-contact a { color: rgba(255,255,255,.7); }
+footer .foot-contact a:hover { color: white; }
 footer h5 {
   font-family: var(--font-display);
   font-size: .95rem;
@@ -1162,8 +1190,11 @@ footer .foot-bot {
   font-size: .82rem;
   color: rgba(255,255,255,.5);
 }
-@media (max-width: 900px) {
-  footer .foot-grid { grid-template-columns: 1fr 1fr; }
+@media (max-width: 1100px) {
+  footer .foot-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 640px) {
+  footer .foot-grid { grid-template-columns: 1fr 1fr; gap: 34px 24px; }
 }
 
 /* =========================================================
@@ -1517,7 +1548,99 @@ footer .foot-bot {
 }
 .int-card h4 { margin: 4px 0 0; font-size: 1rem; }
 .int-card p { font-size: .85rem; margin: 0; color: var(--pf-mute); }
+.int-card-logo {
+  height: 36px;
+  width: auto;
+  max-width: 120px;
+  object-fit: contain;
+  border-radius: 6px;
+  margin-bottom: 4px;
+}
+.int-tag {
+  display: inline-block;
+  margin-top: auto;
+  padding: 3px 9px;
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  background: var(--pf-mist);
+  color: var(--pf-slate);
+  border-radius: 99px;
+  border: 1px solid var(--pf-line);
+  width: fit-content;
+}
+
+/* Category sections */
+.int-category {
+  margin-bottom: 56px;
+}
+.int-category-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 22px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--pf-line);
+}
+.int-category-header h3 { margin: 0 0 4px; font-size: 1.3rem; }
+.int-category-header p { margin: 0; font-size: .9rem; color: var(--pf-mute); max-width: 560px; }
+.int-category-icon {
+  flex-shrink: 0;
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  background: var(--pf-mist);
+  border: 1px solid var(--pf-line);
+  display: grid; place-items: center;
+  font-size: 1.4rem;
+}
+
 @media (max-width: 900px) { .int-grid { grid-template-columns: repeat(2, 1fr); } }
+
+/* int-all-grid — unified integration card grid */
+.int-all-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.int-all-card {
+  background: white;
+  border: 1px solid var(--pf-line);
+  border-radius: var(--r-md);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all .2s ease;
+}
+.int-all-card:hover { border-color: var(--pf-blue); transform: translateY(-2px); box-shadow: var(--sh-md); }
+.int-all-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+.int-all-logo {
+  height: 32px;
+  width: auto;
+  max-width: 110px;
+  object-fit: contain;
+  border-radius: 5px;
+}
+.int-all-initial {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: var(--pf-mist);
+  display: grid; place-items: center;
+  color: var(--pf-blue);
+  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: .85rem;
+}
+.int-all-card h4 { margin: 0; font-size: .95rem; }
+.int-all-card p { margin: 0; font-size: .83rem; color: var(--pf-mute); flex: 1; }
+@media (max-width: 1024px) { .int-all-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 700px) { .int-all-grid { grid-template-columns: repeat(2, 1fr); } }
 
 /* =========================================================
    TEAM GRID
@@ -1646,6 +1769,30 @@ footer .foot-bot {
 /* =========================================================
    RESOURCES CARDS
    ========================================================= */
+.res-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+.res-chip {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--pf-line);
+  background: white;
+  color: var(--pf-slate);
+  font-family: var(--font-sans);
+  font-size: .85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease, border-color .15s ease;
+}
+.res-chip:hover { border-color: rgba(20,99,255,.4); color: var(--pf-blue); }
+.res-chip.active {
+  background: var(--grad-btn);
+  color: white;
+  border-color: transparent;
+}
 .res-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
