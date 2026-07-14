@@ -1,0 +1,288 @@
+/* =========================================================
+   Profiscience — Admin
+   Layered on top of styles.css; reuses the same design tokens.
+   ========================================================= */
+
+body.admin { background: var(--pf-mist); }
+
+/* --- Shell ------------------------------------------------ */
+.adm-bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: white;
+  border-bottom: 1px solid var(--pf-line);
+}
+.adm-bar-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.adm-bar .brand { margin-right: auto; }
+.adm-who {
+  color: var(--pf-mute);
+  font-size: .88rem;
+}
+.adm-main {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 34px 24px 80px;
+}
+.adm-head {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 26px;
+}
+.adm-head h1 { font-size: 1.9rem; margin: 0; }
+.adm-head p { margin: 4px 0 0; color: var(--pf-mute); }
+.adm-head .spacer { margin-left: auto; }
+
+/* --- Login ------------------------------------------------ */
+.adm-login-wrap {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: var(--grad-hero);
+}
+.adm-login {
+  width: 100%;
+  max-width: 420px;
+  background: white;
+  border-radius: var(--r-xl);
+  box-shadow: var(--sh-lg);
+  padding: 40px;
+}
+.adm-login h1 { font-size: 1.6rem; margin-bottom: 6px; }
+.adm-login p.sub { color: var(--pf-mute); margin-bottom: 26px; font-size: .95rem; }
+
+/* --- Toolbar ---------------------------------------------- */
+.adm-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.adm-search {
+  flex: 1;
+  min-width: 200px;
+  border: 1px solid var(--pf-line);
+  border-radius: 999px;
+  padding: 9px 16px;
+  font-family: var(--font-sans);
+  font-size: .92rem;
+  background: white;
+}
+.adm-search:focus { outline: 0; border-color: var(--pf-blue); }
+
+/* --- List ------------------------------------------------- */
+.adm-list {
+  background: white;
+  border: 1px solid var(--pf-line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+.adm-row {
+  display: grid;
+  grid-template-columns: 64px 1fr 130px 130px 92px 150px;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--pf-line);
+}
+.adm-row:last-child { border-bottom: 0; }
+.adm-row:hover { background: var(--pf-mist); }
+.adm-row.head {
+  background: var(--pf-mist);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--pf-mute);
+}
+.adm-row.head:hover { background: var(--pf-mist); }
+.adm-thumb {
+  width: 64px;
+  height: 40px;
+  border-radius: 6px;
+  object-fit: cover;
+  background: var(--grad-hero);
+}
+.adm-title { font-weight: 600; color: var(--pf-ink); }
+.adm-title small { display: block; font-weight: 400; color: var(--pf-mute); font-size: .8rem; }
+.adm-cell { color: var(--pf-slate); font-size: .9rem; }
+.adm-actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+.badge.published { background: rgba(16,185,129,.12); color: #0B7A5B; }
+.badge.draft     { background: rgba(245,166,35,.14); color: #96620A; }
+.badge.archived  { background: var(--pf-line);       color: var(--pf-mute); }
+.badge.star      { background: rgba(20,99,255,.10);  color: var(--pf-blue); }
+
+.btn-sm {
+  padding: 6px 14px;
+  font-size: .82rem;
+  border-radius: 999px;
+  border: 1px solid var(--pf-line);
+  background: white;
+  color: var(--pf-slate);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-sm:hover { border-color: var(--pf-blue); color: var(--pf-blue); }
+.btn-sm.danger:hover { border-color: #DC2626; color: #DC2626; }
+
+/* --- Drawer / editor -------------------------------------- */
+.adm-scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(10,37,64,.5);
+  z-index: 40;
+}
+.adm-drawer {
+  position: fixed;
+  top: 0; right: 0; bottom: 0;
+  width: min(620px, 100%);
+  background: white;
+  z-index: 50;
+  overflow-y: auto;
+  box-shadow: -10px 0 40px rgba(10,37,64,.2);
+}
+.adm-drawer-head {
+  position: sticky;
+  top: 0;
+  background: white;
+  border-bottom: 1px solid var(--pf-line);
+  padding: 20px 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 2;
+}
+.adm-drawer-head h2 { margin: 0; font-size: 1.3rem; }
+.adm-drawer-head .spacer { margin-left: auto; }
+.adm-drawer-body { padding: 26px 28px 40px; }
+.adm-drawer-foot {
+  position: sticky;
+  bottom: 0;
+  background: white;
+  border-top: 1px solid var(--pf-line);
+  padding: 16px 28px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.adm-drawer-foot .spacer { margin-left: auto; }
+
+.adm-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 16px;
+}
+@media (max-width: 600px) { .adm-grid-2 { grid-template-columns: 1fr; } }
+
+.adm-field { margin-bottom: 16px; }
+.adm-field label {
+  display: block;
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--pf-ink);
+  margin-bottom: 6px;
+}
+.adm-field .hint {
+  font-weight: 400;
+  color: var(--pf-mute);
+  font-size: .78rem;
+}
+.adm-field input[type="text"],
+.adm-field input[type="email"],
+.adm-field input[type="password"],
+.adm-field input[type="number"],
+.adm-field select,
+.adm-field textarea {
+  width: 100%;
+  border: 1px solid var(--pf-line);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-family: var(--font-sans);
+  font-size: .95rem;
+  color: var(--pf-ink);
+  background: white;
+}
+.adm-field textarea { resize: vertical; min-height: 90px; }
+.adm-field input:focus,
+.adm-field select:focus,
+.adm-field textarea:focus { outline: 0; border-color: var(--pf-blue); }
+
+.adm-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: .92rem;
+  color: var(--pf-slate);
+}
+.adm-check input { width: 18px; height: 18px; }
+
+/* Image dropzone */
+.adm-drop {
+  border: 2px dashed var(--pf-line);
+  border-radius: var(--r-lg);
+  padding: 22px;
+  text-align: center;
+  color: var(--pf-mute);
+  font-size: .9rem;
+  cursor: pointer;
+  transition: border-color .2s ease, background .2s ease;
+}
+.adm-drop:hover, .adm-drop.over { border-color: var(--pf-blue); background: rgba(20,99,255,.04); }
+.adm-drop input { display: none; }
+.adm-preview {
+  position: relative;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  border: 1px solid var(--pf-line);
+}
+.adm-preview img { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
+.adm-preview .remove {
+  position: absolute;
+  top: 10px; right: 10px;
+  background: rgba(10,37,64,.8);
+  color: white;
+  border: 0;
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: .78rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* --- Feedback --------------------------------------------- */
+.adm-note {
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: .9rem;
+  margin-bottom: 18px;
+}
+.adm-note.error   { background: rgba(220,38,38,.08); color: #B91C1C; }
+.adm-note.success { background: rgba(16,185,129,.10); color: #0B7A5B; }
+.adm-note.info    { background: rgba(20,99,255,.08);  color: var(--pf-navy); }
+
+.adm-empty {
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--pf-mute);
+}
+.is-hidden { display: none !important; }

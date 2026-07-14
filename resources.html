@@ -25,13 +25,22 @@
 
 <section>
   <div class="container">
-    <!-- Subject filter chips (populated from content/articles.json) -->
-    <div class="res-filters" id="resFilters" role="tablist" aria-label="Filter resources by subject"></div>
+    <!-- Filter chips (populated live from the database by js/resources.js) -->
+    <div class="res-filters">
+      <div class="res-filter-group">
+        <span class="res-filter-label">Type</span>
+        <div class="res-filter-group" id="resTypeFilters" role="group" aria-label="Filter resources by type"></div>
+      </div>
+      <div class="res-filter-group">
+        <span class="res-filter-label">Subject</span>
+        <div class="res-filter-group" id="resSubjectFilters" role="group" aria-label="Filter resources by subject"></div>
+      </div>
+    </div>
+    <p class="res-count" id="resCount"></p>
 
-    <!-- Cards rendered client-side from content/articles.json by js/main.js -->
+    <!-- Cards rendered client-side by js/resources.js -->
     <div class="res-grid" id="resGrid"></div>
 
-    <!-- Shown only if articles.json fails to load -->
     <p class="res-empty" id="resEmpty" style="display:none; color:var(--pf-mute)">
       Resources are loading&hellip; if this persists, please check back shortly.
     </p>
@@ -80,5 +89,6 @@
 <div id="site-footer"></div>
 
 <script src="js/main.js"></script>
+<script type="module" src="js/resources.js"></script>
 </body>
 </html>

@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Resources Admin — Profiscience</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+<link rel="icon" href="../assets/favicon.ico" />
+<link rel="stylesheet" href="../css/styles.css" />
+<link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body class="admin">
+
+<!-- ============ SETUP NOTICE (shown until config is filled in) ============ -->
+<div id="setupView" class="adm-login-wrap is-hidden">
+  <div class="adm-login">
+    <h1>Almost there</h1>
+    <p class="sub">This admin isn't connected to Supabase yet.</p>
+    <div class="adm-note info">
+      Open <b>js/supabase-config.js</b> and paste your <b>Project URL</b> and
+      <b>anon/public key</b> from Supabase → Project Settings → API. Then run
+      <b>supabase/schema.sql</b> in the SQL Editor.
+    </div>
+  </div>
+</div>
+
+<!-- ============ LOGIN ============ -->
+<div id="loginView" class="adm-login-wrap is-hidden">
+  <div class="adm-login">
+    <h1>Resources Admin</h1>
+    <p class="sub">Sign in to manage the resources library.</p>
+
+    <div id="loginError" class="adm-note error is-hidden"></div>
+
+    <form id="loginForm">
+      <div class="adm-field">
+        <label for="email">Work email</label>
+        <input id="email" type="email" autocomplete="username" required placeholder="you@profiscience.com" />
+      </div>
+      <div class="adm-field">
+        <label for="password">Password</label>
+        <input id="password" type="password" autocomplete="current-password" required placeholder="••••••••" />
+      </div>
+      <button type="submit" id="loginBtn" class="btn btn-primary" style="width:100%; justify-content:center">
+        Sign in
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- ============ APP ============ -->
+<div id="appView" class="is-hidden">
+
+  <div class="adm-bar">
+    <div class="adm-bar-inner">
+      <a class="brand" href="../index.html">
+        <span class="brand-mark">P</span> Profiscience
+      </a>
+      <span class="adm-who" id="whoami"></span>
+      <button class="btn-sm" id="signOutBtn">Sign out</button>
+    </div>
+  </div>
+
+  <main class="adm-main">
+    <div class="adm-head">
+      <div>
+        <h1>Resources</h1>
+        <p>Everything on the public resources page.</p>
+      </div>
+      <div class="spacer"></div>
+      <button class="btn btn-primary" id="newBtn">New resource</button>
+    </div>
+
+    <div id="appNote" class="adm-note is-hidden"></div>
+
+    <div class="adm-toolbar">
+      <input class="adm-search" id="search" type="text" placeholder="Search by title…" />
+      <select class="btn-sm" id="filterType" style="padding:8px 12px">
+        <option value="__all">All types</option>
+      </select>
+      <select class="btn-sm" id="filterStatus" style="padding:8px 12px">
+        <option value="__all">All statuses</option>
+        <option value="published">Published</option>
+        <option value="draft">Draft</option>
+        <option value="archived">Archived</option>
+      </select>
+    </div>
+
+    <div class="adm-list" id="list">
+      <div class="adm-row head">
+        <span></span>
+        <span>Title</span>
+        <span>Type</span>
+        <span>Subject</span>
+        <span>Status</span>
+        <span></span>
+      </div>
+      <div id="rows"></div>
+    </div>
+
+    <div class="adm-empty is-hidden" id="listEmpty">Nothing here yet.</div>
+  </main>
+</div>
+
+<!-- ============ EDITOR DRAWER ============ -->
+<div id="scrim" class="adm-scrim is-hidden"></div>
+<aside id="drawer" class="adm-drawer is-hidden" aria-label="Edit resource">
+  <div class="adm-drawer-head">
+    <h2 id="drawerTitle">New resource</h2>
+    <div class="spacer"></div>
+    <button class="btn-sm" id="closeDrawer">Close</button>
+  </div>
+
+  <div class="adm-drawer-body">
+    <div id="drawerError" class="adm-note error is-hidden"></div>
+
+    <div class="adm-field">
+      <label for="f_title">Title</label>
+      <input id="f_title" type="text" required />
+    </div>
+
+    <div class="adm-field">
+      <label for="f_slug">Slug <span class="hint">— unique id, used in links</span></label>
+      <input id="f_slug" type="text" required />
+    </div>
+
+    <div class="adm-grid-2">
+      <div class="adm-field">
+        <label for="f_type">Type</label>
+        <select id="f_type"></select>
+      </div>
+      <div class="adm-field">
+        <label for="f_subject">Subject</label>
+        <select id="f_subject"></select>
+      </div>
+    </div>
+
+    <div class="adm-field">
+      <label for="f_excerpt">Excerpt <span class="hint">— the blurb on the card</span></label>
+      <textarea id="f_excerpt" rows="3"></textarea>
+    </div>
+
+    <div class="adm-field">
+      <label>Image <span class="hint">— shown on the card (16:9 works best)</span></label>
+      <div id="dropzone" class="adm-drop">
+        <input type="file" id="f_image" accept="image/*" />
+        <b>Click to upload</b> or drag an image here
+      </div>
+      <div id="imagePreview" class="adm-preview is-hidden">
+        <img id="previewImg" alt="" />
+        <button type="button" class="remove" id="removeImage">Remove</button>
+      </div>
+    </div>
+
+    <div class="adm-field">
+      <label for="f_image_alt">Image alt text <span class="hint">— for screen readers</span></label>
+      <input id="f_image_alt" type="text" />
+    </div>
+
+    <div class="adm-grid-2">
+      <div class="adm-field">
+        <label for="f_internal">Internal page <span class="hint">— e.g. case-study-verrill.html</span></label>
+        <input id="f_internal" type="text" />
+      </div>
+      <div class="adm-field">
+        <label for="f_external">External URL <span class="hint">— wins over internal</span></label>
+        <input id="f_external" type="text" placeholder="https://…" />
+      </div>
+    </div>
+
+    <div class="adm-grid-2">
+      <div class="adm-field">
+        <label for="f_pdf">PDF URL <span class="hint">— optional download</span></label>
+        <input id="f_pdf" type="text" />
+      </div>
+      <div class="adm-field">
+        <label for="f_read">Read time <span class="hint">— optional, e.g. 5 min read</span></label>
+        <input id="f_read" type="text" />
+      </div>
+    </div>
+
+    <div class="adm-grid-2">
+      <div class="adm-field">
+        <label for="f_status">Status</label>
+        <select id="f_status">
+          <option value="draft">Draft</option>
+          <option value="published">Published</option>
+          <option value="archived">Archived</option>
+        </select>
+      </div>
+      <div class="adm-field">
+        <label for="f_sort">Sort order <span class="hint">— lower shows first</span></label>
+        <input id="f_sort" type="number" value="100" />
+      </div>
+    </div>
+
+    <div class="adm-field">
+      <label class="adm-check">
+        <input id="f_featured" type="checkbox" />
+        Featured — pin this to the top of the resources page
+      </label>
+    </div>
+  </div>
+
+  <div class="adm-drawer-foot">
+    <button class="btn-sm danger is-hidden" id="deleteBtn">Delete</button>
+    <div class="spacer"></div>
+    <span class="adm-who" id="saveStatus"></span>
+    <button class="btn btn-primary" id="saveBtn">Save</button>
+  </div>
+</aside>
+
+<script type="module" src="admin.js"></script>
+</body>
+</html>

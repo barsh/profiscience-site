@@ -291,69 +291,7 @@
     }, 1800);
   }
 
-  // --- Resources: render article cards from content/articles.json ---
-  const resGrid = document.getElementById("resGrid");
-  if (resGrid) {
-    const resFilters = document.getElementById("resFilters");
-    const resEmpty = document.getElementById("resEmpty");
-    const esc = (s) =>
-      String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({
-        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
-      }[c]));
-
-    fetch("content/articles.json")
-      .then((r) => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
-      .then((data) => {
-        const articles = (data.articles || []).slice();
-        if (!articles.length) { if (resEmpty) { resEmpty.textContent = "No resources yet — check back soon."; resEmpty.style.display = "block"; } return; }
-
-        // Featured first, otherwise preserve authored order
-        articles.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
-
-        // Render cards
-        resGrid.innerHTML = articles.map((a) => {
-          const isExternal = /^https?:\/\//i.test(a.url || "");
-          const href = a.url ? esc(a.url) : "#";
-          const target = isExternal ? ' target="_blank" rel="noopener"' : "";
-          const meta = [a.readTime || a.type, a.subject].filter(Boolean).map(esc).join(" · ");
-          return (
-            '<a href="' + href + '" class="res-card reveal in" data-subject="' + esc(a.subject) + '"' + target + ">" +
-              '<div class="thumb"><span class="tag">' + esc((a.type || "").toUpperCase()) + "</span></div>" +
-              '<div class="body">' +
-                "<h3>" + esc(a.title) + "</h3>" +
-                "<p>" + esc(a.excerpt) + "</p>" +
-                '<div class="meta">' + meta + "</div>" +
-              "</div>" +
-            "</a>"
-          );
-        }).join("");
-
-        // Build subject filter chips (only subjects that have at least one article)
-        if (resFilters) {
-          const used = [];
-          articles.forEach((a) => { if (a.subject && used.indexOf(a.subject) === -1) used.push(a.subject); });
-          const chips = ['<button class="res-chip active" data-subject="__all">All</button>']
-            .concat(used.map((s) => '<button class="res-chip" data-subject="' + esc(s) + '">' + esc(s) + "</button>"));
-          resFilters.innerHTML = chips.join("");
-
-          resFilters.addEventListener("click", (e) => {
-            const btn = e.target.closest(".res-chip");
-            if (!btn) return;
-            const subj = btn.getAttribute("data-subject");
-            resFilters.querySelectorAll(".res-chip").forEach((c) => c.classList.remove("active"));
-            btn.classList.add("active");
-            resGrid.querySelectorAll(".res-card").forEach((card) => {
-              const show = subj === "__all" || card.getAttribute("data-subject") === subj;
-              card.style.display = show ? "" : "none";
-            });
-            track("resource_filter", { subject: subj });
-          });
-        }
-      })
-      .catch(() => {
-        if (resEmpty) { resEmpty.textContent = "We couldn't load resources right now. Please try again later."; resEmpty.style.display = "block"; }
-      });
-  }
+  // --- Resources cards are rendered by js/resources.js (live from Supabase) ---
 
   // Auto-track CTA clicks
   document.querySelectorAll("[data-cta]").forEach((el) => {

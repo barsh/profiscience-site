@@ -24,7 +24,8 @@
       "subject": "Legal & CLE",
       "excerpt": "How a national firm standardizes training and CLE tracking on Profiscience.",
       "readTime": "",
-      "url": "https://www.profiscience.com/CaseStudies/Steptoe%20Johnson%20Case%20Study.pdf",
+      "url": "case-study-steptoe-johnson.html",
+      "pdf": "assets/case-studies/steptoe-johnson.pdf",
       "featured": true
     },
     {
@@ -34,7 +35,8 @@
       "subject": "Onboarding",
       "excerpt": "Scaling onboarding and continuing education as the firm grows.",
       "readTime": "",
-      "url": "https://www.profiscience.com/CaseStudies/Verrill%20Equips%20for%20Growth.pdf",
+      "url": "case-study-verrill.html",
+      "pdf": "assets/case-studies/verrill-equips-for-growth.pdf",
       "featured": true
     },
     {
@@ -44,7 +46,8 @@
       "subject": "AI & Product",
       "excerpt": "Delivering accessible, captioned video learning across the firm.",
       "readTime": "",
-      "url": "https://www.profiscience.com/CaseStudies/WBD%20Close%20Captioning%20Case%20Study.pdf",
+      "url": "case-study-womble-bond-dickinson.html",
+      "pdf": "assets/case-studies/womble-bond-dickinson-closed-captioning.pdf",
       "featured": true
     },
     {
@@ -54,7 +57,8 @@
       "subject": "Integrations",
       "excerpt": "A look at how the firm tailored Profiscience to its own systems.",
       "readTime": "",
-      "url": "https://www.profiscience.com/CaseStudies/Haynes%20Boone%20-%20SDK%20Extension.pdf",
+      "url": "case-study-haynes-boone.html",
+      "pdf": "assets/case-studies/haynes-boone-sdk-extension.pdf",
       "featured": false
     },
     {
@@ -64,7 +68,8 @@
       "subject": "Legal & CLE",
       "excerpt": "Managing attorney CLE and compliance in one place.",
       "readTime": "",
-      "url": "https://www.profiscience.com/CaseStudies/Bond,%20Schoeneck%20King%20Case%20Study.pdf",
+      "url": "case-study-bond-schoeneck-king.html",
+      "pdf": "assets/case-studies/bond-schoeneck-king.pdf",
       "featured": false
     }
   ]

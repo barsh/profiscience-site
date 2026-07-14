@@ -1,0 +1,45 @@
+# Supabase free-tier projects pause after ~1 week of inactivity.
+# A paused project means the resources page can't load its content.
+# This pings the database every 3 days so the project never goes idle.
+#
+# Setup (one time): in GitHub → Settings → Secrets and variables → Actions,
+# add two repository secrets:
+#   SUPABASE_URL       — your Project URL
+#   SUPABASE_ANON_KEY  — your anon/public key
+#
+# Note: this workflow is disabled automatically by GitHub after 60 days of
+# repository inactivity. If you go that long without a commit, re-enable it
+# from the Actions tab.
+
+name: Supabase keep-alive
+
+on:
+  schedule:
+    - cron: "0 6 */3 * *" # every 3 days at 06:00 UTC
+  workflow_dispatch: # lets you run it by hand from the Actions tab
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Query the articles table
+        run: |
+          if [ -z "${{ secrets.SUPABASE_URL }}" ] || [ -z "${{ secrets.SUPABASE_ANON_KEY }}" ]; then
+            echo "::error::SUPABASE_URL and SUPABASE_ANON_KEY repository secrets are not set."
+            exit 1
+          fi
+
+          status=$(curl -s -o /tmp/body.txt -w "%{http_code}" \
+            "${{ secrets.SUPABASE_URL }}/rest/v1/articles?select=id&limit=1" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}")
+
+          echo "HTTP $status"
+          cat /tmp/body.txt
+
+          if [ "$status" != "200" ]; then
+            echo "::error::Keep-alive ping failed with HTTP $status"
+            exit 1
+          fi
+
+          echo "Project is awake."
