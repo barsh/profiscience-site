@@ -1,38 +1,40 @@
-# Supabase free-tier projects pause after ~1 week of inactivity.
-# A paused project means the resources page can't load its content.
-# This pings the database every 3 days so the project never goes idle.
+# Supabase free-tier projects pause after ~1 week of inactivity, which would
+# leave the resources page unable to load its content. This job pings the
+# database once a day so the project never goes idle.
 #
-# Setup (one time): in GitHub → Settings → Secrets and variables → Actions,
-# add two repository secrets:
-#   SUPABASE_URL       — your Project URL
-#   SUPABASE_ANON_KEY  — your anon/public key
+# It runs on GitHub's servers and talks to the Supabase REST API directly, so
+# it works no matter where the website itself is hosted (GitHub Pages,
+# profiscience.com, anywhere). It does NOT depend on the site.
 #
-# Note: this workflow is disabled automatically by GitHub after 60 days of
-# repository inactivity. If you go that long without a commit, re-enable it
-# from the Actions tab.
+# No secrets needed: the values below are the project URL and the PUBLIC
+# publishable key, which is already committed in js/supabase-config.js and is
+# safe to expose (row-level security is what protects the data). Do NOT put the
+# service_role / secret key here.
+#
+# Caveat: GitHub auto-disables scheduled workflows after 60 days with no repo
+# activity. If this repo goes that long without a commit, re-enable it from the
+# Actions tab — or set up an external pinger (see README) as a sturdier backup.
 
 name: Supabase keep-alive
 
 on:
   schedule:
-    - cron: "0 6 */3 * *" # every 3 days at 06:00 UTC
-  workflow_dispatch: # lets you run it by hand from the Actions tab
+    - cron: "0 6 * * *" # daily at 06:00 UTC
+  workflow_dispatch: # run on demand from the Actions tab
 
 jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
       - name: Query the articles table
+        env:
+          SUPABASE_URL: "https://rqkbjvyxhdknbjhaszya.supabase.co"
+          SUPABASE_KEY: "sb_publishable_Y-lJeRmMpUi3Xd13_psUtg_GHpjkDWf"
         run: |
-          if [ -z "${{ secrets.SUPABASE_URL }}" ] || [ -z "${{ secrets.SUPABASE_ANON_KEY }}" ]; then
-            echo "::error::SUPABASE_URL and SUPABASE_ANON_KEY repository secrets are not set."
-            exit 1
-          fi
-
           status=$(curl -s -o /tmp/body.txt -w "%{http_code}" \
-            "${{ secrets.SUPABASE_URL }}/rest/v1/articles?select=id&limit=1" \
-            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
-            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}")
+            "$SUPABASE_URL/rest/v1/articles?select=id&limit=1" \
+            -H "apikey: $SUPABASE_KEY" \
+            -H "Authorization: Bearer $SUPABASE_KEY")
 
           echo "HTTP $status"
           cat /tmp/body.txt
