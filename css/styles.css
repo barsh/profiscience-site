@@ -1671,6 +1671,16 @@ footer .foot-bot {
   margin-bottom: 18px;
   box-shadow: var(--sh-glow);
 }
+.team-card .portrait-img {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 42%;
+  display: block;
+  margin-bottom: 18px;
+  box-shadow: 0 20px 60px -15px rgba(20,99,255,.45);
+}
 .team-card b { display: block; font-size: 1.1rem; color: var(--pf-ink); }
 .team-card .role {
   color: var(--pf-blue);
