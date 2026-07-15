@@ -1190,6 +1190,8 @@ footer .foot-bot {
   font-size: .82rem;
   color: rgba(255,255,255,.5);
 }
+footer .foot-admin { color: rgba(255,255,255,.5); font-weight: 600; }
+footer .foot-admin:hover { color: #fff; }
 @media (max-width: 1100px) {
   footer .foot-grid { grid-template-columns: repeat(3, 1fr); }
 }
