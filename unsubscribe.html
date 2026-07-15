@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Unsubscribe — The CLE Corner | Profiscience</title>
+<meta name="description" content="Unsubscribe from The CLE Corner newsletter." />
+<meta name="robots" content="noindex, nofollow" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+<link rel="icon" href="assets/favicon.ico" />
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<div id="site-header"></div>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="eyebrow">The CLE Corner</span>
+    <h1>Unsubscribe</h1>
+    <p>Sorry to see you go. Enter your email below to stop receiving The CLE Corner newsletter.</p>
+  </div>
+</section>
+
+<section>
+  <div class="container" style="max-width:520px; margin:0 auto;">
+    <div class="unsub-card reveal">
+      <form id="unsubForm">
+        <div class="form-group">
+          <label for="unsub-email">Email address</label>
+          <input id="unsub-email" type="email" required placeholder="you@firm.com" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-arrow" id="unsubBtn" style="width:100%; justify-content:center">Unsubscribe</button>
+        <div class="form-error" id="unsubError" style="display:none; color:#DC2626; margin-top:12px; font-weight:600"></div>
+      </form>
+      <div class="form-success" id="unsubSuccess" style="display:none; color:var(--pf-success); font-weight:600; font-size:1.05rem">
+        ✓ You've been unsubscribed. You won't receive further CLE Corner emails.
+      </div>
+      <p class="unsub-note">Changed your mind? <a href="stay-clever.html#free-copy">Re-subscribe here</a>.</p>
+    </div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+
+<script src="js/main.js"></script>
+
+<!-- Prefill from ?email= in a plain script so it works even if the module below
+     (which loads Supabase from a CDN) is slow. Never auto-submit: email clients
+     prefetch links and would unsubscribe people by accident — the visitor clicks. -->
+<script>
+  (function () {
+    var pre = new URLSearchParams(location.search).get("email");
+    if (pre) { var el = document.getElementById("unsub-email"); if (el) el.value = pre; }
+  })();
+</script>
+
+<script type="module">
+  import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+  import { SUPABASE_URL, SUPABASE_ANON_KEY, isConfigured } from "./js/supabase-config.js";
+
+  const sb = isConfigured ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+
+  const form = document.getElementById("unsubForm");
+  const errEl = document.getElementById("unsubError");
+  const okEl = document.getElementById("unsubSuccess");
+  const btn = document.getElementById("unsubBtn");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    errEl.style.display = "none";
+    const email = document.getElementById("unsub-email").value.trim();
+    if (!email) return;
+    if (!sb) {
+      errEl.textContent = "Unsubscribe isn't available right now. Please email info@profiscience.com to be removed.";
+      errEl.style.display = "block";
+      return;
+    }
+    btn.disabled = true;
+    const label = btn.textContent;
+    btn.textContent = "Processing…";
+    const { error } = await sb.rpc("unsubscribe", { p_email: email });
+    btn.disabled = false;
+    btn.textContent = label;
+    if (error) {
+      errEl.textContent = "Something went wrong. Please email info@profiscience.com to be removed.";
+      errEl.style.display = "block";
+      return;
+    }
+    // Succeeds whether or not the address was on the list (no enumeration).
+    form.style.display = "none";
+    okEl.style.display = "block";
+    if (window.pfTrack) window.pfTrack("cle_corner_unsubscribe", {});
+  });
+</script>
+
+<style>
+  .unsub-card {
+    background: white;
+    border: 1px solid var(--pf-line);
+    border-radius: var(--r-lg);
+    padding: 32px;
+    box-shadow: var(--sh-sm);
+  }
+  .unsub-card .form-group { margin-bottom: 16px; }
+  .unsub-card label { display: block; font-size: .85rem; font-weight: 600; margin-bottom: 6px; }
+  .unsub-card input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--pf-line);
+    border-radius: var(--r-sm);
+    font: inherit; font-size: .95rem;
+    box-sizing: border-box;
+  }
+  .unsub-card input:focus { outline: none; border-color: var(--pf-blue); box-shadow: 0 0 0 3px rgba(20,99,255,.15); }
+  .unsub-note { margin: 18px 0 0; font-size: .88rem; color: var(--pf-mute); }
+</style>
+</body>
+</html>
