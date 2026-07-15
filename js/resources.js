@@ -95,6 +95,23 @@ if (grid) {
     );
   }
 
+  // Shimmer placeholders shown while the fetch is in flight.
+  function skeletonHtml(n) {
+    const card =
+      '<div class="res-card skeleton" aria-hidden="true">' +
+        '<div class="sk-thumb"></div>' +
+        '<div class="body">' +
+          '<div class="sk-line sk-title"></div>' +
+          '<div class="sk-line sk-title short"></div>' +
+          '<div class="sk-line"></div>' +
+          '<div class="sk-line"></div>' +
+          '<div class="sk-line short"></div>' +
+          '<div class="sk-line sk-meta"></div>' +
+        "</div>" +
+      "</div>";
+    return card.repeat(n);
+  }
+
   function chipsHtml(values, active) {
     return ['<button class="res-chip' + (active === "__all" ? " active" : "") + '" data-value="__all">All</button>']
       .concat(
@@ -152,6 +169,9 @@ if (grid) {
 
   // --- Boot ------------------------------------------------
   (async () => {
+    // Show shimmer tiles right away so a slow load isn't a blank page.
+    grid.innerHTML = skeletonHtml(6);
+
     let articles = [];
     try {
       if (!isConfigured) throw new Error("Supabase not configured yet");
@@ -161,6 +181,7 @@ if (grid) {
       try {
         articles = await loadFromJson();
       } catch (err2) {
+        grid.innerHTML = "";
         if (emptyEl) {
           emptyEl.textContent = "We couldn't load resources right now. Please try again shortly.";
           emptyEl.style.display = "block";
@@ -172,6 +193,7 @@ if (grid) {
     state.articles = articles;
 
     if (!articles.length) {
+      grid.innerHTML = "";
       if (emptyEl) {
         emptyEl.textContent = "No resources yet — check back soon.";
         emptyEl.style.display = "block";
