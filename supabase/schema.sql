@@ -317,5 +317,13 @@ values
    'Managing attorney CLE and compliance in one place.',
    'case-study-bond-schoeneck-king.html',
    'assets/case-studies/bond-schoeneck-king.pdf',
-   false, 'published', 50, now())
+   false, 'published', 50, now()),
+
+  ('foley-lardner',
+   'Foley & Lardner: LinkedIn Learning at Scale',
+   'case-study', 'integrations',
+   'Running a firm-wide enrichment plan through the LinkedIn Learning Extension — 90% participation.',
+   'case-study-foley-lardner.html',
+   'assets/case-studies/foley-lardner-lil-extension.pdf',
+   false, 'published', 60, now())
 on conflict (slug) do nothing;

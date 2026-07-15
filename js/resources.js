@@ -216,16 +216,16 @@ if (nlForm) {
     const label = btn.textContent;
     btn.textContent = "Subscribing…";
 
-    // Upsert so re-subscribing with the same email is a silent success,
-    // not a duplicate-key error the visitor would see as a failure.
-    const { error } = await sb
-      .from("subscribers")
-      .upsert(row, { onConflict: "email", ignoreDuplicates: true });
+    const { error } = await sb.from("subscribers").insert(row);
 
     btn.disabled = false;
     btn.textContent = label;
 
-    if (error) {
+    // 23505 = duplicate email (unique violation). They're already on the list,
+    // so treat re-subscribing as a success rather than surfacing an error.
+    // (A plain insert is used instead of upsert: upsert needs UPDATE rights,
+    // which the public role intentionally lacks, so it would 401.)
+    if (error && error.code !== "23505") {
       errEl.textContent = "Something went wrong. Please try again in a moment.";
       errEl.style.display = "block";
       if (window.pfTrack) window.pfTrack("newsletter_error", { message: error.message });
