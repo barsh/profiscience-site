@@ -1207,7 +1207,7 @@ footer .foot-admin:hover { color: #fff; }
   grid-template-columns: 1.1fr 1fr;
   gap: 60px;
   align-items: center;
-  padding: 20px 0 10px;
+  /* padding: 20px 0 10px; */
 }
 .about-hero-copy .lead {
   color: rgba(255,255,255,.82);
@@ -2056,6 +2056,27 @@ footer .foot-admin:hover { color: #fff; }
 /* =========================================================
    CASE STUDY (article pages)
    ========================================================= */
+/* Client logo chip in the case-study hero — white tile so dark/colored logos
+   read against the gradient. max-height keeps small logos sharp (no upscaling). */
+.cs-hero-logo {
+  display: flex;         /* block-level: sits on its own line under the eyebrow */
+  width: fit-content;    /* but only as wide as the logo */
+  align-items: center;
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px 22px;
+  margin: 4px 0 22px;
+  box-shadow: 0 14px 40px -14px rgba(0,0,0,.45);
+}
+.cs-hero-logo img {
+  width: auto;
+  height: auto;
+  max-height: 44px;
+  max-width: 240px;
+  object-fit: contain;
+  display: block;
+}
+
 .cs-hero-meta {
   display: flex;
   flex-wrap: wrap;
