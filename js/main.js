@@ -145,7 +145,7 @@
     const body = panel.querySelector(".bot-body");
     const canned = {
       pricing:
-        "Profiscience pricing scales with seats and modules. A specialist will reach out — or you can request a demo anytime.",
+        "Profiscience pricing scales with seats and modules. A specialist will reach out — or you can request a discovery call anytime.",
       demo:
         "Happy to set up a demo. Head to the Contact page or drop your email and we'll reach out.",
       cle:

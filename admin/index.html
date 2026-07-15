@@ -187,7 +187,7 @@
     </div>
 
     <div class="adm-field">
-      <label>Image <span class="hint">— shown on the card (16:9 works best)</span></label>
+      <label>Image <span class="hint">— shown on the card</span></label>
       <div id="dropzone" class="adm-drop">
         <input type="file" id="f_image" accept="image/*" />
         <b>Click to upload</b> or drag an image here
@@ -196,6 +196,11 @@
         <img id="previewImg" alt="" />
         <button type="button" class="remove" id="removeImage">Remove</button>
       </div>
+    </div>
+
+    <div class="adm-field">
+      <label for="f_image_url">…or use an image URL <span class="hint">— e.g. a client logo already in the repo: assets/clients/steptoe.png. Skips the upload.</span></label>
+      <input id="f_image_url" type="text" placeholder="assets/clients/logo.png  or  https://…" />
     </div>
 
     <div class="adm-field">

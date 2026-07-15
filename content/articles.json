@@ -24,6 +24,8 @@
       "subject": "Legal & CLE",
       "excerpt": "How a national firm standardizes training and CLE tracking on Profiscience.",
       "readTime": "",
+      "image": "assets/clients/steptoe.png",
+      "imageAlt": "Steptoe logo",
       "url": "case-study-steptoe-johnson.html",
       "pdf": "assets/case-studies/steptoe-johnson.pdf",
       "featured": true
@@ -35,6 +37,8 @@
       "subject": "Onboarding",
       "excerpt": "Scaling onboarding and continuing education as the firm grows.",
       "readTime": "",
+      "image": "assets/clients/verrill.png",
+      "imageAlt": "Verrill logo",
       "url": "case-study-verrill.html",
       "pdf": "assets/case-studies/verrill-equips-for-growth.pdf",
       "featured": true
@@ -46,6 +50,8 @@
       "subject": "AI & Product",
       "excerpt": "Delivering accessible, captioned video learning across the firm.",
       "readTime": "",
+      "image": "assets/clients/womble.png",
+      "imageAlt": "Womble Bond Dickinson logo",
       "url": "case-study-womble-bond-dickinson.html",
       "pdf": "assets/case-studies/womble-bond-dickinson-closed-captioning.pdf",
       "featured": true
@@ -57,6 +63,8 @@
       "subject": "Integrations",
       "excerpt": "A look at how the firm tailored Profiscience to its own systems.",
       "readTime": "",
+      "image": "assets/clients/Haynes_Boone.png",
+      "imageAlt": "Haynes Boone logo",
       "url": "case-study-haynes-boone.html",
       "pdf": "assets/case-studies/haynes-boone-sdk-extension.pdf",
       "featured": false
@@ -68,6 +76,8 @@
       "subject": "Legal & CLE",
       "excerpt": "Managing attorney CLE and compliance in one place.",
       "readTime": "",
+      "image": "assets/clients/Bond_Logo.jfif",
+      "imageAlt": "Bond, Schoeneck & King logo",
       "url": "case-study-bond-schoeneck-king.html",
       "pdf": "assets/case-studies/bond-schoeneck-king.pdf",
       "featured": false

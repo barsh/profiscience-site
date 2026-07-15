@@ -250,6 +250,7 @@ function boot() {
     $("f_type").value = article ? article.type_slug : (state.types[0] || {}).slug || "";
     $("f_subject").value = article ? article.subject_slug : (state.subjects[0] || {}).slug || "";
     $("f_excerpt").value = article ? article.excerpt || "" : "";
+    $("f_image_url").value = article ? article.image_url || "" : "";
     $("f_image_alt").value = article ? article.image_alt || "" : "";
     $("f_internal").value = article ? article.internal_url || "" : "";
     $("f_external").value = article ? article.external_url || "" : "";
@@ -323,13 +324,24 @@ function boot() {
 
   function stageFile(file) {
     state.pendingFile = file;
+    $("f_image_url").value = ""; // an uploaded file wins over a pasted URL
     setPreview(URL.createObjectURL(file));
   }
+
+  // Paste/type an image URL (e.g. an existing client logo) instead of uploading.
+  $("f_image_url").addEventListener("input", () => {
+    const url = $("f_image_url").value.trim();
+    state.pendingFile = null; // a URL overrides any staged file
+    $("f_image").value = "";
+    state.imageUrl = url || null;
+    setPreview(state.imageUrl);
+  });
 
   $("removeImage").addEventListener("click", () => {
     state.pendingFile = null;
     state.imageUrl = null;
     $("f_image").value = "";
+    $("f_image_url").value = "";
     setPreview(null);
   });
 

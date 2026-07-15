@@ -1838,6 +1838,13 @@ footer .foot-admin:hover { color: #fff; }
   height: 100%;
   object-fit: cover;
 }
+.res-card .thumb.logo-thumb {
+  background: white;
+}
+.res-card .thumb.logo-thumb img {
+  object-fit: contain;
+  padding: 22px;
+}
 .res-card .body { padding: 20px 24px 24px; }
 .res-card h3 { font-size: 1.1rem; margin-bottom: 6px; }
 .res-card .meta { font-size: .82rem; color: var(--pf-mute); }

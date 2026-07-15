@@ -327,3 +327,11 @@ values
    'assets/case-studies/foley-lardner-lil-extension.pdf',
    false, 'published', 60, now())
 on conflict (slug) do nothing;
+
+-- Card logos for the seeded case studies (see supabase/add-case-study-logos.sql).
+update public.articles set image_url = 'assets/clients/steptoe.png',      image_alt = 'Steptoe & Johnson logo'       where slug = 'steptoe-johnson';
+update public.articles set image_url = 'assets/clients/verrill.png',      image_alt = 'Verrill logo'                 where slug = 'verrill-equips-for-growth';
+update public.articles set image_url = 'assets/clients/womble.png',       image_alt = 'Womble Bond Dickinson logo'   where slug = 'wbd-closed-captioning';
+update public.articles set image_url = 'assets/clients/Haynes_Boone.png', image_alt = 'Haynes Boone logo'            where slug = 'haynes-boone-sdk-extension';
+update public.articles set image_url = 'assets/clients/Bond_Logo.jfif',   image_alt = 'Bond, Schoeneck & King logo'  where slug = 'bond-schoeneck-king';
+update public.articles set image_url = 'assets/clients/foley-lardner.svg',image_alt = 'Foley & Lardner logo'         where slug = 'foley-lardner';

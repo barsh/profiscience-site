@@ -71,6 +71,8 @@ if (grid) {
     const isExternal = /^https?:\/\//i.test(a.url || "");
     const target = isExternal ? ' target="_blank" rel="noopener"' : "";
     const meta = [a.readTime || a.type, a.subject].filter(Boolean).map(esc).join(" · ");
+    const isCaseStudy = /case\s*study/i.test(a.type || "");
+    const thumbClass = isCaseStudy && a.image ? "thumb logo-thumb" : "thumb";
 
     const thumb = a.image
       ? '<img src="' + esc(a.image) + '" alt="' + esc(a.imageAlt || a.title) + '" loading="lazy" />'
@@ -79,7 +81,7 @@ if (grid) {
     return (
       '<a href="' + esc(a.url || "#") + '" class="res-card reveal in"' +
         ' data-type="' + esc(a.type) + '" data-subject="' + esc(a.subject) + '"' + target + ">" +
-        '<div class="thumb">' + thumb +
+        '<div class="' + thumbClass + '">' + thumb +
           '<span class="tag">' + esc((a.type || "").toUpperCase()) + "</span>" +
         "</div>" +
         '<div class="body">' +
