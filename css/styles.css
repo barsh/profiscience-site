@@ -3019,3 +3019,117 @@ footer .foot-admin:hover { color: #fff; }
   /* Links shouldn't look like links on paper. */
   a { color: inherit !important; text-decoration: none !important; }
 }
+
+/* =========================================================
+   HERO TRUST STRIP (enterprise credibility, above the fold)
+   ========================================================= */
+.hero-trust {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 20px;
+  margin-top: 26px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(255,255,255,.14);
+}
+.hero-trust span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: .82rem;
+  font-weight: 600;
+  letter-spacing: .01em;
+  color: rgba(255,255,255,.82);
+  white-space: nowrap;
+}
+.hero-trust span::before {
+  content: "";
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--pf-cyan);
+  box-shadow: 0 0 10px rgba(0,212,255,.8);
+}
+
+/* =========================================================
+   SECURITY & TRUST SECTION
+   ========================================================= */
+.trust-layout {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 56px;
+  align-items: center;
+}
+.trust-intro .eyebrow { margin-bottom: 18px; }
+.trust-intro h2 { margin-bottom: 18px; }
+.trust-intro > p { max-width: 46ch; }
+
+.trust-metrics {
+  display: flex;
+  gap: 28px;
+  flex-wrap: wrap;
+  margin: 26px 0 30px;
+}
+.trust-metric strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--pf-navy);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.trust-metric span {
+  display: block;
+  margin-top: 4px;
+  font-size: .8rem;
+  color: var(--pf-mute);
+  max-width: 16ch;
+}
+
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+.trust-card {
+  background: white;
+  border: 1px solid var(--pf-line);
+  border-radius: var(--r-md);
+  padding: 22px;
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.trust-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--sh-md);
+  border-color: rgba(20,99,255,.3);
+}
+.trust-ico {
+  width: 42px; height: 42px;
+  border-radius: 11px;
+  display: grid; place-items: center;
+  font-size: 1.15rem;
+  margin-bottom: 14px;
+  background: rgba(20,99,255,.08);
+  border: 1px solid rgba(20,99,255,.16);
+}
+.trust-card b {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--pf-ink);
+  margin-bottom: 6px;
+}
+.trust-card span {
+  display: block;
+  font-size: .86rem;
+  line-height: 1.5;
+  color: var(--pf-slate);
+}
+
+@media (max-width: 900px) {
+  .trust-layout { grid-template-columns: 1fr; gap: 36px; }
+}
+@media (max-width: 520px) {
+  .trust-grid { grid-template-columns: 1fr; }
+  .trust-metrics { gap: 20px; }
+}
