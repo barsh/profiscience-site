@@ -1,19 +1,23 @@
-# Supabase free-tier projects pause after ~1 week of inactivity, which would
-# leave the resources page unable to load its content. This job pings the
-# database once a day so the project never goes idle.
+# Keeps the free-tier Supabase project from pausing (it pauses after ~1 week
+# of inactivity, which would break the resources page).
 #
-# It runs on GitHub's servers and talks to the Supabase REST API directly, so
-# it works no matter where the website itself is hosted (GitHub Pages,
-# profiscience.com, anywhere). It does NOT depend on the site.
+# This runs on GitHub's servers and hits the Supabase REST API directly, so it
+# works regardless of where the website is hosted (GitHub Pages, profiscience.com,
+# anywhere). It does NOT depend on the site being up.
 #
-# No secrets needed: the values below are the project URL and the PUBLIC
-# publishable key, which is already committed in js/supabase-config.js and is
-# safe to expose (row-level security is what protects the data). Do NOT put the
-# service_role / secret key here.
+# Two things happen each run:
+#   1. Ping the database  -> registers activity so Supabase stays awake.
+#   2. Self-heal          -> GitHub auto-disables scheduled workflows after 60
+#      days with no repo commits. If the repo has been idle 45+ days, this makes
+#      an empty commit so the workflow can never disable itself. Result: the
+#      GitHub half of the keep-alive is self-sustaining with no babysitting.
 #
-# Caveat: GitHub auto-disables scheduled workflows after 60 days with no repo
-# activity. If this repo goes that long without a commit, re-enable it from the
-# Actions tab — or set up an external pinger (see README) as a sturdier backup.
+# No secrets required: the key below is the PUBLIC publishable key (already in
+# js/supabase-config.js; safe to expose - row-level security protects the data).
+# Never put the service_role / secret key here.
+#
+# This is deliberately redundant with an external pinger (see
+# docs/keep-supabase-alive.md). Either mechanism alone keeps the project live.
 
 name: Supabase keep-alive
 
@@ -22,11 +26,17 @@ on:
     - cron: "0 6 * * *" # daily at 06:00 UTC
   workflow_dispatch: # run on demand from the Actions tab
 
+permissions:
+  contents: write # needed for the self-heal commit
+
 jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Query the articles table
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Ping Supabase
         env:
           SUPABASE_URL: "https://rqkbjvyxhdknbjhaszya.supabase.co"
           SUPABASE_KEY: "sb_publishable_Y-lJeRmMpUi3Xd13_psUtg_GHpjkDWf"
@@ -43,5 +53,21 @@ jobs:
             echo "::error::Keep-alive ping failed with HTTP $status"
             exit 1
           fi
-
           echo "Project is awake."
+
+      - name: Prevent 60-day auto-disable
+        if: always() # run even if the ping failed, so the workflow stays enabled
+        run: |
+          last=$(git log -1 --format=%ct)
+          now=$(date +%s)
+          days=$(( (now - last) / 86400 ))
+          echo "Most recent commit was $days day(s) ago."
+          if [ "$days" -ge 45 ]; then
+            echo "Repo idle 45+ days - making an empty commit to stay enabled."
+            git config user.name "keepalive-bot"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit --allow-empty -m "chore: keep-alive heartbeat [skip ci]"
+            git push
+          else
+            echo "Recent activity exists - no keep-alive commit needed."
+          fi
