@@ -71,7 +71,7 @@
         <p>Benchmarks, case studies, product launches. No fluff, no recycled marketing emails.</p>
       </div>
       <div class="form-card reveal">
-        <form data-track="newsletter" class="newsletter-form">
+        <form id="newsletterForm" class="newsletter-form" data-source="resources-page">
           <div class="form-group">
             <label for="nl-name">Name</label>
             <input id="nl-name" type="text" name="name" placeholder="Your name" required />
@@ -80,8 +80,13 @@
             <label for="nl-email">Work email</label>
             <input id="nl-email" type="email" name="email" placeholder="you@company.com" required />
           </div>
-          <button type="submit" class="btn btn-primary btn-arrow" style="width:100%; justify-content:center" data-cta="nl_signup">Subscribe</button>
-          <div class="form-success" style="display:none; color:var(--pf-success); margin-top:10px; font-weight:600">✓ You're in. First issue lands next Tuesday.</div>
+          <div class="form-group">
+            <label for="nl-company">Company</label>
+            <input id="nl-company" type="text" name="company" placeholder="Your firm" required />
+          </div>
+          <button type="submit" class="btn btn-primary btn-arrow" style="width:100%; justify-content:center" data-cta="nl_signup" id="nlSubmit">Subscribe</button>
+          <div class="form-error" id="nlError" style="display:none; color:#DC2626; margin-top:10px; font-weight:600"></div>
+          <div class="form-success" id="nlSuccess" style="display:none; color:var(--pf-success); margin-top:10px; font-weight:600">✓ You're in. First issue lands next month.</div>
         </form>
       </div>
     </div>

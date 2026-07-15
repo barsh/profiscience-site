@@ -315,50 +315,8 @@
     });
   });
 
-  // --- Lead forms: send submissions to the sales inbox ---
-  // Interim (no backend yet): compose a pre-filled email to sales@.
-  // To upgrade to real background delivery / CRM later, set LEAD_FORM_ENDPOINT
-  // to a POST URL (Formspree, Web3Forms, or an Azure Function) — submissions
-  // will POST there as JSON instead of opening a mail client.
-  const LEAD_EMAIL = "sales@profiscience.com";
-  const LEAD_FORM_ENDPOINT = ""; // e.g. "https://formspree.io/f/xxxxxxx"
-  const fieldLabel = (k) => k.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-
-  document.querySelectorAll("form[data-track]").forEach((f) => {
-    f.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const fd = new FormData(f);
-      const data = Object.fromEntries(fd.entries());
-      track("form_submit", { form: f.dataset.track, ...data });
-
-      const showSuccess = () => {
-        const msg = f.querySelector(".form-success");
-        if (msg) msg.style.display = "block";
-        f.reset();
-      };
-
-      const isNewsletter = f.dataset.track === "newsletter";
-      const who = data.first_name
-        ? " — " + (data.first_name + " " + (data.last_name || "")).trim()
-        : data.name ? " — " + data.name : "";
-      const subject = (isNewsletter ? "Newsletter signup" : "Demo request") + who;
-
-      if (LEAD_FORM_ENDPOINT) {
-        fetch(LEAD_FORM_ENDPOINT, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify({ _subject: subject, form: f.dataset.track, to: LEAD_EMAIL, ...data }),
-        }).then(showSuccess).catch(showSuccess);
-      } else {
-        const body = Object.keys(data).map((k) => fieldLabel(k) + ": " + data[k]).join("\n");
-        window.location.href =
-          "mailto:" + LEAD_EMAIL +
-          "?subject=" + encodeURIComponent(subject) +
-          "&body=" + encodeURIComponent(body);
-        showSuccess();
-      }
-    });
-  });
+  // Lead forms are handled elsewhere now: the demo form is a Pipedrive embed
+  // (contact.html), and the newsletter writes to Supabase (js/resources.js).
 
   // Fire page_view
   track("page_view");

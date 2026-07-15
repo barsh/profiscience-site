@@ -9,6 +9,9 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { SUPABASE_URL, SUPABASE_ANON_KEY, isConfigured } from "./supabase-config.js";
 
+// One shared client for both the article grid and the newsletter form.
+const sb = isConfigured ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+
 const grid = document.getElementById("resGrid");
 if (grid) {
   const typeFilters = document.getElementById("resTypeFilters");
@@ -25,7 +28,6 @@ if (grid) {
 
   // --- Load ------------------------------------------------
   async function loadFromSupabase() {
-    const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     const { data, error } = await sb
       .from("articles")
       .select(`
@@ -180,4 +182,58 @@ if (grid) {
 
     render();
   })();
+}
+
+/* =========================================================
+   Newsletter signup -> subscribers table (single opt-in)
+   ========================================================= */
+const nlForm = document.getElementById("newsletterForm");
+if (nlForm) {
+  const btn = document.getElementById("nlSubmit");
+  const errEl = document.getElementById("nlError");
+  const okEl = document.getElementById("nlSuccess");
+
+  nlForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    errEl.style.display = "none";
+
+    const row = {
+      name: nlForm.name.value.trim(),
+      email: nlForm.email.value.trim(),
+      company: nlForm.company.value.trim(),
+      source: nlForm.dataset.source || "website",
+    };
+
+    if (!row.email) return;
+
+    if (!sb) {
+      errEl.textContent = "Signups aren't available right now. Please email info@profiscience.com.";
+      errEl.style.display = "block";
+      return;
+    }
+
+    btn.disabled = true;
+    const label = btn.textContent;
+    btn.textContent = "Subscribing…";
+
+    // Upsert so re-subscribing with the same email is a silent success,
+    // not a duplicate-key error the visitor would see as a failure.
+    const { error } = await sb
+      .from("subscribers")
+      .upsert(row, { onConflict: "email", ignoreDuplicates: true });
+
+    btn.disabled = false;
+    btn.textContent = label;
+
+    if (error) {
+      errEl.textContent = "Something went wrong. Please try again in a moment.";
+      errEl.style.display = "block";
+      if (window.pfTrack) window.pfTrack("newsletter_error", { message: error.message });
+      return;
+    }
+
+    nlForm.reset();
+    okEl.style.display = "block";
+    if (window.pfTrack) window.pfTrack("newsletter_signup", { source: row.source });
+  });
 }

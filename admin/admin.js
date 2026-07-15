@@ -34,6 +34,8 @@ function boot() {
     editing: null,   // the article being edited, or null for a new one
     pendingFile: null,
     imageUrl: null,
+    subscribers: [],
+    subsLoaded: false,
   };
 
   // ---------- helpers ----------
@@ -434,6 +436,132 @@ function boot() {
     closeDrawer();
     note($("appNote"), "Deleted.", "info");
     await loadAll();
+  });
+
+  // ---------- tabs ----------
+  document.querySelectorAll(".adm-tab").forEach((tab) => {
+    tab.addEventListener("click", () => {
+      document.querySelectorAll(".adm-tab").forEach((t) => t.classList.remove("active"));
+      tab.classList.add("active");
+      const panelId = tab.getAttribute("data-panel");
+      ["resourcesPanel", "subscribersPanel"].forEach((id) => {
+        $(id).classList.toggle("is-hidden", id !== panelId);
+      });
+      if (panelId === "subscribersPanel" && !state.subsLoaded) loadSubscribers();
+    });
+  });
+
+  // ---------- subscribers ----------
+  async function loadSubscribers() {
+    const { data, error } = await sb
+      .from("subscribers")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      note($("appNote"), "Couldn't load subscribers: " + error.message, "error");
+      return;
+    }
+    state.subscribers = data || [];
+    state.subsLoaded = true;
+    renderSubscribers();
+  }
+
+  function visibleSubscribers() {
+    const q = $("subSearch").value.trim().toLowerCase();
+    const status = $("subFilterStatus").value;
+    return state.subscribers.filter((s) => {
+      if (status !== "__all" && s.status !== status) return false;
+      if (!q) return true;
+      return [s.email, s.name, s.company].some((v) => (v || "").toLowerCase().includes(q));
+    });
+  }
+
+  function fmtDate(iso) {
+    if (!iso) return "—";
+    // Fixed format, locale-independent: YYYY-MM-DD
+    return iso.slice(0, 10);
+  }
+
+  function renderSubscribers() {
+    const items = visibleSubscribers();
+    const total = state.subscribers.length;
+    const active = state.subscribers.filter((s) => s.status === "subscribed").length;
+    $("subCount").textContent =
+      total === 0 ? "No signups yet." : active + " subscribed · " + total + " total";
+
+    const rows = $("subRows");
+    if (!items.length) {
+      rows.innerHTML = "";
+      show($("subEmpty"));
+      $("subEmpty").textContent = total ? "Nothing matches those filters." : "No subscribers yet.";
+      return;
+    }
+    hide($("subEmpty"));
+
+    rows.innerHTML = items
+      .map((s) => {
+        const unsub = s.status === "unsubscribed";
+        return (
+          '<div class="adm-row sub">' +
+            '<div class="adm-title">' + esc(s.email) + "</div>" +
+            '<div class="adm-cell">' + esc(s.name || "—") + "</div>" +
+            '<div class="adm-cell">' + esc(s.company || "—") + "</div>" +
+            '<div class="adm-cell">' + fmtDate(s.created_at) + "</div>" +
+            '<div><span class="badge ' + (unsub ? "archived" : "published") + '">' +
+              (unsub ? "unsubscribed" : "subscribed") + "</span></div>" +
+            '<div class="adm-actions">' +
+              '<button class="btn-sm" data-sub-toggle="' + esc(s.id) + '">' +
+                (unsub ? "Resub" : "Unsub") + "</button>" +
+            "</div>" +
+          "</div>"
+        );
+      })
+      .join("");
+
+    rows.querySelectorAll("[data-sub-toggle]").forEach((btn) => {
+      btn.addEventListener("click", () => toggleSubscriber(btn.getAttribute("data-sub-toggle")));
+    });
+  }
+
+  async function toggleSubscriber(id) {
+    const sub = state.subscribers.find((s) => s.id === id);
+    if (!sub) return;
+    const next = sub.status === "subscribed" ? "unsubscribed" : "subscribed";
+    const { error } = await sb.from("subscribers").update({ status: next }).eq("id", id);
+    if (error) {
+      note($("appNote"), error.message, "error");
+      return;
+    }
+    sub.status = next;
+    renderSubscribers();
+  }
+
+  ["subSearch", "subFilterStatus"].forEach((id) => {
+    $(id).addEventListener("input", renderSubscribers);
+    $(id).addEventListener("change", renderSubscribers);
+  });
+
+  // CSV export — mirrors the old site's "download mailing list".
+  $("subExport").addEventListener("click", () => {
+    const rows = visibleSubscribers();
+    if (!rows.length) {
+      note($("appNote"), "No subscribers to export.", "info");
+      return;
+    }
+    const cell = (v) => '"' + String(v == null ? "" : v).replace(/"/g, '""') + '"';
+    const header = ["email", "name", "company", "status", "source", "created_at"];
+    const csv = [header.join(",")]
+      .concat(rows.map((s) => header.map((k) => cell(s[k])).join(",")))
+      .join("\r\n");
+
+    const blob = new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "profiscience-subscribers.csv";
+    a.click();
+    URL.revokeObjectURL(url);
   });
 
   // ---------- go ----------

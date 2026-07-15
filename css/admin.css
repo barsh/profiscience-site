@@ -87,6 +87,28 @@ body.admin { background: var(--pf-mist); }
   border-radius: var(--r-lg);
   overflow: hidden;
 }
+/* Tabs */
+.adm-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--pf-line);
+}
+.adm-tab {
+  border: 0;
+  background: none;
+  padding: 12px 18px;
+  font-family: var(--font-sans);
+  font-size: .95rem;
+  font-weight: 600;
+  color: var(--pf-mute);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+.adm-tab:hover { color: var(--pf-ink); }
+.adm-tab.active { color: var(--pf-blue); border-bottom-color: var(--pf-blue); }
+
 .adm-row {
   display: grid;
   grid-template-columns: 64px 1fr 130px 130px 92px 150px;
@@ -94,6 +116,10 @@ body.admin { background: var(--pf-mist); }
   align-items: center;
   padding: 14px 18px;
   border-bottom: 1px solid var(--pf-line);
+}
+/* Subscriber rows: email, name, company, joined, status, actions */
+.adm-row.sub {
+  grid-template-columns: 1.4fr 1fr 1fr 120px 110px 90px;
 }
 .adm-row:last-child { border-bottom: 0; }
 .adm-row:hover { background: var(--pf-mist); }

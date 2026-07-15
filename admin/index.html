@@ -65,43 +65,86 @@
   </div>
 
   <main class="adm-main">
-    <div class="adm-head">
-      <div>
-        <h1>Resources</h1>
-        <p>Everything on the public resources page.</p>
-      </div>
-      <div class="spacer"></div>
-      <button class="btn btn-primary" id="newBtn">New resource</button>
+    <div class="adm-tabs">
+      <button class="adm-tab active" id="tabResources" data-panel="resourcesPanel">Resources</button>
+      <button class="adm-tab" id="tabSubscribers" data-panel="subscribersPanel">Subscribers</button>
     </div>
 
     <div id="appNote" class="adm-note is-hidden"></div>
 
-    <div class="adm-toolbar">
-      <input class="adm-search" id="search" type="text" placeholder="Search by title…" />
-      <select class="btn-sm" id="filterType" style="padding:8px 12px">
-        <option value="__all">All types</option>
-      </select>
-      <select class="btn-sm" id="filterStatus" style="padding:8px 12px">
-        <option value="__all">All statuses</option>
-        <option value="published">Published</option>
-        <option value="draft">Draft</option>
-        <option value="archived">Archived</option>
-      </select>
-    </div>
-
-    <div class="adm-list" id="list">
-      <div class="adm-row head">
-        <span></span>
-        <span>Title</span>
-        <span>Type</span>
-        <span>Subject</span>
-        <span>Status</span>
-        <span></span>
+    <!-- ===== Resources panel ===== -->
+    <section id="resourcesPanel">
+      <div class="adm-head">
+        <div>
+          <h1>Resources</h1>
+          <p>Everything on the public resources page.</p>
+        </div>
+        <div class="spacer"></div>
+        <button class="btn btn-primary" id="newBtn">New resource</button>
       </div>
-      <div id="rows"></div>
-    </div>
 
-    <div class="adm-empty is-hidden" id="listEmpty">Nothing here yet.</div>
+      <div class="adm-toolbar">
+        <input class="adm-search" id="search" type="text" placeholder="Search by title…" />
+        <select class="btn-sm" id="filterType" style="padding:8px 12px">
+          <option value="__all">All types</option>
+        </select>
+        <select class="btn-sm" id="filterStatus" style="padding:8px 12px">
+          <option value="__all">All statuses</option>
+          <option value="published">Published</option>
+          <option value="draft">Draft</option>
+          <option value="archived">Archived</option>
+        </select>
+      </div>
+
+      <div class="adm-list" id="list">
+        <div class="adm-row head">
+          <span></span>
+          <span>Title</span>
+          <span>Type</span>
+          <span>Subject</span>
+          <span>Status</span>
+          <span></span>
+        </div>
+        <div id="rows"></div>
+      </div>
+
+      <div class="adm-empty is-hidden" id="listEmpty">Nothing here yet.</div>
+    </section>
+
+    <!-- ===== Subscribers panel ===== -->
+    <section id="subscribersPanel" class="is-hidden">
+      <div class="adm-head">
+        <div>
+          <h1>Subscribers</h1>
+          <p id="subCount">Newsletter signups.</p>
+        </div>
+        <div class="spacer"></div>
+        <button class="btn-sm" id="subExport">Export CSV</button>
+      </div>
+
+      <div class="adm-toolbar">
+        <input class="adm-search" id="subSearch" type="text" placeholder="Search by email, name, or company…" />
+        <select class="btn-sm" id="subFilterStatus" style="padding:8px 12px">
+          <option value="__all">All</option>
+          <option value="subscribed">Subscribed</option>
+          <option value="unsubscribed">Unsubscribed</option>
+        </select>
+      </div>
+
+      <div class="adm-list" id="subList">
+        <div class="adm-row sub head">
+          <span>Email</span>
+          <span>Name</span>
+          <span>Company</span>
+          <span>Joined</span>
+          <span>Status</span>
+          <span></span>
+        </div>
+        <div id="subRows"></div>
+      </div>
+
+      <div class="adm-empty is-hidden" id="subEmpty">No subscribers yet.</div>
+    </section>
   </main>
 </div>
 
