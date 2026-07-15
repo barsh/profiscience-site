@@ -47,6 +47,16 @@ function boot() {
       "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
     }[c]));
 
+  // image_url values like "assets/clients/steptoe.png" are relative to the SITE
+  // ROOT (where resources.html lives). The admin is served from /admin/, so for
+  // DISPLAY ONLY we hop up one level. Absolute URLs (http:, blob:, data:) and
+  // root-absolute paths are left alone. The stored value is never changed.
+  const adminImg = (url) => {
+    if (!url) return url;
+    if (/^[a-z][a-z0-9+.-]*:/i.test(url) || url.startsWith("/")) return url;
+    return "../" + url;
+  };
+
   function note(el, message, kind) {
     el.textContent = message;
     el.className = "adm-note " + (kind || "info");
@@ -200,7 +210,7 @@ function boot() {
     rows.innerHTML = items
       .map((a) => {
         const thumb = a.image_url
-          ? '<img class="adm-thumb" src="' + esc(a.image_url) + '" alt="" />'
+          ? '<img class="adm-thumb" src="' + esc(adminImg(a.image_url)) + '" alt="" />'
           : '<div class="adm-thumb"></div>';
 
         return (
@@ -289,7 +299,7 @@ function boot() {
   // ---------- image ----------
   function setPreview(url) {
     if (url) {
-      $("previewImg").src = url;
+      $("previewImg").src = adminImg(url);
       show($("imagePreview"));
       hide($("dropzone"));
     } else {
