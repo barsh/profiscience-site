@@ -1838,12 +1838,27 @@ footer .foot-admin:hover { color: #fff; }
   height: 100%;
   object-fit: cover;
 }
+/* Client-logo tile: center the logo at a consistent, sensible size on white,
+   never upscaling small logos to fill (which looks soft/stretched). */
 .res-card .thumb.logo-thumb {
-  background: white;
+  background: #fff;
+  display: grid;
+  place-items: center;
+  padding: 24px 30px;
+  border-bottom: 1px solid var(--pf-line);
 }
 .res-card .thumb.logo-thumb img {
+  width: auto;
+  height: auto;
+  max-height: 48px;   /* cap tall logos; small ones stay at natural size = sharp */
+  max-width: 70%;     /* cap ultra-wide logos so they don't run edge to edge */
   object-fit: contain;
-  padding: 22px;
+}
+/* The tag is white-on-blue over the gradient hero; on a white logo tile it
+   needs its own outline to stay visible. */
+.res-card .thumb.logo-thumb .tag {
+  background: var(--pf-mist);
+  border: 1px solid var(--pf-line);
 }
 .res-card .body { padding: 20px 24px 24px; }
 .res-card h3 { font-size: 1.1rem; margin-bottom: 6px; }
