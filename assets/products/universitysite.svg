@@ -1,0 +1,29 @@
+<svg width="360" height="180" viewBox="0 0 360 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="us-bg" x1="10" y1="10" x2="350" y2="170" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0A2540"/>
+      <stop offset="1" stop-color="#0E3870"/>
+    </linearGradient>
+    <linearGradient id="us-icon" x1="52" y1="60" x2="112" y2="120" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1463FF"/>
+      <stop offset="1" stop-color="#00D4FF"/>
+    </linearGradient>
+  </defs>
+  <!-- Card -->
+  <rect x="10" y="10" width="340" height="160" rx="26" fill="url(#us-bg)"/>
+  <rect x="10.75" y="10.75" width="338.5" height="158.5" rx="25.25" stroke="#FFFFFF" stroke-opacity="0.14" stroke-width="1.5"/>
+  <!-- Glow contained around the icon -->
+  <circle cx="82" cy="90" r="34" fill="#1463FF" fill-opacity="0.14"/>
+  <!-- Icon tile -->
+  <rect x="52" y="60" width="60" height="60" rx="17" fill="url(#us-icon)"/>
+  <!-- Mortarboard cap -->
+  <polygon points="82,71 108,82 82,93 56,82" fill="white"/>
+  <line x1="56" y1="82" x2="56" y2="98" stroke="white" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="56" cy="100" r="2.5" fill="white"/>
+  <rect x="71" y="91" width="22" height="14" rx="3" fill="white" fill-opacity="0.28"/>
+  <!-- Text block -->
+  <text x="134" y="80" fill="white" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700" letter-spacing="-0.03em">UniversitySite</text>
+  <text x="134" y="104" fill="#BEE1FF" font-family="Inter, Arial, sans-serif" font-size="13.5" font-weight="600" letter-spacing="0.03em">LEARNING PLATFORM</text>
+  <rect x="134" y="114" width="118" height="21" rx="10.5" fill="#FFFFFF" fill-opacity="0.08"/>
+  <text x="193" y="128.5" fill="#7FC3FF" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="600" text-anchor="middle">LMS · Onboarding · PD</text>
+</svg>

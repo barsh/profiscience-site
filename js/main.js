@@ -97,6 +97,21 @@
     revealEls.forEach((el) => el.classList.add("in"));
   }
 
+  // --- Re-align hash anchors after full load ---
+  // Images above the target (e.g. the clients logo wall) load after the initial
+  // jump and push content down, so the browser lands short. Re-scroll once
+  // everything is loaded. scrollIntoView respects each target's scroll-margin-top.
+  if (location.hash && location.hash.length > 1) {
+    window.addEventListener("load", function () {
+      var target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+      if (target) {
+        requestAnimationFrame(function () {
+          target.scrollIntoView({ block: "start" });
+        });
+      }
+    });
+  }
+
   // --- Animated counters ---
   const counters = document.querySelectorAll("[data-count]");
   const animateCount = (el) => {

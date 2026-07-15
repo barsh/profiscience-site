@@ -1,0 +1,30 @@
+<svg width="360" height="180" viewBox="0 0 360 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sf-bg" x1="10" y1="10" x2="350" y2="170" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1A0A30"/>
+      <stop offset="1" stop-color="#2D1060"/>
+    </linearGradient>
+    <linearGradient id="sf-icon" x1="52" y1="60" x2="112" y2="120" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F59E0B"/>
+      <stop offset="1" stop-color="#F77B3C"/>
+    </linearGradient>
+  </defs>
+  <!-- Card -->
+  <rect x="10" y="10" width="340" height="160" rx="26" fill="url(#sf-bg)"/>
+  <rect x="10.75" y="10.75" width="338.5" height="158.5" rx="25.25" stroke="#F59E0B" stroke-opacity="0.25" stroke-width="1.5"/>
+  <!-- Glow contained around the icon -->
+  <circle cx="82" cy="90" r="34" fill="#F59E0B" fill-opacity="0.12"/>
+  <!-- Icon tile -->
+  <rect x="52" y="60" width="60" height="60" rx="17" fill="url(#sf-icon)"/>
+  <!-- Lightning bolt (speed / fly) -->
+  <polygon points="89,67 73,91 82,91 76,113 98,86 87,86" fill="white"/>
+  <!-- Motion streaks -->
+  <line x1="58" y1="82" x2="66" y2="82" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+  <line x1="56" y1="90" x2="64" y2="90" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.3"/>
+  <line x1="58" y1="98" x2="66" y2="98" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+  <!-- Text block -->
+  <text x="134" y="80" fill="white" font-family="Inter, Arial, sans-serif" font-size="27" font-weight="700" letter-spacing="-0.03em">ScormFly</text>
+  <text x="134" y="104" fill="#FDE68A" font-family="Inter, Arial, sans-serif" font-size="13.5" font-weight="600" letter-spacing="0.03em">CONTENT DELIVERY</text>
+  <rect x="134" y="114" width="150" height="21" rx="10.5" fill="#FFFFFF" fill-opacity="0.07"/>
+  <text x="209" y="128.5" fill="#FDE68A" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="600" text-anchor="middle">SCORM · xAPI · Streaming</text>
+</svg>

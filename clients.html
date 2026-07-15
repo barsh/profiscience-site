@@ -661,6 +661,10 @@
 
       </div>
 
+      <div style="text-align:center; margin-top:32px;">
+        <button type="button" class="btn btn-secondary" id="showAllTestimonials" aria-expanded="false">Show all 26 testimonials</button>
+      </div>
+
       <div style="text-align:center; margin-top:40px;">
         <a href="contact.html" class="btn btn-primary btn-arrow">Get in touch</a>
       </div>
@@ -669,6 +673,24 @@
 
   <div id="site-footer"></div>
   <script src="js/main.js"></script>
+
+  <!-- Testimonials: reveal the rest on demand instead of showing all at once -->
+  <script>
+    (function () {
+      var btn = document.getElementById("showAllTestimonials");
+      var wall = document.querySelector(".testimonials-wall");
+      if (!btn || !wall) return;
+      btn.addEventListener("click", function () {
+        var open = wall.classList.toggle("show-all");
+        btn.setAttribute("aria-expanded", open ? "true" : "false");
+        btn.textContent = open ? "Show fewer testimonials" : "Show all 26 testimonials";
+        if (!open) {
+          // Collapsing: bring the user back to the top of the section.
+          document.getElementById("testimonials").scrollIntoView({ block: "start" });
+        }
+      });
+    })();
+  </script>
 
   <style>
     /* Clients grid — scoped to this page */
