@@ -260,6 +260,7 @@ function boot() {
     $("f_type").value = article ? article.type_slug : (state.types[0] || {}).slug || "";
     $("f_subject").value = article ? article.subject_slug : (state.subjects[0] || {}).slug || "";
     $("f_excerpt").value = article ? article.excerpt || "" : "";
+    $("f_body").value = article ? article.body || "" : "";
     $("f_image_url").value = article ? article.image_url || "" : "";
     $("f_image_alt").value = article ? article.image_alt || "" : "";
     $("f_internal").value = article ? article.internal_url || "" : "";
@@ -386,8 +387,9 @@ function boot() {
 
     const internal = $("f_internal").value.trim();
     const external = $("f_external").value.trim();
-    if (!internal && !external) {
-      note($("drawerError"), "Give the card somewhere to link: an internal page or an external URL.", "error");
+    const body = $("f_body").value.trim();
+    if (!internal && !external && !body) {
+      note($("drawerError"), "Give the card a destination: write a Body, or link to an internal page or external URL.", "error");
       return;
     }
 
@@ -409,6 +411,7 @@ function boot() {
         image_alt: $("f_image_alt").value.trim() || null,
         internal_url: internal || null,
         external_url: external || null,
+        body: body || null,
         pdf_url: $("f_pdf").value.trim() || null,
         read_time: $("f_read").value.trim() || null,
         featured: $("f_featured").checked,

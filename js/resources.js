@@ -31,7 +31,7 @@ if (grid) {
     const { data, error } = await sb
       .from("articles")
       .select(`
-        title, excerpt, read_time, image_url, image_alt,
+        slug, title, excerpt, read_time, image_url, image_alt,
         internal_url, external_url, featured, published_at,
         article_types    ( label ),
         article_subjects ( label )
@@ -49,7 +49,9 @@ if (grid) {
       readTime: r.read_time,
       image: r.image_url,
       imageAlt: r.image_alt,
-      url: r.external_url || r.internal_url || "#",
+      // No external/internal link means it's an inline post — the DB constraint
+      // guarantees such a row has a body, so send it to the reusable post page.
+      url: r.external_url || r.internal_url || ("post.html?slug=" + encodeURIComponent(r.slug)),
       type: r.article_types?.label || "",
       subject: r.article_subjects?.label || "",
       featured: r.featured,
