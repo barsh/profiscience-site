@@ -51,7 +51,7 @@ if (grid) {
       imageAlt: r.image_alt,
       // No external/internal link means it's an inline post — the DB constraint
       // guarantees such a row has a body, so send it to the reusable post page.
-      url: r.external_url || r.internal_url || ("post.html?slug=" + encodeURIComponent(r.slug)),
+      url: r.external_url || r.internal_url || ("post?slug=" + encodeURIComponent(r.slug)),
       type: r.article_types?.label || "",
       subject: r.article_subjects?.label || "",
       featured: r.featured,
