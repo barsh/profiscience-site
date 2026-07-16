@@ -523,9 +523,23 @@ section.dark .gradient-text,
 
 @media (max-width: 900px) {
   .hero { padding: 60px 0 80px; }
-  .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  /* minmax(0,…) lets the column shrink below its content's intrinsic width,
+     otherwise wide children force horizontal overflow on phones. */
+  .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 40px; }
   .hero-visual { order: 2; }
   .hero-float.top, .hero-float.bot { display: none; }
+
+  /* The stat strip is a nowrap flex row — it overflows narrow screens.
+     Lay it out as a 2×2 grid and drop the vertical dividers. */
+  .hero-stat-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px 16px;
+    margin-top: 34px;
+    padding-top: 26px;
+  }
+  .hss-divider { display: none; }
+  .hss-item { padding: 0; }
 }
 
 /* Hero decorative animated blobs */

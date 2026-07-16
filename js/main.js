@@ -61,12 +61,12 @@
   });
 
   function setActiveNav() {
-    var raw = location.pathname.split("/").pop() || "index.html";
-    // normalise: add .html if missing (some servers strip the extension)
-    var page = raw.includes(".") ? raw : (raw === "" ? "index.html" : raw + ".html");
+    // Compare without the .html extension so active state works whether the
+    // server serves /solutions or /solutions.html (URLs are extensionless).
+    var page = (location.pathname.split("/").pop() || "").replace(/\.html$/, "");
     document.querySelectorAll(".nav-links a").forEach(function (a) {
-      var href = a.getAttribute("href").split("#")[0];
-      if (href === page) a.classList.add("active");
+      var href = a.getAttribute("href").split("#")[0].replace(/\.html$/, "");
+      if (href && href === page) a.classList.add("active");
     });
   }
 
