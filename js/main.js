@@ -146,6 +146,15 @@
     counters.forEach((el) => cio.observe(el));
   }
 
+  // --- Years-since counters (e.g. "15 yrs / Serving law firms since 2010") ---
+  // Keeps elapsed-year figures current without hand-editing each year.
+  document.querySelectorAll("[data-years-since]").forEach((el) => {
+    const since = parseInt(el.dataset.yearsSince, 10);
+    if (!since) return;
+    const years = new Date().getFullYear() - since;
+    el.textContent = years + (el.dataset.suffix || "");
+  });
+
   // --- Questions bot widget ---
   // (Front-end only demo. Wire to your real AI endpoint in production.)
   const launcher = document.querySelector(".bot-launcher");
