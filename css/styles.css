@@ -515,7 +515,7 @@ section.dark .gradient-text,
   background: var(--pf-success);
   box-shadow: 0 0 0 4px rgba(16,185,129,.2);
 }
-.hero-float.top { top: -18px; right: -10px; animation: floaty 5s ease-in-out infinite alternate-reverse; }
+.hero-float.top { top: 245px; right: -10px; animation: floaty 5s ease-in-out infinite alternate-reverse; }
 .hero-float.bot { bottom: 20px; left: -20px; animation: floaty 7s ease-in-out infinite alternate; }
 
 @media (max-width: 900px) {
@@ -715,6 +715,11 @@ section.dark p { color: rgba(255,255,255,.75); }
 .product-card-header {
   padding: 24px 24px 20px;
   position: relative;
+}
+.product-card-intro {
+  padding: 20px 20px 0 20px;
+  font-size: .92rem;
+  color: var(--pf-slate);
 }
 .product-card-header.us {
   background: linear-gradient(135deg, #0A2540 0%, #0E4AC9 100%);
