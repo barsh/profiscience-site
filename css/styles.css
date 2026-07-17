@@ -589,6 +589,28 @@ section.dark p { color: rgba(255,255,255,.75); }
 }
 .section-head.left { text-align: left; margin-left: 0; }
 
+.platform-pillars-copy {
+  max-width: 860px;
+  margin: 20px auto 0;
+  display: grid;
+  gap: 16px;
+}
+
+.platform-pillars-copy p {
+  margin: 0;
+  color: var(--pf-slate);
+  font-size: 1.03rem;
+  line-height: 1.65;
+}
+
+.platform-pillars-label {
+  display: block;
+  margin-bottom: 5px;
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+  color: var(--pf-ink);
+}
+
 /* =========================================================
    LOGO TICKER
    ========================================================= */
