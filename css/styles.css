@@ -332,22 +332,27 @@ section.dark .gradient-text,
   font-size: .9rem;
 }
 
-/* Hero inline stat strip */
-.hero-stat-strip {
+/* Right hero column: visual stacked above the stat strip */
+.hero-visual-col {
   display: flex;
-  align-items: flex-start;
-  gap: 0;
-  margin-top: 44px;
-  padding-top: 32px;
+  flex-direction: column;
+  gap: 40px;
+}
+
+/* Hero stat strip — sits under the visual as a 2×2 grid */
+.hero-stat-strip {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px 28px;
+  margin-top: 8px;
+  padding-top: 28px;
   border-top: 1px solid rgba(255,255,255,.15);
 }
 .hss-item {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  padding: 0 32px 0 0;
 }
-.hss-item:first-child { padding-left: 0; }
 .hss-item strong {
   font-family: var(--font-display);
   font-size: 2rem;
@@ -361,14 +366,6 @@ section.dark .gradient-text,
   color: rgba(255,255,255,.6);
   font-weight: 500;
 }
-.hss-divider {
-  width: 1px;
-  height: 40px;
-  background: rgba(255,255,255,.2);
-  flex-shrink: 0;
-  margin: 0 32px 0 0;
-}
-
 .ai-powered-badge {
   display: inline-flex;
   align-items: center;
@@ -526,20 +523,9 @@ section.dark .gradient-text,
   /* minmax(0,…) lets the column shrink below its content's intrinsic width,
      otherwise wide children force horizontal overflow on phones. */
   .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 40px; }
-  .hero-visual { order: 2; }
   .hero-float.top, .hero-float.bot { display: none; }
-
-  /* The stat strip is a nowrap flex row — it overflows narrow screens.
-     Lay it out as a 2×2 grid and drop the vertical dividers. */
-  .hero-stat-strip {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 22px 16px;
-    margin-top: 34px;
-    padding-top: 26px;
-  }
-  .hss-divider { display: none; }
-  .hss-item { padding: 0; }
+  .hero-visual-col { gap: 34px; }
+  .hero-stat-strip { gap: 22px 16px; padding-top: 26px; }
 }
 
 /* Hero decorative animated blobs */
