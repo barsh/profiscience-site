@@ -40,20 +40,41 @@
 <section>
   <div class="container">
     <div class="contact-grid">
+
+      <!-- Pipedrive Web Form — submissions land directly in the CRM.
+           Same form the old site used on request-demo.aspx.
+           Note: no .reveal here on purpose — the reveal animation starts at
+           opacity:0 with a transform, which makes the embedded iframe
+           mis-measure its own height. -->
+      <div class="form-card pd-form-card">
+        <div
+          class="pipedriveWebForms"
+          data-pd-webforms="https://webforms.pipedrive.com/f/2XfYHDLoI2a5CJ6AZoVf1xLDQjEJigRUlaWnWkrT5CEneaCCZ1pU099AGP3YEvjVh"
+          data-cta="demo_form"
+        ></div>
+        <noscript>
+          <p>
+            This form needs JavaScript. Email
+            <a href="mailto:sales@profiscience.com">sales@profiscience.com</a>
+            or call <a href="tel:+18009403656">1 800 940 3656</a> and we'll set up your demo.
+          </p>
+        </noscript>
+      </div>
+
       <div class="contact-info reveal">
-        <h3>Talk to us</h3>
-        <div class="info-card">
-          <div class="ico">✉️</div>
-          <div>
-            <b>Sales &amp; demos</b>
-            <small><a href="mailto:sales@profiscience.com">sales@profiscience.com</a></small>
-          </div>
-        </div>
+        <h3 style="margin-top: 1.9em">Talk to us</h3>
         <div class="info-card">
           <div class="ico">🛟</div>
           <div>
             <b>Customer support</b>
             <small><a href="mailto:support@profiscience.com">support@profiscience.com</a></small>
+          </div>
+        </div>
+        <div class="info-card">
+          <div class="ico">✉️</div>
+          <div>
+            <b>Sales</b>
+            <small><a href="mailto:sales@profiscience.com">sales@profiscience.com</a></small>
           </div>
         </div>
         <div class="info-card">
@@ -79,26 +100,6 @@
         </div>
       </div>
 
-      <!-- Pipedrive Web Form — submissions land directly in the CRM.
-           Same form the old site used on request-demo.aspx.
-           Note: no .reveal here on purpose — the reveal animation starts at
-           opacity:0 with a transform, which makes the embedded iframe
-           mis-measure its own height. -->
-      <div class="form-card pd-form-card">
-        <h3 style="margin-bottom:20px">Request a discovery call</h3>
-        <div
-          class="pipedriveWebForms"
-          data-pd-webforms="https://webforms.pipedrive.com/f/1rq7zGXFwnf0kiRu5WUdyYzHoVOH1gWQfUHHfV7MHe4HVhAsR1bpY9Wtr7g6KGy2v"
-          data-cta="demo_form"
-        ></div>
-        <noscript>
-          <p>
-            This form needs JavaScript. Email
-            <a href="mailto:sales@profiscience.com">sales@profiscience.com</a>
-            or call <a href="tel:+18009403656">1 800 940 3656</a> and we'll set up your demo.
-          </p>
-        </noscript>
-      </div>
     </div>
   </div>
 </section>
