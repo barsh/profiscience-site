@@ -963,6 +963,84 @@ section.dark p { color: rgba(255,255,255,.75); }
   letter-spacing: .06em;
 }
 
+/* Why Profiscience — numbered reason cards (home) */
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+.why-card {
+  position: relative;
+  overflow: hidden;
+  padding: 40px 36px 36px;
+  border: 1px solid var(--pf-line);
+  border-radius: var(--r-xl);
+  background:
+    radial-gradient(520px 220px at 100% 0%, rgba(26,166,230,.07), transparent 70%),
+    white;
+  box-shadow: var(--sh-sm);
+  transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+}
+/* Gradient rail that fills in on hover */
+.why-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 3px;
+  background: var(--grad-btn);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .45s cubic-bezier(.4,0,.2,1);
+}
+.why-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(14,74,201,.28);
+  box-shadow: var(--sh-glow);
+}
+.why-card:hover::before { transform: scaleX(1); }
+
+/* Oversized ghost numeral */
+.why-card-num {
+  position: absolute;
+  top: 16px; right: 24px;
+  font-family: var(--font-display);
+  font-size: 4.2rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -.04em;
+  background: var(--grad-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  opacity: .13;
+  transition: opacity .3s ease;
+  pointer-events: none;
+}
+.why-card:hover .why-card-num { opacity: .22; }
+
+.why-card h3 {
+  position: relative;
+  max-width: 20ch;
+  margin-bottom: 14px;
+  font-family: var(--font-display);
+  font-size: 1.32rem;
+  line-height: 1.28;
+  letter-spacing: -.015em;
+}
+.why-card p {
+  position: relative;
+  margin: 0;
+  color: var(--pf-slate);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+@media (max-width: 640px) {
+  .why-card { padding: 32px 26px 28px; }
+  .why-card-num { font-size: 3.2rem; }
+  .why-card h3 { font-size: 1.18rem; }
+}
+
 /* Core-platform cards — branded logo tile + description (solutions page) */
 .platform-grid {
   display: grid;
@@ -1003,6 +1081,7 @@ section.dark p { color: rgba(255,255,255,.75); }
 @media (max-width: 900px) {
   .platform-grid { grid-template-columns: 1fr; }
   .feat-grid { grid-template-columns: 1fr; }
+  .why-grid { grid-template-columns: 1fr; }
 }
 
 /* =========================================================
