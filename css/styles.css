@@ -928,7 +928,7 @@ section.dark p { color: rgba(255,255,255,.75); }
   transition: opacity .3s ease;
   pointer-events: none;
 }
-.why-card:hover .why-card-num { opacity: .22; }
+.why-card:hover .why-card-num { opacity: .7; }
 
 .why-card h3 {
   position: relative;
