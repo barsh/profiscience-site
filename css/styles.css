@@ -574,6 +574,8 @@ section.dark p { color: rgba(255,255,255,.75); }
   margin: 0 auto 60px;
 }
 .section-head.left { text-align: left; margin-left: 0; }
+/* For headings that need more room to breathe — stays fluid below 800px. */
+.section-head.wide { max-width: 800px; }
 
 .platform-pillars-copy {
   max-width: 860px;
