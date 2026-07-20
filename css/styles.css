@@ -1803,6 +1803,188 @@ footer .foot-admin:hover { color: #fff; }
   overflow: hidden;
 }
 
+.platform-options-section .section-head {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.platform-options-intro {
+  max-width: 760px;
+  margin: 0 auto;
+  color: rgba(255,255,255,.76);
+}
+
+.platform-options-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  align-items: stretch;
+}
+
+.platform-option-card {
+  --option-accent: rgba(26,166,230,.45);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 100%;
+  padding: 28px;
+  border-radius: var(--r-xl);
+  border: 1px solid rgba(255,255,255,.12);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.05) 0%, rgba(255,255,255,.03) 100%),
+    linear-gradient(180deg, rgba(12,37,68,.94) 0%, rgba(10,37,64,.94) 100%);
+  box-shadow: 0 16px 40px rgba(2,8,23,.18);
+  color: rgba(255,255,255,.9);
+}
+
+.platform-option-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(135deg, var(--option-accent), transparent 40%);
+  opacity: .18;
+}
+
+.platform-option-card--applications { --option-accent: rgba(26,166,230,.65); }
+.platform-option-card--extensions { --option-accent: rgba(14,74,201,.7); }
+.platform-option-card--integrations { --option-accent: rgba(80,136,236,.65); }
+
+.platform-option-card > * { position: relative; z-index: 1; }
+
+.platform-option-card__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.platform-option-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.05);
+  color: #D9ECFF;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.03);
+}
+
+.platform-option-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.platform-option-label {
+  display: inline-block;
+  color: rgba(190,225,255,.94);
+  font-size: .74rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.platform-option-card h3 {
+  color: white;
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.platform-option-card p {
+  color: rgba(255,255,255,.72);
+  margin: 0;
+}
+
+.platform-option-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.platform-option-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.04);
+  color: rgba(255,255,255,.9);
+  line-height: 1.35;
+}
+
+.platform-option-list li::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  margin-top: .45em;
+  border-radius: 999px;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #4D90FF 0%, #2BC4F0 100%);
+  box-shadow: 0 0 0 3px rgba(26,166,230,.12);
+}
+
+.platform-option-list--two-col {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.platform-option-groups {
+  display: grid;
+  gap: 16px;
+}
+
+.platform-option-group h4 {
+  color: #D9ECFF;
+  margin: 0 0 10px;
+  font-size: 1rem;
+}
+
+.platform-option-link {
+  margin-top: auto;
+  align-self: flex-start;
+  color: #BEE1FF;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(190,225,255,.35);
+  padding-bottom: 2px;
+}
+
+.platform-option-link:hover {
+  color: white;
+  border-bottom-color: rgba(255,255,255,.8);
+}
+
+.platform-option-link:focus-visible,
+.platform-options-cta .btn:focus-visible {
+  outline: 3px solid rgba(80,136,236,.65);
+  outline-offset: 4px;
+}
+
+.platform-options-cta {
+  display: flex;
+  justify-content: center;
+  margin-top: 34px;
+}
+
+@media (max-width: 1100px) {
+  .platform-options-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .platform-option-card--integrations { grid-column: 1 / -1; }
+}
+
+@media (max-width: 760px) {
+  .platform-options-section { padding: 76px 0; }
+  .platform-options-grid { grid-template-columns: 1fr; }
+  .platform-option-card--integrations { grid-column: auto; }
+  .platform-option-card { padding: 24px; }
+  .platform-option-list--two-col { grid-template-columns: 1fr; }
+  .platform-options-cta { margin-top: 28px; }
+}
+
 /* =========================================================
    BOOK PAGE — Stay CLEver
    ========================================================= */
