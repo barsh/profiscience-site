@@ -3192,86 +3192,6 @@ footer .foot-admin:hover { color: #fff; }
 @media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; } }
 
 /* =========================================================
-   QUESTIONS / CHAT BOT WIDGET
-   ========================================================= */
-.bot-launcher {
-  position: fixed;
-  bottom: 24px; right: 24px;
-  width: 60px; height: 60px;
-  border-radius: 50%;
-  background: var(--grad-btn);
-  color: white;
-  display: grid; place-items: center;
-  box-shadow: var(--sh-glow);
-  cursor: pointer;
-  z-index: 60;
-  border: 0;
-  font-size: 1.4rem;
-  transition: transform .2s ease;
-}
-.bot-launcher:hover { transform: scale(1.06); }
-.bot-panel {
-  position: fixed;
-  bottom: 100px; right: 24px;
-  width: 340px; max-width: calc(100vw - 40px);
-  height: 460px;
-  background: white;
-  border-radius: 20px;
-  box-shadow: var(--sh-lg);
-  display: none;
-  flex-direction: column;
-  overflow: hidden;
-  z-index: 60;
-  border: 1px solid var(--pf-line);
-}
-.bot-panel.open { display: flex; }
-.bot-header {
-  padding: 18px;
-  background: var(--grad-hero);
-  color: white;
-}
-.bot-header b { display: block; font-family: var(--font-display); }
-.bot-header small { color: rgba(255,255,255,.8); }
-.bot-body {
-  flex: 1;
-  padding: 16px;
-  overflow-y: auto;
-  display: flex; flex-direction: column; gap: 10px;
-  background: var(--pf-mist);
-}
-.bot-msg {
-  max-width: 85%;
-  padding: 10px 14px;
-  border-radius: 14px;
-  font-size: .9rem;
-}
-.bot-msg.bot { background: white; border: 1px solid var(--pf-line); }
-.bot-msg.user { background: var(--grad-btn); color: white; align-self: flex-end; }
-.bot-foot {
-  display: flex; gap: 8px;
-  padding: 12px;
-  border-top: 1px solid var(--pf-line);
-  background: white;
-}
-.bot-foot input {
-  flex: 1;
-  border: 1px solid var(--pf-line);
-  border-radius: 999px;
-  padding: 10px 14px;
-  font-size: .9rem;
-}
-.bot-foot input:focus { outline: 0; border-color: var(--pf-blue); }
-.bot-foot button {
-  border: 0;
-  background: var(--grad-btn);
-  color: white;
-  border-radius: 999px;
-  padding: 0 16px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-/* =========================================================
    ANIMATIONS (reveal on scroll)
    ========================================================= */
 .reveal {
@@ -3521,8 +3441,9 @@ footer .foot-admin:hover { color: #fff; }
   .cs-back,
   .cs-hero-meta,
   .cs-doc,
-  .bot-launcher,
-  .bot-panel,
+  /* Pipedrive LeadBooster injects a srcless iframe with this id — confirmed
+     against the live widget, so don't switch this to an [src*=] match. */
+  #LeadboosterContainer,
   #site-header,
   #site-footer {
     display: none !important;

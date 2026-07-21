@@ -27,6 +27,41 @@
     lf();
   })("https://sc.lfeeder.com/lftracker_v1_DzLR5a50zgn4BoQ2.js", "script", document);
 
+  // --- Pipedrive LeadBooster chat ---
+  // Replaces the old front-end-only demo widget. Conversations land in the CRM
+  // as leads. Loaded here rather than in each HTML file, same as the tracker.
+  //
+  // Both values come from the playbook's "install manually" snippet in
+  // Pipedrive. They're public client-side identifiers, not secrets — Pipedrive
+  // ships them in the page markup. Swapping the playbook means updating the
+  // UUID here.
+  var PD_COMPANY_ID = 7745355;
+  var PD_PLAYBOOK_UUID = "3a2811df-3d73-494f-b5f3-52c17ec1a046";
+
+  if (PD_COMPANY_ID && PD_PLAYBOOK_UUID) {
+    window.pipedriveLeadboosterConfig = {
+      base: "leadbooster-chat.pipedrive.com",
+      companyId: PD_COMPANY_ID,
+      playbookUuid: PD_PLAYBOOK_UUID,
+      version: 2,
+    };
+    (function () {
+      var w = window;
+      if (w.LeadBooster) return;
+      w.LeadBooster = {
+        q: [],
+        on: function (n, h) { this.q.push({ t: "o", n: n, h: h }); },
+        trigger: function (n) { this.q.push({ t: "t", n: n }); },
+      };
+      var s = document.createElement("script");
+      s.src = "https://leadbooster-chat.pipedrive.com/assets/loader.js";
+      s.async = true;
+      document.head.appendChild(s);
+    })();
+  } else if (window.__pfDebug) {
+    console.warn("[pipedrive] LeadBooster not configured — chat widget disabled.");
+  }
+
   // --- Lightweight tracker scaffold ---
   window.pfTrack = function track(event, data) {
     data = data || {};
@@ -204,59 +239,6 @@
     const years = new Date().getFullYear() - since;
     el.textContent = years + (el.dataset.suffix || "");
   });
-
-  // --- Questions bot widget ---
-  // (Front-end only demo. Wire to your real AI endpoint in production.)
-  const launcher = document.querySelector(".bot-launcher");
-  const panel = document.querySelector(".bot-panel");
-  if (launcher && panel) {
-    launcher.addEventListener("click", () => {
-      panel.classList.toggle("open");
-      track("bot_toggled", { open: panel.classList.contains("open") });
-    });
-    const form = panel.querySelector(".bot-foot");
-    const input = panel.querySelector("input");
-    const body = panel.querySelector(".bot-body");
-    const canned = {
-      pricing:
-        "Profiscience pricing scales with seats and modules. A specialist will reach out — or you can request a discovery call anytime.",
-      demo:
-        "Happy to set up a demo. Head to the Contact page or drop your email and we'll reach out.",
-      cle:
-        "Yes — our CLE add-ons handle accreditation tracking, attorney reporting, and state-specific credit rules out of the box.",
-      ai:
-        "Our AI Knowledge Check builder can turn any uploaded video into a validated assessment in minutes. No authoring required.",
-    };
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const q = input.value.trim();
-      if (!q) return;
-      const userMsg = document.createElement("div");
-      userMsg.className = "bot-msg user";
-      userMsg.textContent = q;
-      body.appendChild(userMsg);
-      input.value = "";
-      body.scrollTop = body.scrollHeight;
-      track("bot_asked", { q });
-
-      setTimeout(() => {
-        const lc = q.toLowerCase();
-        let answer =
-          "Great question — a specialist can answer that in detail. Want me to route you to someone on the team?";
-        for (const k of Object.keys(canned)) {
-          if (lc.includes(k)) {
-            answer = canned[k];
-            break;
-          }
-        }
-        const botMsg = document.createElement("div");
-        botMsg.className = "bot-msg bot";
-        botMsg.textContent = answer;
-        body.appendChild(botMsg);
-        body.scrollTop = body.scrollHeight;
-      }, 650);
-    });
-  }
 
   // --- Logo ticker ---
   const TICKER_LOGOS = [
