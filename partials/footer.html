@@ -71,5 +71,20 @@
   </div>
 </footer>
 
-<!-- Chat is Pipedrive LeadBooster now; it injects its own launcher and panel.
-     Loaded from js/main.js so it applies to every page. -->
+<!-- Chat widget. Behaviour lives in js/chat.js, which talks to the
+     Supabase Edge Function in supabase/functions/chat. -->
+<button class="bot-launcher" aria-label="Ask a question">💬</button>
+<div class="bot-panel" role="dialog" aria-label="Ask Profiscience" aria-modal="false">
+  <div class="bot-header">
+    <b>Ask Profiscience</b>
+    <small>Questions about the platform, CLE, or getting started</small>
+    <button class="bot-close" aria-label="Close chat">&times;</button>
+  </div>
+  <div class="bot-body" role="log" aria-live="polite" aria-atomic="false">
+    <div class="bot-msg bot">Hi — I can answer questions about UniversitySite, CLESite, and ScormFly, or point you to the right person. What are you looking into?</div>
+  </div>
+  <form class="bot-foot">
+    <input type="text" placeholder="Type your question…" aria-label="Ask a question" autocomplete="off" maxlength="2000" />
+    <button type="submit" aria-label="Send">Send</button>
+  </form>
+</div>

@@ -3192,6 +3192,154 @@ footer .foot-admin:hover { color: #fff; }
 @media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; } }
 
 /* =========================================================
+   CHAT WIDGET
+   Behaviour: js/chat.js → supabase/functions/chat
+   ========================================================= */
+.bot-launcher {
+  position: fixed;
+  bottom: 24px; right: 24px;
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: var(--grad-btn);
+  color: white;
+  display: grid; place-items: center;
+  box-shadow: var(--sh-glow);
+  cursor: pointer;
+  z-index: 60;
+  border: 0;
+  font-size: 1.4rem;
+  transition: transform .2s ease;
+}
+.bot-launcher:hover { transform: scale(1.06); }
+.bot-panel {
+  position: fixed;
+  bottom: 100px; right: 24px;
+  width: 380px; max-width: calc(100vw - 40px);
+  height: 540px; max-height: calc(100vh - 140px);
+  background: white;
+  border-radius: 20px;
+  box-shadow: var(--sh-lg);
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 60;
+  border: 1px solid var(--pf-line);
+}
+.bot-panel.open { display: flex; }
+.bot-header {
+  padding: 18px;
+  background: var(--grad-hero);
+  color: white;
+  position: relative;
+}
+.bot-header b { display: block; font-family: var(--font-display); }
+.bot-header small { color: rgba(255,255,255,.8); font-size: .8rem; }
+.bot-close {
+  position: absolute;
+  top: 12px; right: 14px;
+  background: transparent;
+  border: 0;
+  color: rgba(255,255,255,.75);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+.bot-close:hover { color: white; }
+.bot-body {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  display: flex; flex-direction: column; gap: 10px;
+  background: var(--pf-mist);
+}
+.bot-msg {
+  max-width: 85%;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-size: .9rem;
+  line-height: 1.5;
+  white-space: pre-wrap;   /* the model replies in short paragraphs */
+  overflow-wrap: anywhere; /* long URLs must not widen the panel */
+}
+.bot-msg.bot { background: white; border: 1px solid var(--pf-line); }
+.bot-msg.user { background: var(--grad-btn); color: white; align-self: flex-end; }
+.bot-msg.error {
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  color: #991B1B;
+}
+.bot-msg a { color: var(--pf-blue); text-decoration: underline; }
+.bot-msg.user a { color: white; }
+
+/* Typing indicator — three dots that breathe while awaiting the model.
+   Replies are not streamed, so without this the panel looks frozen. */
+.bot-typing {
+  display: flex; gap: 4px; align-items: center;
+  padding: 12px 14px;
+  background: white;
+  border: 1px solid var(--pf-line);
+  border-radius: 14px;
+  align-self: flex-start;
+}
+.bot-typing span {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--pf-mute);
+  animation: botBlink 1.4s infinite both;
+}
+.bot-typing span:nth-child(2) { animation-delay: .2s; }
+.bot-typing span:nth-child(3) { animation-delay: .4s; }
+@keyframes botBlink {
+  0%, 80%, 100% { opacity: .25; }
+  40% { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bot-typing span { animation: none; opacity: .6; }
+  .bot-launcher { transition: none; }
+}
+
+.bot-foot {
+  display: flex; gap: 8px;
+  padding: 12px;
+  border-top: 1px solid var(--pf-line);
+  background: white;
+}
+.bot-foot input {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid var(--pf-line);
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-size: .9rem;
+  font-family: inherit;
+}
+.bot-foot input:focus { outline: 0; border-color: var(--pf-blue); }
+.bot-foot button {
+  border: 0;
+  background: var(--grad-btn);
+  color: white;
+  border-radius: 999px;
+  padding: 0 16px;
+  font-weight: 600;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.bot-foot button:disabled,
+.bot-foot input:disabled { opacity: .55; cursor: default; }
+
+/* Phones: full-width sheet rather than a floating card. */
+@media (max-width: 480px) {
+  .bot-panel {
+    right: 12px; left: 12px;
+    bottom: 88px;
+    width: auto; max-width: none;
+    height: calc(100vh - 160px);
+  }
+  .bot-launcher { bottom: 16px; right: 16px; }
+}
+
+/* =========================================================
    ANIMATIONS (reveal on scroll)
    ========================================================= */
 .reveal {

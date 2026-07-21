@@ -27,40 +27,10 @@
     lf();
   })("https://sc.lfeeder.com/lftracker_v1_DzLR5a50zgn4BoQ2.js", "script", document);
 
-  // --- Pipedrive LeadBooster chat ---
-  // Replaces the old front-end-only demo widget. Conversations land in the CRM
-  // as leads. Loaded here rather than in each HTML file, same as the tracker.
-  //
-  // Both values come from the playbook's "install manually" snippet in
-  // Pipedrive. They're public client-side identifiers, not secrets — Pipedrive
-  // ships them in the page markup. Swapping the playbook means updating the
-  // UUID here.
-  var PD_COMPANY_ID = 7745355;
-  var PD_PLAYBOOK_UUID = "3a2811df-3d73-494f-b5f3-52c17ec1a046";
-
-  if (PD_COMPANY_ID && PD_PLAYBOOK_UUID) {
-    window.pipedriveLeadboosterConfig = {
-      base: "leadbooster-chat.pipedrive.com",
-      companyId: PD_COMPANY_ID,
-      playbookUuid: PD_PLAYBOOK_UUID,
-      version: 2,
-    };
-    (function () {
-      var w = window;
-      if (w.LeadBooster) return;
-      w.LeadBooster = {
-        q: [],
-        on: function (n, h) { this.q.push({ t: "o", n: n, h: h }); },
-        trigger: function (n) { this.q.push({ t: "t", n: n }); },
-      };
-      var s = document.createElement("script");
-      s.src = "https://leadbooster-chat.pipedrive.com/assets/loader.js";
-      s.async = true;
-      document.head.appendChild(s);
-    })();
-  } else if (window.__pfDebug) {
-    console.warn("[pipedrive] LeadBooster not configured — chat widget disabled.");
-  }
+  // --- Chat ---
+  // Our own agent now (js/chat.js → supabase/functions/chat), not Pipedrive
+  // LeadBooster. Free-text in, routed to lead capture or support without
+  // manufacturing a CRM record for people who just need help.
 
   // --- Lightweight tracker scaffold ---
   window.pfTrack = function track(event, data) {

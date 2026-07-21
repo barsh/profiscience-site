@@ -1,1 +1,5 @@
 node_modules/
+
+# Supabase CLI local state — machine-specific, and pooler-url can carry
+# credentials depending on how the project was linked.
+supabase/.temp/
