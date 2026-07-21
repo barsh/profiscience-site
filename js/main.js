@@ -64,7 +64,9 @@
     // Compare without the .html extension so active state works whether the
     // server serves /solutions or /solutions.html (URLs are extensionless).
     var page = (location.pathname.split("/").pop() || "").replace(/\.html$/, "");
-    document.querySelectorAll(".nav-links a").forEach(function (a) {
+    // Only the top-level link gets the underline — dropdown entries share the
+    // same base href and would all light up otherwise.
+    document.querySelectorAll(".nav-item > a, .nav-links > a").forEach(function (a) {
       var href = a.getAttribute("href").split("#")[0].replace(/\.html$/, "");
       if (href && href === page) a.classList.add("active");
     });
@@ -77,6 +79,54 @@
   if (toggle && nav) {
     toggle.addEventListener("click", () => nav.classList.toggle("open"));
   }
+
+  // --- Section dropdowns ---
+  // Desktop opens them on hover (CSS). The caret is for touch/keyboard, where
+  // hover never fires: it toggles the panel instead of following the link.
+  document.querySelectorAll(".nav-item").forEach((item) => {
+    const caret = item.querySelector(".nav-caret");
+    if (!caret) return;
+    caret.addEventListener("click", (e) => {
+      e.preventDefault();
+      const open = !item.classList.contains("open");
+      // One panel at a time so the mobile sheet doesn't become a wall of links.
+      document.querySelectorAll(".nav-item.open").forEach((o) => {
+        o.classList.remove("open");
+        const c = o.querySelector(".nav-caret");
+        if (c) c.setAttribute("aria-expanded", "false");
+      });
+      item.classList.toggle("open", open);
+      caret.setAttribute("aria-expanded", String(open));
+    });
+  });
+
+  // Close the mobile sheet after picking a section; a same-page hash link
+  // doesn't reload, so the menu would otherwise stay covering the target.
+  document.querySelectorAll(".nav-menu a, .nav-item > a").forEach((a) => {
+    a.addEventListener("click", () => {
+      if (nav) nav.classList.remove("open");
+      document.querySelectorAll(".nav-item.open").forEach((o) => o.classList.remove("open"));
+    });
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".nav-item")) {
+      document.querySelectorAll(".nav-item.open").forEach((o) => {
+        o.classList.remove("open");
+        const c = o.querySelector(".nav-caret");
+        if (c) c.setAttribute("aria-expanded", "false");
+      });
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    document.querySelectorAll(".nav-item.open").forEach((o) => {
+      o.classList.remove("open");
+      const c = o.querySelector(".nav-caret");
+      if (c) c.setAttribute("aria-expanded", "false");
+    });
+  });
 
   // --- Scroll reveal ---
   const revealEls = document.querySelectorAll(".reveal");

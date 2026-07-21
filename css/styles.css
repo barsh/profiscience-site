@@ -197,14 +197,99 @@ section.dark .gradient-text,
   padding: 6px 0;
 }
 .nav-links a.active,
-.nav-links a:hover { color: var(--pf-blue); font-weight: 600; }
-.nav-links a.active::after {
+.nav-links a:hover { color: var(--pf-blue); }
+/* Bold only the top-level labels. Dropdown entries get background + color
+   instead, so hovering one can't widen the panel. */
+.nav-item > a.active,
+.nav-item > a:hover { font-weight: 600; }
+/* Each label reserves its *bold* width up front via a zero-height hidden copy,
+   so switching weight on hover/active can't reflow the row. */
+.nav-item > a::before {
+  content: attr(data-label);
+  display: block;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  pointer-events: none;
+  font-weight: 600;
+}
+.nav-item > a.active::after {
   content: "";
   position: absolute;
   left: 0; right: 0; bottom: -4px;
   height: 2px;
   background: var(--grad-btn);
   border-radius: 2px;
+}
+
+/* --- Section dropdowns --- */
+.nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  /* Padding bridges the gap to the panel so the pointer never leaves :hover. */
+  padding: 24px 0;
+}
+.nav-caret {
+  /* Hidden on desktop — hover (and :focus-within for keyboard) opens the panel,
+     so the arrow is visual noise. Restored under 900px, where touch needs it. */
+  display: none;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  line-height: 0;
+  color: var(--pf-mute);
+}
+.nav-caret::before {
+  content: "";
+  display: block;
+  width: 7px; height: 7px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg) translate(-1px, -1px);
+  transition: transform .18s ease;
+}
+.nav-item:hover .nav-caret { color: var(--pf-blue); }
+.nav-menu {
+  position: absolute;
+  top: 100%;
+  left: -14px;
+  min-width: 230px;
+  background: white;
+  border: 1px solid var(--pf-line);
+  border-radius: var(--r-md, 12px);
+  box-shadow: 0 18px 40px rgba(16, 24, 40, .12);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: opacity .16s ease, transform .16s ease, visibility .16s;
+}
+.nav-item:hover .nav-menu,
+.nav-item:focus-within .nav-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.nav-item:hover .nav-caret::before,
+.nav-item:focus-within .nav-caret::before {
+  transform: rotate(-135deg) translate(-2px, -2px);
+}
+.nav-menu a {
+  padding: 9px 12px;
+  border-radius: 8px;
+  font-size: .9rem;
+  white-space: nowrap;
+  color: var(--pf-ink);
+}
+.nav-menu a:hover {
+  background: rgba(14, 74, 201, .07);
+  color: var(--pf-blue);
 }
 .nav-cta {
   display: flex;
@@ -218,11 +303,17 @@ section.dark .gradient-text,
   font-size: 1.5rem;
   cursor: pointer;
   color: var(--pf-ink);
+  /* Never let the CTA squeeze the toggle off-screen. */
+  flex-shrink: 0;
 }
+/* Only appears inside the open mobile sheet, where the header CTA is hidden.
+   Needs to outrank .btn's display:inline-flex, which is defined further down. */
+.nav-links a.nav-sheet-cta { display: none; }
 
 @media (max-width: 1200px) and (min-width: 901px) {
   .nav-links { gap: 16px; }
   .nav-links a { font-size: .85rem; }
+  .nav-menu a { font-size: .85rem; }
   .nav-cta .btn { padding: 10px 16px; font-size: .85rem; }
 }
 
@@ -232,12 +323,71 @@ section.dark .gradient-text,
   .nav.open .nav-links {
     display: flex;
     flex-direction: column;
+    align-items: stretch;
+    gap: 0;
     position: absolute;
     top: 72px; left: 0; right: 0;
+    max-height: calc(100vh - 72px);
+    overflow-y: auto;
     background: white;
-    padding: 20px;
+    padding: 12px 20px 20px;
     border-bottom: 1px solid var(--pf-line);
   }
+  /* Dropdowns become tap-to-open accordions — hover has no meaning on touch. */
+  .nav-item {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0;
+    border-bottom: 1px solid var(--pf-line);
+  }
+  .nav-item > a {
+    padding: 14px 0;
+    /* Leave room for the caret button so the labels don't collide. */
+    padding-right: 44px;
+  }
+  .nav-caret {
+    position: absolute;
+    top: 0; right: 0;
+    width: 44px; height: 50px;
+    display: grid;
+    place-items: center;
+  }
+  .nav-menu {
+    position: static;
+    min-width: 0;
+    border: 0;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0 0 10px 12px;
+    transform: none;
+    transition: none;
+    display: none;
+  }
+  /* :hover/:focus-within must not open these — only the explicit .open class. */
+  .nav-item:hover .nav-menu,
+  .nav-item:focus-within .nav-menu { opacity: 1; visibility: visible; display: none; }
+  .nav-item.open .nav-menu { display: flex; opacity: 1; visibility: visible; }
+  .nav-item.open .nav-caret::before { transform: rotate(-135deg) translate(-2px, -2px); }
+  .nav-item:hover .nav-caret::before,
+  .nav-item:focus-within .nav-caret::before { transform: rotate(45deg) translate(-1px, -1px); }
+  .nav-item.open:hover .nav-caret::before,
+  .nav-item.open:focus-within .nav-caret::before { transform: rotate(-135deg) translate(-2px, -2px); }
+}
+
+/* Below ~600px the header CTA collides with the wordmark and shoves the
+   hamburger off-screen (brand is flex-shrink:0, the button's label can't wrap).
+   Drop it from the header and surface it inside the menu sheet instead. */
+@media (max-width: 600px) {
+  .nav-cta .btn { display: none; }
+  .nav.open .nav-links a.nav-sheet-cta {
+    display: inline-flex;
+    justify-content: center;
+    margin-top: 18px;
+    padding: 12px 22px;
+    color: white;
+    font-weight: 600;
+  }
+  .nav.open .nav-links a.nav-sheet-cta:hover { color: white; }
 }
 
 /* =========================================================
@@ -1511,7 +1661,8 @@ section.dark p { color: rgba(255,255,255,.75); }
 /* =========================================================
    TESTIMONIALS
    ========================================================= */
-/* Offset anchor targets so they clear the 72px sticky nav when linked from the footer, etc. */
+/* Offset anchor targets so they clear the 72px sticky nav when linked from the nav dropdowns, footer, etc. */
+section[id],
 #testimonials,
 .feature-detail,
 #ai-knowledge-check,
@@ -1702,10 +1853,6 @@ footer .foot-admin:hover { color: #fff; }
 @media (max-width: 480px) {
   .container { padding: 0 16px; }
   section { padding: 60px 0; }
-
-  /* Nav: hide CTA button text at very small sizes, keep toggle visible */
-  .nav-cta .btn { display: none; }
-  .nav-toggle { display: block; }
 
   /* Footer: single column */
   footer .foot-grid { grid-template-columns: 1fr; gap: 28px; }
