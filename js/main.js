@@ -210,6 +210,42 @@
     el.textContent = years + (el.dataset.suffix || "");
   });
 
+  // --- Leadership show more/less ---
+  function initLeadershipToggle() {
+    const section = document.getElementById("leadership");
+    if (!section) return;
+
+    const cards = section.querySelectorAll(".team-card");
+    const button = section.querySelector("[data-leadership-toggle]");
+    if (!cards.length || !button) return;
+
+    const visibleWhenCollapsed = () => 3;
+
+    function setExpanded(expanded) {
+      section.classList.toggle("leadership-collapsed", !expanded);
+      button.setAttribute("aria-expanded", String(expanded));
+      button.textContent = expanded ? "Show fewer leaders" : "Show more leaders";
+    }
+
+    function syncButtonVisibility() {
+      const shouldShowButton = cards.length > visibleWhenCollapsed();
+      button.hidden = !shouldShowButton;
+      if (!shouldShowButton) setExpanded(true);
+    }
+
+    setExpanded(false);
+    syncButtonVisibility();
+
+    button.addEventListener("click", () => {
+      const currentlyCollapsed = section.classList.contains("leadership-collapsed");
+      setExpanded(currentlyCollapsed);
+    });
+
+    window.addEventListener("resize", syncButtonVisibility);
+  }
+
+  initLeadershipToggle();
+
   // --- Logo ticker ---
   const TICKER_LOGOS = [
     { name: 'Akin Gump', url: 'assets/clients/akingump.png' },
