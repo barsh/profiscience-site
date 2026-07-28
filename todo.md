@@ -1,5 +1,6 @@
 # todo
 
+- CPDSite is not referenced and no discussion of AUS, CA, UK, or HK jurisdictions
 - index
     - update testimonials
 - /resources page
@@ -7,7 +8,6 @@
     - update testimonials
 - /STAY-CLEVER page
 - REMOVE unlinked pages: support, solutions, features, pricing, etc
-- CPDSite is not referenced and no discussion of jurisdictions
 
 ## done
 
