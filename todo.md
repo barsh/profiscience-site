@@ -1,11 +1,12 @@
 # todo
 
 - CPDSite is not referenced and no discussion of AUS, CA, UK, or HK jurisdictions
-- index
-    - update testimonials
+- header.html has links to features page... that page is 
 - /resources page
 - /CLIENTS page
-    - update testimonials
+- /support page
+- /pricing page
+
 - /STAY-CLEVER page
 - REMOVE unlinked pages: support, solutions, features, pricing, etc
 
