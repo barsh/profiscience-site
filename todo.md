@@ -1,7 +1,6 @@
 # todo
 
 - CPDSite is not referenced and no discussion of AUS, CA, UK, or HK jurisdictions
-- header.html has links to features page... that page is 
 - /resources page
 - /CLIENTS page
 - /support page
