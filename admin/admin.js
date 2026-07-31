@@ -699,6 +699,88 @@ function boot() {
     });
   }
 
+  // Who the conversation was with, for the list. A lead is the only time we
+  // know — anonymous visitors stay a dash rather than an empty cell, so the
+  // column reads as "nobody left details" and not as missing data.
+  //
+  // Falling back to the email as the label matters: the capture tool can
+  // return an email with no name, and "—" next to a working copy button
+  // would look broken.
+  function personCell(c) {
+    const email = c.lead_email || "";
+    const label = c.lead_name || email;
+    if (!label) return '<span class="chat-person chat-person-none">—</span>';
+
+    // With no email there is nothing to copy, so the name stays inert text
+    // rather than a control that looks clickable and does nothing.
+    if (!email) return '<span class="chat-person">' + esc(label) + "</span>";
+
+    // A button, not an anchor: it copies rather than navigates, and the
+    // tooltip is what tells you which address you are about to get.
+    return (
+      '<button type="button" class="chat-person" data-copy="' +
+      esc(email) +
+      '" title="Copy ' +
+      esc(email) +
+      '">' +
+      esc(label) +
+      "</button>"
+    );
+  }
+
+  /**
+   * Copy text and say so on the button itself.
+   *
+   * The async Clipboard API is undefined outside a secure context, which
+   * includes opening this file from disk — so the old selection trick is
+   * kept as a fallback rather than letting the button silently do nothing.
+   */
+  async function copyText(text, btn) {
+    const original = btn.getAttribute("data-copy-label") || btn.textContent;
+    btn.setAttribute("data-copy-label", original);
+
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.setAttribute("readonly", "");
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        const ok = document.execCommand("copy");
+        document.body.removeChild(ta);
+        if (!ok) throw new Error("copy rejected");
+      }
+      btn.textContent = "Copied";
+      btn.classList.add("is-copied");
+    } catch (err) {
+      console.warn("[admin] copy failed:", err);
+      btn.textContent = "Failed";
+    }
+
+    clearTimeout(btn._copyTimer);
+    btn._copyTimer = setTimeout(() => {
+      btn.textContent = original;
+      btn.classList.remove("is-copied");
+    }, 1400);
+  }
+
+  // Delegated, so the list and the drawer's lead card both work without
+  // rewiring anything after each innerHTML rebuild.
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest && e.target.closest("[data-copy]");
+    if (!btn) return;
+    e.preventDefault();
+    // The row is not clickable today (only its Open button is), but the
+    // button sits inside one — keep the click from travelling if that
+    // ever changes.
+    e.stopPropagation();
+    copyText(btn.getAttribute("data-copy"), btn);
+  });
+
   function outcomeLabel(c) {
     if (c.captured_lead) {
       return '<span class="chat-pill lead">Lead</span>';
@@ -736,6 +818,7 @@ function boot() {
           "<span>" +
           fmtDate(c.started_at) +
           "</span>" +
+          personCell(c) +
           '<span class="chat-q">' +
           esc(c.first_question) +
           "</span>" +
@@ -811,12 +894,28 @@ function boot() {
   function leadCard(c) {
     if (!c || !c.captured_lead) return "";
 
+    // The name copies the address, exactly as it does in the list, so the
+    // same click does the same thing in both places.
+    const nameValue = c.lead_email ? personCell(c) : null;
+
+    // The email itself still navigates — one control to reach them, one to
+    // paste them somewhere else.
+    //
+    // encodeURI, not encodeURIComponent — the latter turns "@" into %40,
+    // which works but shows up mangled in some mail clients.
+    const emailValue =
+      '<a class="chat-mailto" href="mailto:' +
+      esc(encodeURI(c.lead_email || "")) +
+      '">' +
+      esc(c.lead_email) +
+      "</a>";
+
     const rows = [
-      ["Name", c.lead_name],
-      ["Email", c.lead_email],
-      ["Firm", c.lead_firm],
-      ["Size", c.lead_firm_size],
-      ["Interest", c.lead_interest],
+      ["Name", c.lead_name, nameValue],
+      ["Email", c.lead_email, c.lead_email ? emailValue : null],
+      ["Firm", c.lead_firm, null],
+      ["Size", c.lead_firm_size, null],
+      ["Interest", c.lead_interest, null],
     ]
       .filter((r) => r[1])
       .map(
@@ -824,7 +923,7 @@ function boot() {
           '<div class="chat-lead-row"><span>' +
           esc(r[0]) +
           "</span><span>" +
-          esc(r[1]) +
+          (r[2] || esc(r[1])) +
           "</span></div>",
       )
       .join("");

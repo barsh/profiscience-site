@@ -121,10 +121,46 @@ body.admin { background: var(--pf-mist); }
 .adm-row.sub {
   grid-template-columns: 1.4fr 1fr 1fr 120px 110px 90px;
 }
-/* Conversation rows: started, opening question, turns, cost, outcome, actions */
+/* Conversation rows: started, person, opening question, turns, cost, outcome, actions */
 .adm-row.chat {
-  grid-template-columns: 110px 1fr 60px 90px 110px 90px;
+  grid-template-columns: 110px 190px 1fr 60px 90px 110px 90px;
 }
+
+/* Who it was, when they left a lead. The name IS the copy control, so it is
+   a button styled as a link — it must clip like the surrounding cells rather
+   than force the row wider. */
+.chat-person {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.chat-person-none { color: var(--pf-mute); }
+button.chat-person {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: inherit;
+  font-size: inherit;
+  text-align: left;
+  color: var(--pf-blue);
+  cursor: pointer;
+  /* Dotted rather than solid: this copies, it does not navigate. */
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+}
+button.chat-person:hover { text-decoration: underline solid; }
+button.chat-person.is-copied {
+  color: #0B7A5B;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* The drawer's email row still navigates, so it keeps a real link's look. */
+a.chat-mailto { color: var(--pf-blue); text-decoration: none; }
+a.chat-mailto:hover { text-decoration: underline; }
 .chat-cost {
   font-variant-numeric: tabular-nums;
   color: var(--pf-mute);
