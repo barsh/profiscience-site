@@ -1,0 +1,1416 @@
+======================================================================
+index.html
+======================================================================
+
+Learning and CLE Technology for Law Firms
+# A proven platform. A team that stays close.
+Profiscience helps law firms manage complex CLE obligations, firm-wide learning, and professional development through one connected platform.
+For more than 26
+years, our team has stayed close to the firms we serve, supporting complex workflows and improving the platform week after week.
+Start a Conversation
+Deep experience supporting complex workflows law firms manage
+Direct access to a USA-based team that knows your firm and your platform
+✦
+AI-ready learning content
+● Live · building compliance dashboard
+#### New York CLE
+Analyzing CLE rules · calculating compliance status…
+72% complete
+   >>> DO NOT STATE — percentage: 72%
++3 new attorneys · +4 new staffers
+provisioned and assigned onboarding plans
+CLE credits synced
+984 attorneys · 41 jurisdictions
+   >>> DO NOT STATE — headcount: 984 attorneys
+26+
+Years serving law firms
+400K+
+Law firm employees served
+500+
+Platform releases delivered through weekly updates
+50%+
+   >>> DO NOT STATE — percentage: 50%
+More than half of our clients use CLESite alongside UniversitySite
+Trusted by law firms across the Americas, Australia, and Europe.
+See more
+The Platform
+## One place to manage learning
+and CLE administration.
+Many firms manage learning in one system and CLE in another. Profiscience brings them together in one connected platform—without sacrificing the specialized capabilities law firms need.
+LMS
+CLE
+UniversitySite
+### Learning administration
+Onboarding, required training, and professional development.
+CLESite
+### CLE administration and oversight
+Obligations, records, provider workflows, and firm-wide visibility.
+Learning and CLE, connected
+Recent results for law firms
+4.6M+
+Hours of learning orchestrated
+3.5M+
+Live seminar attendees
+10M+
+On-demand courses taken
+950K+
+Compliance programs completed
+UniversitySite Analytics
+Last 10 years
+   >>> DO NOT STATE — duration/tenure: 10 years
+10M
+On-demand courses taken
+3.5M
+Live seminar attendees
+4.6M
+Hours of learning orchestrated
+950K
+Compliance programs completed
+✓ CLE
+✓ CPD
+✓ Onboarding
+✓ Security
+UniversitySite · Learning Platform
+## Learning built around the way law firms work.
+UniversitySite helps law firms manage onboarding, professional development, technology training, security awareness, compliance programs, and firm-wide learning through one flexible platform.
+UniversitySite includes InstructorSite for administrators and coordinators and LearningSite for attorneys and staff, with ManagerSite available when firms need delegated visibility.
+Built and continuously refined since 2000, UniversitySite evolves through weekly updates informed by feedback from the law firms that use it.
+Start a Conversation
+Explore UniversitySite
+CLE Compliance
+New York
+AL
+Amanda Lewis24 / 24 credits
+✓ Complete
+DC
+David Chen24 / 24 credits
+✓ Complete
+SO
+Sarah Okafor18 / 24 credits
+In progress
+MR
+Michael Reyes24 / 24 credits
+✓ Complete
+PP
+Priya Patel26 / 24 credits
+✓ Complete
+CLESite · Powered by UniversitySite
+##
+CLE administration and oversight shaped by law-firm CLE administrators.
+CLESite helps law firms manage the distinct needs of CLE administrators, attorneys, and firm leadership.
+For CLE administrators, CLESite reduces manual work by bringing records, certificates, deadlines, provider reporting, and jurisdiction-specific requirements into one system.
+For attorneys, it provides a centralized place to review CLE obligations, learning activity, and supporting documentation.
+For firm leadership, it offers clearer visibility into renewal deadlines, compliance progress, and areas that may require attention.
+Legal-learning integrations: CeriFi LegalEdge · NBI/IPE · PLI
+Start a Conversation
+Explore CLESite
+Additional Capabilities
+## Add the capabilities and connections your firm needs.
+Platform Foundation
+### UniversitySite provides the learning foundation.
+CLESite adds specialized CLE administration, while selected extensions and integrations can support additional workflows, audiences, and systems.
+CLESite
+### CLE administration, powered by UniversitySite
+Support attorney records, jurisdictional obligations, certificates, provider workflows, reporting, and firm-wide visibility.
+Legal-learning integrations:
+CeriFi LegalEdge · NBI/IPE · PLI
+Extensions
+### Add focused capabilities within the platform
+Add capabilities for assessments, evaluations, video streaming, mobile access, custom reporting, data exchange, and AI-ready learning content where they address a defined need.
+Integrations
+### Connect with existing firm technology
+Support identity, employee data, virtual learning, and external learning content without recreating the firm's broader technology environment.
+Explore additional capabilities
+Why Profiscience
+## Why law firms choose Profiscience.
+01
+### Built over 26 years. Improved every week.
+   >>> DO NOT STATE — duration/tenure: 26 years
+Since 2000, Profiscience has continuously developed its platform around the needs of law firms. Weekly updates reflect ongoing client feedback, evolving workflows, and changing learning and compliance requirements.
+02
+### A dedicated team for every client
+Work with people who learn your firm’s priorities, support implementation, and remain involved as your needs evolve.
+03
+### Learning and CLE expertise in one relationship
+Bring firmwide learning and specialized CLE administration together without managing disconnected vendors, systems, and processes.
+04
+### Implementation shaped around your existing workflows
+Get help planning the transition, preparing data, configuring workflows, preserving historical records, and managing adoption.
+Why firms choose Profiscience
+The thinking behind the platform
+## Practical CLE expertise, shared beyond the platform.
+Written by Profiscience founder Michael Barshinger, Stay CLEver offers practical guidance for reducing the administrative burden of CLE compliance.
+It reflects the same practical perspective that shapes CLESite and the way our team works with law firms.
+Explore the book
+Buy print edition
+Get a free copy
+What clients say
+## Law firms trust Profiscience.
+"After evaluating Workday Learning, we concluded that replacing UniversitySite would not improve how we manage learning. Instead, we integrated the platforms, publishing completed learning activity from UniversitySite into Workday. This gave us the connectivity we needed while retaining a platform designed for law firms."
+KG
+Kurt Geisler
+CTO
+Haynes Boone
+"UniversitySite and CLESite have helped a small team support a much larger organization. From automated reminders and learning plans to CLE dashboards and reporting, the system gives us the structure we need to scale training and compliance work without adding unnecessary manual effort."
+DK
+Daniel Kent
+Training Manager
+Foley Hoag
+"What stands out about Profiscience is how closely their team works with us. They are responsive, practical, and willing to adapt the platform to support the way our firm manages learning rather than expecting us to fit into a standard approach."
+PP
+Pamela Presley
+Technology Training Manager
+Akin
+Read client perspectives
+Security & Trust
+## Enterprise-grade security, designed for sensitive law-firm environments.
+Law firms safeguard their clients' most sensitive information — so we hold ourselves to the standard your IT, security, and risk teams already expect.
+Profiscience products are designed with role-based access, secure authentication, and encryption in transit and at rest to support the security expectations of law firms.
+26 yrs
+Serving law firms since 2000
+SSO
+SAML Single Sign-On
+Encrypted
+In transit & at rest
+🔐
+SAML Single Sign-On
+Sign in with your existing identity provider, no new passwords.
+👤
+Role-Based Access
+Configure access for administrators, managers, instructors, and learners based on their responsibilities.
+🔒
+Encryption in Transit & at Rest
+Data encrypted in transit over TLS and at rest — from upload through playback and reporting.
+📋
+Audit-Ready Reporting
+Exportable, timestamped compliance records your risk and audit teams can rely on.
+## Let's discuss what your firm is trying to improve.
+Explore how Profiscience could support firmwide learning, professional development, and complex CLE administration based on your priorities.
+Start a Conversation
+Explore the Platform
+
+======================================================================
+platform.html
+======================================================================
+
+The Platform
+# Build on a proven learning foundation.
+UniversitySite provides the foundation for managing learning across the firm.
+CLESite adds specialized CLE administration, with extensions, integrations, and additional applications available when they support a defined need.
+Start a Conversation
+UniversitySite · Learning Platform
+## The foundation for learning across the firm.
+UniversitySite provides the shared platform for managing onboarding, required training, professional development, continuing education, and other firm learning programs. It brings together the experiences used to administer learning, participate in programs, and provide appropriate visibility to managers and firm leaders.
+Use one platform to organize onboarding, required training, professional development, live programs, on-demand learning, and firm-wide learning records.
+Included with UniversitySite
+Administration and coordination
+### InstructorSite
+Give learning administrators, instructors, and coordinators the tools to organize programs, manage audiences and requirements, support instructor-led learning, maintain records, and report on participation and progress.
+The learner experience
+### LearningSite
+Give attorneys and staff one place to discover programs, complete assignments, access learning resources, and review their learning history.
+Manager visibility
+### ManagerSite
+Provide designated managers and leaders with appropriate visibility into the learning activity and progress of the people or groups they oversee, without giving them full administrative access.
+CLESite &middot; Powered by UniversitySite
+## Bring CLE records, obligations, and oversight into one connected environment.
+CLESite builds specialized CLE administration on the UniversitySite learning foundation, so learning activity, attorney records, certificates, provider information, and compliance reporting can be managed through connected workflows rather than separate systems.
+CLE RECORDS
+### Maintain reliable CLE records
+Bring internal programs, external activity, certificates, carryover, and historical records into one dependable CLE record for each attorney.
+- Consolidate CLE activity and certificates
+- Import historical and external records
+- Reduce spreadsheet-based tracking
+- Preserve a complete attorney history
+COMPLIANCE OVERSIGHT
+### Understand obligations and compliance
+Apply jurisdiction-specific rules to calculate requirements, deadlines, progress, and compliance status.
+- Calculate progress by jurisdiction
+- Identify missing credits and approaching deadlines
+- Support multiple admissions per attorney
+- Account for carryover and category requirements
+ATTORNEY EXPERIENCE
+### Give attorneys one place to manage CLE
+Provide attorneys with direct access to their learning history, certificates, upcoming requirements, and compliance information.
+- Find records and certificates quickly
+- Review progress toward requirements
+- Submit or confirm external activity
+- Prepare for bar reporting and renewal
+FIRMWIDE OVERSIGHT
+### Give the firm clearer oversight
+Help administrators monitor obligations, resolve exceptions, and document compliance across the firm.
+- See who is on track and who needs attention
+- Report across jurisdictions and offices
+- Manage corrections and supporting documentation
+- Communicate deadlines and required actions
+LEGAL-LEARNING INTEGRATIONS
+### Connect the legal-learning providers and systems your firm already uses.
+CLESite can connect with legal-learning providers and other sources of CLE activity to reduce manual entry and bring registrations, attendance, credits, and certificates into the firm's learning and compliance environment.
+CeriFi LegalEdge
+NBI and IPE
+PLI
+Additional Capabilities
+## Add the capabilities and connections your firm needs.
+### Learning Beyond the Firm
+Publish learning for clients and other external audiences through a dedicated learning experience.
+ACCREDITED CLE PROGRAMS
+#### ProviderSite
+Designed for accredited CLE providers that want to publish recorded programs, award eligible credit upon completion, and issue CLE certificates.
+Broader client education
+#### ClientSite
+Designed for client education and external learning that is not centered on CLE accreditation, credit calculation, or certificate administration.
+### Extensions
+Add focused capabilities where they solve a defined need.
+#### Learning content and participation
+-
+Video Streaming and Compliance
+ScormFly delivers video-based learning with tools that support participation and completion requirements.
+-
+Knowledge Checks
+Add questions and assessments to reinforce learning and confirm understanding.
+-
+Evaluation Forms
+Collect structured feedback about programs, instructors, and learning experiences.
+#### Data and reporting
+-
+SQL Reporting
+Support firm-specific reporting and analysis using authorized access to UniversitySite reporting data.
+-
+API
+Exchange supported information with other systems based on the firm's requirements.
+-
+AI Knowledge Connector
+Make approved learning content and metadata available for use in supported firm AI environments.
+#### Access and experience
+-
+Mobile App
+Give learners an additional way to discover programs and access supported learning from mobile devices.
+### Integrations
+Connect UniversitySite with the systems your firm already uses.
+#### Identity and user data
+Connect UniversitySite with the systems your firm uses to authenticate users and maintain employee information.
+- SAML single sign-on
+- HRIS-driven user provisioning
+#### Virtual learning
+Support instructor-led and virtual-learning workflows using the meeting platforms already familiar to your firm.
+- Microsoft Teams
+- Webex
+- Zoom
+#### External learning content
+Bring selected external learning content into the firm's broader learning environment.
+- LinkedIn Learning
+- CeriFi LegalEdge
+- NBI and IPE
+- PLI
+Choosing What Fits
+## Your firm does not need every option.
+Start with the problems your firm needs to solve now. Add other capabilities when they become useful—without replacing the platform or starting over.
+01
+### Start with the priority
+Begin with firm-wide learning, CLE administration, or both—based on the work creating the most friction today.
+02
+### Add only what is useful
+Choose the extensions, integrations, and client-learning capabilities that support your workflows.
+03
+### Expand without starting over
+Add capabilities as your needs change without rebuilding your content, records, integrations, or platform foundation.
+Start With Your Priorities
+## Let’s identify the right starting point.
+Tell us about the audiences, workflows, and systems involved. We’ll help identify the platform capabilities and connections that deserve further consideration.
+Start a Conversation
+
+======================================================================
+features.html
+======================================================================
+
+Platform
+# One platform. Every learning moment.
+From content authoring to compliance reporting, every feature is built for enterprise scale and audit-ready from day one.
+New · AI Knowledge Check
+## Turn any video into a validated assessment.
+Upload a course video to Scormfly. Profiscience AI transcribes, identifies learning
+objectives, and drafts a full knowledge check — multiple choice, scenarios, and
+free-response. Your subject matter expert reviews, edits, and publishes. Done.
+- ✓ 60-second average generation time
+- ✓ Auto-linked timestamps for review hints
+- ✓ Bloom's taxonomy coverage report
+- ✓ Bias & ambiguity pre-checks
+- ✓ SCORM 2004 / xAPI export
+Scormfly Storage
+## SCORM delivery that never flinches under load.
+Global CDN, signed URLs, granular permissions, and zero-maintenance versioning. Upload
+once — deliver to every region, every device, every language.
+- ✓ SCORM 1.2, 2004, AICC, xAPI, cmi5
+- ✓ Multi-region delivery (US, EU, APAC)
+- ✓ Monitored, high-availability delivery
+- ✓ Real-time analytics pipeline
+Scormfly DeliveryLive
+US-East
+5,120
+EU-West
+4,240
+APAC
+3,120
+12,480Active streams
+3Global regions
+48msAvg latency
+New · AI Connector
+## Bring your own LLM. Keep your compliance posture.
+Connect OpenAI, Anthropic, Azure OpenAI, AWS Bedrock, or your private model gateway.
+Profiscience routes AI-powered features through the model your security team has
+already vetted — with full logging, usage limits, and PII redaction.
+- ✓ Drop-in LLM swapping
+- ✓ Prompt & response audit log
+- ✓ Per-tenant usage caps
+- ✓ Built-in PII & PHI redaction
+- ✓ Fallback & multi-model routing
+AI Connector · RoutingVetted
+Anthropic Claude
+active
+OpenAI GPT
+standby
+Azure OpenAI
+standby
+AWS Bedrock
+standby
+Private gateway
+available
+✓ PII redacted
+✓ Audit log
+✓ Usage caps
+CLE Add-Ons
+## Purpose-built for legal L&D.
+Track accreditation, report credits to state bars, and handle MCLE compliance
+without the spreadsheets. Attorney-friendly UI, compliance-officer-friendly reporting.
+- ✓ 50-state MCLE rules engine
+- ✓ Automated attorney self-certification
+- ✓ Bar-ready credit reports (PDF & API)
+- ✓ Ethics, bias, and wellness category tagging
+- ✓ Carryover & deadline tracking
+MCLE Compliance50 states · 2025
+JM
+Jordan MeyerNew York · 24 / 24 credits
+✓ Compliant
+RT
+Renée TranCalifornia · 22 / 25 · Ethics 3 hrs
+3 hrs left
+DK
+Devin KrauseTexas · 15 / 15 credits
+✓ Compliant
+AO
+Amara ObiIllinois · 30 / 30 · Wellness 1 hr
+✓ Compliant
+More capabilities
+## Under the hood.
+📊
+### Analytics & Insights
+Executive dashboards, cohort analysis, time-to-competency, and exportable data feeds for your BI stack.
+🔐
+### Enterprise Security
+SAML SSO, HRIS-driven user provisioning, role-based access, and encryption in transit and at rest.
+🌍
+### Global Reach
+Serving law firms across the Americas, Australia, and Europe, with multi-region content delivery through ScormFly.
+🧩
+### Open APIs
+A REST API returning JSON, plus SQL Reporting for custom BI. Built to fit your existing stack.
+📱
+### Mobile Access
+The Mobile App gives learners another way to discover programs and access supported learning on the go.
+♿
+### Accessibility
+Built for accessibility — keyboard-first navigation, full screen reader support, and closed captions everywhere.
+## See the features in your environment.
+Book a working session. We'll bring the platform. You bring a use case.
+Let's Talk
+See pricing
+
+======================================================================
+solutions.html
+======================================================================
+
+Solutions
+# Built around the sites firms already know.
+Modernized for enterprise learning.
+UniversitySite, CLESite, and ScormFly remain the backbone of the platform — with the scale, reporting, and workflows enterprise teams need today.
+Trusted by leading law firms & enterprises
+See all clients
+Core platforms
+## Let us do the heavy lifting.
+Three purpose-built platforms. One team behind all of them. UniversitySite runs your learning, CLESite owns your compliance, and ScormFly delivers your content — so your people can focus on actually learning.
+Learning platform
+### UniversitySite
+The learning platform for onboarding, skills development, leadership training, and firm-wide content delivery.
+Explore UniversitySite
+Compliance platform
+### CLESite
+The compliance platform for tracking MCLE, reporting credits, and keeping attorneys current across jurisdictions.
+Explore CLESite
+Content delivery
+### ScormFly
+The secure content delivery layer for SCORM packaging, media hosting, and scalable playback across regions and devices.
+Explore ScormFly
+By use case
+## One platform, every team's mandate.
+From corporate L&D to bar-ready CLE and audit-proof compliance — the same core, configured for how your organization actually works.
+🏢
+### Corporate L&D
+Unify onboarding, skills development, leadership programs, and role-based certifications on one platform.
+Connect learning to career paths and performance outcomes.
+⚖️
+### Legal & CLE
+MCLE tracking for 50 states, ethics and wellness tagging, bar-ready reporting, and an attorney experience
+that doesn't make partners roll their eyes.
+✅
+### Compliance & Risk
+SOX, HIPAA, GDPR, anti-bribery, code of conduct — turnkey templates plus your custom policies, all with
+audit-ready evidence trails.
+🚀
+### Onboarding
+Cut time-to-productivity in half. Role-based paths, manager checkpoints, and mentor pairing baked in.
+🔁
+### Client & External Learning
+Publish learning beyond the firm — ProviderSite for accredited CLE programs with credit and certificates, ClientSite for broader client education.
+🩺
+### Regulated Industries
+Purpose-built for financial services, healthcare, energy, and public sector. Audit-ready on day one.
+Industry spotlight
+## Why legal teams pick Profiscience.
+CLE compliance is the kind of problem that eats hours of attorney time and compliance-officer sanity.
+Profiscience turns it into a dashboard:
+- ✓ One platform for 50-state MCLE rules
+- ✓ Self-certification workflows attorneys actually use
+- ✓ Bar-report PDF & API export
+- ✓ Carryover, make-up, and deadline tracking
+Explore CLE add-ons
+MCLE Compliance
+50 states &middot; 2025
+JM
+Jordan MeyerNew York &middot; 24 / 24 credits
+✓ Compliant
+RT
+Renée TranCalifornia &middot; 22 / 25 credits
+3 hrs left
+DK
+Devin KrauseTexas &middot; 15 / 15 credits
+✓ Compliant
+AO
+Amara ObiIllinois &middot; 30 / 30 credits
+✓ Compliant
+SP
+Sam PorterFlorida &middot; 33 / 33 credits
+✓ Compliant
+Integrations
+## Plugs into the tools your firm already runs.
+Video conferencing, HRIS, identity, and CLE content libraries — connected to UniversitySite and CLESite without rip-and-replace.
+Zoom
+Microsoft Teams
+Microsoft 365
+Workday
+LinkedIn Learning
+Cisco Webex
+PLI
+NBI
+Skillsoft Percipio
+Okta &middot; SAML SSO
+Azure AD &middot; SAML SSO
+OneLogin &middot; SAML SSO
+SQL Server
+ScormFly
+See all integrations
+## Your use case, our platform.
+Tell us what you're trying to accomplish. We'll map it to Profiscience in under 30 minutes.
+Let's Talk
+
+======================================================================
+integrations.html
+======================================================================
+
+Integrations
+# Works with the tools your firm already uses.
+Purpose-built extensions for video conferencing, content libraries, HRIS, identity, and AI — designed specifically for law firms, not bolted on after the fact.
+Talk to an engineer
+All integrations
+## Every integration, at a glance.
+From live training delivery to CLE content libraries and identity management — UniversitySite connects to the platforms your firm already runs.
+Video
+#### Zoom
+Create and manage Zoom meetings without leaving UniversitySite. Sessions start on time, every time.
+Video
+#### Microsoft Teams
+Create and manage Teams meetings directly from UniversitySite — no context-switching required.
+Video
+#### Cisco Webex
+Manage Webex trainings from inside UniversitySite. Empower instructors to run sessions more efficiently.
+Calendar
+#### Microsoft 365
+Training events sync to Outlook calendar so attendees always have the right time and join link.
+HRIS
+#### Workday
+Employee sync, roles, and org structure keep UniversitySite rosters current automatically.
+Content
+#### LinkedIn Learning
+Leverage LinkedIn's 9,000+ course library inside UniversitySite for technical, soft skills, and PD.
+CLE Content
+#### Practicing Law Institute
+PLI's live seminars, webcasts, and on-demand programs surfaced directly inside UniversitySite.
+CLE Content
+#### NBI & IPE
+State-specific live online seminars and OnDemand CLE videos from NBI, integrated into UniversitySite.
+CLE Content
+#### Cerifi LegalEdge
+Engaging, practical CLE content from Cerifi's expansive catalog — accessible inside UniversitySite.
+Content
+#### Skillsoft Percipio
+Leverage Skillsoft's broader learning catalog alongside your firm's own content in one place.
+CLE Content
+#### West LegalEd
+Thomson Reuters CLE content library, accessible through UniversitySite.
+Native
+#### ScormFly
+Convert media files to SCORM-compliant format for tracking. Includes video streaming and closed captioning.
+Native
+#### CLESite
+Track CLE obligations, deadlines, certificates, and jurisdictional status in the same ecosystem as UniversitySite.
+AI
+#### AI Knowledge Check
+Upload a course video and AI drafts a full knowledge check — ready for SME review in under 60 seconds.
+Security
+#### SAML-based Single Sign-On
+SAML is an open standard for exchanging authentication and authorization data between identity providers and service providers.
+SAML SSO
+#### Okta
+SAML-compatible identity provider — works with the UniversitySite SAML SSO Extension.
+SAML SSO
+#### Azure Active Directory
+SAML-compatible identity provider — works with the UniversitySite SAML SSO Extension.
+SAML SSO
+#### OneLogin
+SAML-compatible identity provider — works with the UniversitySite SAML SSO Extension.
+Developer
+#### SDK Extension
+Embed UniversitySite modules inside your employee portal or intranet using the Profiscience SDK.
+Developer
+#### SQL Reporting
+Direct SQL database access for custom reports. Data syncs from UniversitySite twice per day.
+Deep dive · AI Knowledge Check
+## Turn any video into a validated assessment.
+Upload a course video. Profiscience AI transcribes, identifies learning objectives, and drafts a full knowledge check — multiple choice, scenarios, and free-response. Your subject matter expert reviews, edits, and publishes. Done.
+- ✓ 60-second average generation time
+- ✓ Auto-linked timestamps for review hints
+- ✓ Bloom's taxonomy coverage report
+- ✓ Bias & ambiguity pre-checks
+- ✓ SCORM 2004 / xAPI export
+Learn more about AI Knowledge Check
+For developers
+## Extend and embed UniversitySite.
+Need to pull custom reports or embed UniversitySite directly into your firm's portal? The SDK and SQL Reporting extensions are purpose-built for your development team.
+### SDK Extension
+Embed UniversitySite modules inside your employee portal or intranet using the Profiscience SDK. We're a development-driven company — view API documentation.
+### SQL Reporting Extension
+Direct access to a SQL database for running custom reports. Data is transferred from UniversitySite to reporting servers twice per day — ideal for firms with custom BI needs.
+### SAML-based Single Sign-On
+SAML is an open standard for exchanging authentication and authorization data between identity providers and service providers.
+Customer stories
+## Integration wins from the field.
+### Workday + UniversitySite
+Haynes Boone integrated UniversitySite with Workday for automatic roster sync, eliminating manual provisioning across 600+ employees.
+Read case study
+### Firm Portal SDK
+Haynes Boone embedded UniversitySite directly into their employee portal using the Profiscience SDK Extension — seamless, single-sign-on experience for every attorney.
+Read case study
+### LinkedIn Learning
+Foley & Lardner used the LinkedIn Learning Extension inside UniversitySite to promote firm-wide learning initiatives without changing attorney workflows.
+Read case study
+## Don't see your tool?
+Our Solutions Engineering team builds custom connectors for enterprise deployments — and has for over a decade. Tell us what you're running.
+Talk to an engineer
+Explore the platform
+
+======================================================================
+pricing.html
+======================================================================
+
+Pricing
+# Let's solve the problem first. Then we'll talk numbers.
+No two firms buy the same thing from us — so we don't publish a one-size price list. We start by understanding what you're trying to solve, then scope an investment around the pieces that actually fit. Here's exactly how that works, and why we do it this way.
+Start a conversation
+Our approach
+## Why you won't find a price tag here.
+It isn't a game. Publishing a number before we understand your firm would do you a disservice — here's the honest reasoning.
+🎯
+### Because every firm is different
+A 40-attorney firm standing up CLE tracking and a 900-person firm consolidating five systems aren't buying the same thing. A single list price would be wrong for almost everyone who read it.
+🧩
+### Because you shouldn't pay for what you don't need
+Our platform is modular by design. You can start with one product and add others later — or never. We'd rather scope you to the pieces that solve your problem than sell you a bundle.
+💬
+### Because a number without context isn't useful
+A price with no understanding of your goals, timeline, and rollout just invites a bad comparison. A short conversation first means the number you eventually see is one you can actually act on.
+What you're actually buying
+## Start with one piece. Add the rest only when it helps.
+You don't have to take the whole platform to work with us. Most firms begin with a single product and grow into others — without rebuilding what they already have.
+Start here
+### UniversitySite
+The learning foundation — onboarding, required training, professional development, and firm-wide learning records. Many firms buy only this, and that's a complete solution on its own.
+Add when it fits
+### CLESite
+Specialized CLE administration built on the same foundation. Add it when compliance tracking becomes a priority — or start here if CLE is the reason you're reaching out. It works with UniversitySite, not instead of it.
+Extend further
+### Extensions & add-ons
+ScormFly video compliance, ManagerSite visibility, client-facing learning, reporting, integrations, and more — added one at a time, only where they solve a defined need.
+Not sure which pieces you need? That's what the conversation is for — and it's also how we build a custom package priced only to what you'll use.
+See how it fits together →
+Transparency
+## What shapes your investment.
+We won't surprise you with the model, even before we name a figure. Your quote comes down to a handful of straightforward factors — the same ones we'll walk through together on the first call.
+The goal is a proposal you can read line by line and understand exactly what each part is doing.
+Get a tailored proposal
+-
+01
+Which products
+UniversitySite, CLESite, and any extensions you choose.
+-
+02
+How many people
+The size of the audience you're supporting across the firm.
+-
+03
+Support & service level
+Standard support is included; priority and dedicated coverage are options.
+-
+04
+Rollout & migration
+One-time setup, data migration, and onboarding scoped to your environment.
+The process
+## How we get to a number.
+No pressure, no obligation, no sales gauntlet. Just a short, useful conversation that ends with clarity — whether or not we're the right fit.
+Start a conversation
+01
+### A conversation, not a pitch
+Tell us what's creating friction today — the audiences, workflows, and systems involved. We listen first.
+02
+### We map it to what fits
+We identify which products and capabilities actually address the problem — and just as importantly, which ones you don't need.
+03
+### A proposal built for you
+You get a tailored scope and a transparent, itemized price — clear about what each piece does and what it costs.
+04
+### You decide, on your terms
+Start with one product or the full platform, this quarter or next. No lock-in to capabilities you haven't grown into yet.
+FAQ
+## Straight answers about pricing.
+Why don't you just publish prices?
+Because the honest answer to "what does it cost?" is "what do you need?" We price to the products, audience size, and support level that fit your firm — a list price would be wrong for almost everyone. We'll give you a real number as soon as we understand the shape of the work.
+Can I buy just one product?
+Yes. Plenty of firms run only UniversitySite, or come to us specifically for CLESite. The platform is modular — you take what solves your problem and nothing you don't.
+Do you build custom packages?
+That's the norm, not the exception. Most engagements are a specific combination of products, extensions, and service levels assembled around one firm's needs. The "package" is whatever fits you.
+Will I get pressured to buy the whole suite?
+No. Our approach is the opposite — we'd rather scope you smaller and have you grow into more when it genuinely helps. Adding capabilities later doesn't mean starting over.
+What does the first conversation actually involve?
+A short, no-obligation call to understand what you're solving for. You'll leave with a clear sense of fit and next steps — and if we're not the right choice, we'll tell you.
+## Tell us what you're trying to solve.
+Fifteen minutes is usually enough to know whether we're a fit — and to get you a number that actually means something.
+Start a conversation
+Explore the platform
+
+======================================================================
+about.html
+======================================================================
+
+Why Profiscience
+# Focused on
+law-firm learning since 2000.
+Profiscience builds specialized learning and CLE technology for law firms. Our work combines long-term legal-industry experience, continuous product development, and close collaboration with the firms that use our platform.
+The name Profiscience is a play on proficiency, inspired by the work of helping people and teams become more capable.
+Start a conversation
+26+
+Years serving law firms
+400K+
+Law firm employees served
+500+
+Platform releases delivered through weekly updates
+50%+
+   >>> DO NOT STATE — percentage: 50%
+UniversitySite supports every client, more than half rely on CLESite
+What guides our work
+## Principles that guide how we build and work with clients.
+Specialization
+### Built for the realities of legal learning
+We design around law-firm learning, professional development, CLE, and compliance workflows—not generic training assumptions.
+Continuous improvement
+### Shaped by law firms
+Weekly updates reflect client feedback, evolving workflows, and the practical experience of the people using the platform.
+Client partnership
+### Partnership beyond go-live
+Our involvement continues through implementation, ongoing support, collaboration, and platform improvement.
+Company timeline
+## How Profiscience evolved.
+-
+### 2000: Company founded
+Profiscience begins developing learning technology for law firms.
+-
+### 2010-2015: UniversitySite expands globally
+UniversitySite grows to support law-learning across the Americas, Australia, and Europe.
+-
+### 2016: CLESite introduced
+CLESite is introduced, adding specialized CLE administration and oversight.
+-
+### 2025: CLESite Adoption Milestone
+More than half of Profiscience clients adopt CLESite alongside UniversitySite.
+-
+### Today: Continuous Improvement
+Weekly updates continue across the platform, guided by client feedback and evolving learning, CLE, and compliance requirements.
+Our mission
+## Help law firms do more with learning technology.
+Our mission is to help law firms manage learning and compliance more effectively—supporting better learning experiences, more manageable administration, and clearer firmwide visibility.
+UniversitySite and CLESite were built around the practical realities of legal learning, from onboarding and professional development to CLE administration and compliance oversight. We focus on giving firms tools that fit their work.
+### What we help law firms improve
+#### Better learning experiences
+Onboarding
+Professional development
+Continuing education
+#### Less administrative work
+Assignments
+Records
+Certificates
+Reporting
+#### Clearer oversight and compliance
+CLE tracking
+Requirements
+Deadlines
+Leadership visibility
+Built to support the realities of law-firm learning.
+Leadership
+## The team behind the work
+Profiscience brings together product development, design, implementation, CLE expertise, and client support. Clients work with people who understand both the platform and the realities of law-firm learning.
+Michael Barshinger
+Founder & CEO
+Michael founded Profiscience and continues to guide its product vision and company strategy around the learning and compliance needs of law firms.
+Lawren Finley
+Director of Legal Education
+Lawren works with law firms to understand their learning, professional development, and compliance priorities and translate them into practical UniversitySite and CLESite approaches.
+Carter Strey
+Director of Partner Solutions
+Carter leads conversations with firms evaluating Profiscience, connecting their priorities and existing systems with the right products, services, and implementation approach.
+Daniel Wallace
+Director of Product
+Daniel leads product strategy. He works with clients and the Profiscience team to turn feedback and emerging needs into practical product improvements.
+Autumn Masters
+Partner Advisor
+Autumn works closely with existing clients to understand changing priorities, strengthen their use of Profiscience, and explore additional capabilities that may support their learning and CLE goals.
+Derek Weihs
+Partner Advisor
+Derek works with law firms that are evaluating Profiscience, helping them clarify their goals, assess their current processes, and determine whether UniversitySite, CLESite, or both may be a good fit.
+Mark Staufenberg
+CLE Specialist
+Mark helps law firms interpret CLE requirements and translate them into manageable CLESite processes, including jurisdictional rules, reporting, and administrative workflows.
+Glenn Wilson
+CLE Specialist
+Glenn supports the day-to-day administration of CLE programs, helping firms manage records, reporting, and jurisdiction-specific requirements with greater confidence.
+Mary White
+Product Specialist
+Mary works directly with clients when questions arise, helping them resolve issues and use the platform with confidence. She brings deep product knowledge and a practical understanding of how firms work.
+Show more leaders
+## Let’s discuss what your firm is trying to improve.
+Whether you are reconsidering your learning platform, exploring CLE administration, or trying to connect fragmented processes, we will begin by understanding your priorities.
+Start a conversation
+
+======================================================================
+support.html
+======================================================================
+
+Support
+# We've got your back.
+Help is available directly inside UniversitySite, or reach our friendly USA-based support team by email — typical response time is under two hours during business hours.
+A real team — not a ticket queue. When you reach out, you hear from a person who knows your platform.
+Get help
+## Three ways to get support.
+🖥️
+### Help inside UniversitySite
+The fastest path to an answer. Every page in UniversitySite has a built-in help panel with guides, how-to videos, and a one-click support form.
+Look for the ? icon in the top-right corner of any UniversitySite page.
+✉️
+### Email support
+Send a message to support@profiscience.com and a specialist will respond within two business hours. Enterprise accounts receive 24/7 email support.
+📞
+### Talk to a specialist
+For complex issues, onboarding questions, or anything that's easier to walk through live — use the contact form below to schedule a call with your success partner.
+Schedule a call
+UniversitySite
+? Help
+📖 Read guide
+✉️ Contact us
+In-app help
+## Help is always one click away.
+Every page inside UniversitySite includes a contextual help panel. Click the ? icon in the top-right corner to open guides relevant to the page you're on, watch short how-to clips, or fire off a support request directly — without leaving your workflow.
+- ✓ Context-sensitive — guides match the page you're on
+- ✓ One-click support ticket submission
+- ✓ Short how-to video library
+- ✓ No separate portal login required
+FAQ
+## Common questions.
+### What's the average support response time?
+Under two business hours for Standard support. Enterprise accounts receive 24/7 email and phone coverage with a guaranteed one-hour response SLA.
+### Do you offer onboarding assistance?
+Yes. Every new customer is assigned a named success partner who guides setup, data migration, and initial training sessions for your admin team.
+### Is there a self-service knowledge base?
+Help articles and short video walkthroughs are accessible directly inside UniversitySite via the in-app help panel on every page.
+### Who do I contact for billing or account changes?
+For account-level changes, contact support@profiscience.com or reach out to your account manager directly.
+### Can I request a custom feature or integration?
+Absolutely. Profiscience has a track record of building custom extensions — from Workday integrations to firm-branded portals. Start a conversation via the contact form.
+### Is support included in my subscription?
+Yes. Standard email support is included. Priority and dedicated coverage are available as options — support and service level is one of the factors we scope with your firm. See what shapes your investment.
+## Can't find what you need?
+Send us a message and a Profiscience specialist will get back to you within two business hours.
+Email support
+Contact form
+
+======================================================================
+clients.html
+======================================================================
+
+Our Clients
+# Trusted by the best law firms
+Over the past fifteen years Profiscience has built an impressive clientele — law firms with 200 to 5,000 attorneys who rely on UniversitySite, CLESite, and ScormFly every day.
+   >>> DO NOT STATE — headcount: 5,000 attorneys
+## Case Studies
+See how leading firms put UniversitySite, CLESite, and ScormFly to work.
+Steptoe & Johnson
+Read case study
+Verrill
+Read case study
+Womble Bond Dickinson
+Read case study
+Haynes Boone
+Read case study
+Foley & Lardner
+Read case study
+Bond, Schoeneck & King
+Read case study
+## Law Firm Partners
+A selection of the firms we're proud to partner with.
+All regions
+Australia
+Canada
+Europe
+USA
+Akin Gump
+Alberta Securities Commission
+Arnold Bloch Leibler
+Ashurst
+Baker Botts
+Baker Hostetler
+Balch & Bingham
+Bass Berry & Sims
+Bennett Jones
+Best Best & Krieger
+Bilzin Sumberg
+Bradley Arant
+Bricker Graydon
+Burns White
+Corrs Chambers Westgarth
+DLA Piper
+Debevoise & Plimpton
+Epstein Becker Green
+Eversheds Sutherland
+Fish & Richardson
+Foley Hoag
+Fredrikson & Byron
+Gibbons
+Gilbert + Tobin
+Goodwin
+Haynes Boone
+Hodgson Russ
+Holding Redlich
+Honigman
+Irell & Manella
+Jackson Walker
+Johnson Winter Slattery
+Kessler Topaz Meltzer & Check
+Lathrop GPM
+Littler Mendelson
+Lowenstein Sandler
+Lowndes
+Maddocks
+Manatt, Phelps & Phillips
+McCabes
+McGlinchey Stafford
+Michael Best & Friedrich
+Munger, Tolles & Olson
+Munsch Hardt
+Neal Gerber Eisenberg
+Nixon Peabody
+Nutter
+O'Melveny & Myers
+Orrick
+Paul Hastings
+Perkins Coie
+Pillsbury Winthrop
+Piper Alderman
+Robins Bradshaw
+Robins Kaplan
+Sandberg Phoenix
+Schwabe
+Seyfarth Shaw
+Sheppard Mullin
+Shook Hardy & Bacon
+Shutts & Bowen
+Stikeman Elliott
+Stinson
+Sullivan & Worcester
+Ulmer & Berne
+Varnum
+Venable LLP
+Wachtell Lipton
+Winstead
+Young Conaway
+No partners listed for this region yet.
+What clients say
+## Law firms trust Profiscience.
+Attorneys, trainers, and CLE coordinators across our client base consistently rate Profiscience as a reliable partner.
+"After evaluating Workday Learning, we concluded that replacing UniversitySite would not improve how we manage learning. Instead, we integrated the platforms, publishing completed learning activity from UniversitySite into Workday. This gave us the connectivity we needed while retaining a platform designed for law firms."
+KG
+Kurt Geisler
+CTO
+Haynes Boone
+"Our firm moved from separate CE Manager and LegalMind LMS systems to Profiscience, creating a more connected environment for learning and CLE administration. Bringing these functions together has made it easier to coordinate training, compliance tracking, reporting, content, and the integrations our firm depends on."
+CT
+Chief Training Officer
+New York
+"After evaluating where we were headed with viLMS CLE and Workday Learning, we chose to consolidate on Profiscience's platform for managing our CLE administration and learning. Profiscience understands the specialized learning and compliance workflows a law firm needs to manage."
+SM
+Senior Manager
+950 users
+   >>> DO NOT STATE — headcount: 950 users
+Los Angeles
+"UniversitySite and CLESite have helped a small team support a much larger organization. From automated reminders and learning plans to CLE dashboards and reporting, the system gives us the structure we need to scale training and compliance work without adding unnecessary manual effort."
+DK
+Daniel Kent
+Training Manager
+Foley Hoag
+"What stands out about Profiscience is how closely their team works with us. They are responsive, practical, and willing to adapt the platform to support the way our firm manages learning rather than expecting us to fit into a standard approach."
+PP
+Pamela Presley
+Technology Training Manager
+Akin
+"Profiscience has been a collaborative partner as we’ve expanded our learning environment. Their team worked closely with us to integrate LinkedIn Learning with UniversitySite and helped us create a more connected experience for our learners and administrators."
+KW
+Kevin Wind
+Manager of Technology Training
+Nixon Peabody
+"Over the years, I have seen UniversitySite continue to evolve, including improvements shaped by feedback from our team. It provides a flexible, practical foundation for law-firm learning, with clear visibility for learners and administrators and reporting that supports both day-to-day management and deeper analysis. Just as important, the Profiscience team is responsive, knowledgeable, and easy to work with."
+MT
+Manager, Technical Training
+1500 users, Toronto
+   >>> DO NOT STATE — headcount: 1500 users
+"UniversitySite has been a remarkably reliable platform for our firm, and we rarely have questions. When they do arise, the team at Profiscience is responsive, knowledgeable, and easy to work with."
+SA
+Senior Analyst
+600 users, New York
+   >>> DO NOT STATE — headcount: 600 users
+"UniversitySite gives us a practical, user-friendly way to manage both instructor-led training and eLearning across the firm. Registration is straightforward for learners, administration is manageable for our team, and the reporting gives HR clear visibility into participation and completions. When we need assistance, the Profiscience team responds quickly with thorough, helpful answers."
+MT
+Manager, Training & QA
+1100 users, Calgary
+   >>> DO NOT STATE — headcount: 1100 users
+"UniversitySite helps us create structured, blended learning experiences that combine instructor-led training, eLearning, and other resources. Learning plans guide users through the right content in the right sequence, making it easier for them to build the knowledge they need without navigating the course catalog on their own. The Profiscience team understands how law firms manage learning and works with us to support practical, effective programs."
+CS
+Carolyn Sneed
+Technology Training Coordinator
+Akin, Dallas
+"UniversitySite is an awesome tool giving end-users direct access to knowledge, specific training requests and e-learning. It's a trainer's dream tool that can be used to introduce training opportunities in a variety of ways. Not everyone is comfortable learning in a group setting and some learn only when they can train at their own pace. UniversitySite is a win-win for the firm, the employees and the trainer!"
+BW
+Becky Winn
+Technology Support Services Manager
+Munsch Hardt Kopf & Harr, Dallas
+"Profiscience is one of our most trusted partners. Their team is knowledgeable, responsive, and willing to work with us as our needs evolve. We use UniversitySite not only for IT training, onboarding, and eLearning, but also to coordinate a wide range of firm programs, from wellness initiatives to financial education. That flexibility has made it a valuable platform across the organization."
+IT
+Manager of IT Training
+800 users, New York
+   >>> DO NOT STATE — headcount: 800 users
+Show more client perspectives
+Get in touch
+
+======================================================================
+case-study-foley-lardner.html
+======================================================================
+
+&larr; All resources
+Case Study &middot; Integrations
+# Foley & Lardner brings LinkedIn Learning inside UniversitySite.
+A firm-wide enrichment plan for legal assistants, staff, and managers — delivered through one familiar platform, with 90% participation.
+   >>> DO NOT STATE — percentage: 90%
+View the PDF
+Let's Talk
+## Overview
+Foley & Lardner LLP set out to supplement their existing learning content with LinkedIn
+Learning's vast library, to provide power-skills training for technology staff, legal assistants,
+and managers. The firm also needed the ability to assign learning plans and track completion rates
+and employee progress. UniversitySite was able to meet this need.
+The LinkedIn Learning Extension lets the firm integrate LinkedIn Learning modules with the learning
+content already in UniversitySite, creating customized learning plans for each group. Once the plans
+were set up and assigned, the firm could track employee progress and completion rates — and learners
+reached LinkedIn Learning content through UniversitySite, where they were already accustomed to
+finding learning resources.
+## The solution: the LinkedIn Learning Extension
+The extension incorporates the single sign-on technology of UniversitySite while leveraging
+LinkedIn's digital courses inside UniversitySite for technical, power-skills, and professional
+development. It provides the ability to import LinkedIn Learning courses through the eLearning store
+in InstructorSite, and LinkedIn courses can be launched directly from UniversitySite.
+Foley & Lardner used the extension to implement a legal-assistant enrichment plan, so registrants
+received the training needed to succeed in their roles. The firm could also take courses from
+LinkedIn Learning and break them into chapters — choosing specific sections of a course to assign —
+and build learning plans that send automatic reminders.
+## The benefits
+- Seamless access to LinkedIn Learning content via single sign-on.
+- Easily import LinkedIn content into the UniversitySite course catalog.
+- LinkedIn Learning courses launch directly from UniversitySite.
+- Automatic reminders, plus tracking for learning-plan progress and course completion rates.
+## About Foley & Lardner LLP
+Headquartered in Milwaukee, WI, with over 1,100 lawyers in 25 offices across the United States,
+   >>> DO NOT STATE — headcount: 1,100 lawyers
+Mexico, Europe, and Asia, Foley approaches client service by first understanding clients' priorities,
+objectives, and challenges. They work to forge long-term relationships and solve legal issues through
+practical business advice and cutting-edge legal insight — because great legal service is only
+valuable if it is relevant, practical, and beneficial to a client's business.
+## About Profiscience
+The Profiscience team has more than 20 years of experience providing learning and performance
+   >>> DO NOT STATE — duration/tenure: 20 years
+management solutions specific to the unique needs of the legal industry. We are dedicated to helping
+our clients leverage UniversitySite to meet all of their business objectives, and we continue to
+actively develop and aggressively enhance our flagship product to meet the evolving needs of law firms.
+### At a glance
+Solution
+The LinkedIn Learning Extension brought LinkedIn's content library into UniversitySite's functionality.
+Campaign KPI
+The firm's enrichment plan achieved 90% participation and high completion rates.
+   >>> DO NOT STATE — percentage: 90%
+Core theme
+Implement a learning enrichment plan for legal assistants, staff, and managers.
+PDF
+Foley & Lardner
+View the case study PDF
+## Bring your content library into one platform.
+See how the LinkedIn Learning Extension and single sign-on fit your firm's learning stack.
+Explore integrations
+Read more case studies
+
+======================================================================
+case-study-haynes-boone.html
+======================================================================
+
+&larr; All resources
+Case Study &middot; Integrations
+# Haynes Boone integrates UniversitySite into their employee portal.
+Training compliance was invisible, so it slipped. The fix was to put it where people already look.
+View the PDF
+Let's Talk
+## Overview
+Haynes Boone saw a need to alert employees of required training and upcoming training deadlines.
+They decided the best way to do this was to show alerts in their employee portal.
+&ldquo;Historically, we have struggled with compliance for mandatory employee training. As we
+considered the root causes, we realized that compliance status was not adequately visible. It
+became clear that surfacing information in the right places and making it easy for leadership
+to look up compliance status would be beneficial. This meant incorporating UniversitySite into
+our employee portal.&rdquo;
+KG
+Kurt Geisler
+CTO, Haynes Boone
+## Integration with the employee portal
+Haynes Boone's internal employee portal is one of the best law firm intranets we have ever seen.
+Sandro Juric, Manager of Application Development at Haynes Boone, said, &ldquo;We use
+UniversitySite's API to show alerts to people who haven't completed their required training.&rdquo;
+When employees open their web browser, they see the employee portal — and if they have required
+training outstanding, they see a notification.
+## The product
+Haynes Boone used UniversitySite's Software Developer Kit (SDK) to integrate their employee portal.
+The SDK Extension provides access to UniversitySite cloud-based data in real time. It comprises a
+REST-based API that returns data in JSON format, which can be integrated into other programs.
+&ldquo;Clients are asking us if we have a 100% success rate with security awareness training.
+   >>> DO NOT STATE — percentage: 100%
+It's very important to us as we're getting audited constantly by clients now. Our employee portal
+integration with UniversitySite has been very helpful.&rdquo;
+KG
+Kurt Geisler
+CTO, Haynes Boone
+## About Haynes Boone
+Haynes Boone is an American Lawyer top 100 law firm, with more than 600 lawyers in 18 offices
+   >>> DO NOT STATE — headcount: 600 lawyers
+worldwide, providing services for more than 40 major legal practices. Their growth has been driven
+by client service strengths — especially problem-solving acumen and the ability to collaborate
+with clients.
+## About Profiscience
+The Profiscience team has more than 20 years of experience providing learning and performance
+   >>> DO NOT STATE — duration/tenure: 20 years
+management solutions specific to the unique needs of the legal industry. We are dedicated to
+helping our clients leverage UniversitySite to meet all of their business objectives, and we
+continue to actively develop and aggressively enhance our flagship product to meet the evolving
+needs of law firms.
+### At a glance
+Solution
+SDK Extension
+Campaign KPI
+Increasing training completion rates.
+Core theme
+Feed real-time UniversitySite data to the firm's employee portal.
+PDF
+Haynes Boone
+View the case study PDF
+## Your systems, our data — in real time.
+See what the SDK can surface inside the tools your firm already uses.
+Explore integrations
+Read more case studies
+
+======================================================================
+case-study-womble-bond-dickinson.html
+======================================================================
+
+&larr; All resources
+Case Study &middot; AI & Product
+# Womble Bond Dickinson brings closed captioning to every learning video.
+A transatlantic firm set a goal of 100% accessibility. The feature didn't exist yet — so we built it.
+   >>> DO NOT STATE — percentage: 100%
+View the PDF
+Let's Talk
+## Overview
+Womble Bond Dickinson (WBD), a transatlantic law firm with a global focus, engages in a
+long-term partnership with Profiscience to help its training organization achieve its goal of
+100% accessibility for all people with disabilities.
+   >>> DO NOT STATE — percentage: 100%
+When Ian Phillips, Training & Onboarding Lead at Womble Bond Dickinson, thought about that
+goal, he began working on a project to tag all videos with closed captioning. Because of the
+long-standing partnership, Ian immediately thought to engage Profiscience to develop a solution.
+WBD could not use its current suite of products to add closed captioning to its video files. Ian
+contacted Michael, the Owner and CEO of Profiscience, to ask if there was a way to add captioning
+capabilities to ScormFly.
+## The solution
+Profiscience developed and implemented a solution in about three months. The ScormFly extension
+now allows a user to upload a closed-caption file alongside the video file, and then overlays the
+caption text directly onto the video.
+Ian said he enjoys working with Profiscience and, in his experience, has found that most legal
+vendors only provide system updates once a year and do not listen to client ideas. Profiscience
+offers weekly updates and listens to clients in the hopes of continuing to make the best learning
+technology for the legal space.
+He also finds Profiscience easy to work with, and values the online community — which enables
+clients to talk to one another and share ideas about how they are using learning technology.
+## About Womble Bond Dickinson
+Womble Bond Dickinson is a transatlantic law firm with over 2,300 employees. With teams located
+   >>> DO NOT STATE — headcount: 2,300 employees
+across the United States and the United Kingdom, the firm brings an international perspective and
+extended jurisdictional reach to a wide range of client needs. The training organization,
+Learning@Womble, is led by Michael Blix and Ian Phillips. With Profiscience's help, they have been
+able to create a culture of learning within the firm.
+## About Profiscience
+The Profiscience team has more than 20 years of experience providing learning and performance
+   >>> DO NOT STATE — duration/tenure: 20 years
+management solutions specific to the unique needs of the legal industry. We keep our priorities
+squarely focused on our clients — our most important asset — and continue to actively develop and
+aggressively enhance our flagship product to meet the evolving needs of law firms.
+### At a glance
+Solution
+Profiscience added closed captioning functionality to the ScormFly Extension at the request of client Womble Bond Dickinson.
+Campaign KPI
+The firm's training organization goal is 100% accessibility of learning content for all people with disabilities.
+   >>> DO NOT STATE — percentage: 100%
+Delivered in
+About three months, from request to implementation.
+PDF
+Womble Bond Dickinson
+View the case study PDF
+## Have a feature request? We ship weekly.
+Our clients' ideas end up in the product. Tell us what you need.
+Talk to us
+Read more case studies
+
+======================================================================
+case-study-steptoe-johnson.html
+======================================================================
+
+&larr; All resources
+Case Study &middot; Legal & CLE
+# Steptoe & Johnson uses UniversitySite as part of their COVID-19 strategy.
+A return-to-office task force needed a daily health self-assessment in every employee's hands — fast. The platform they needed was already running.
+View the PDF
+Let's Talk
+## Overview
+COVID-19 caused a change in the way firms manage their employees, including allowing them to
+work remotely. When firms began opening their offices to employees, the need to ensure the
+safety of all employees came to the forefront.
+The law firm of Steptoe & Johnson created a task force whose mission was to create a safe
+plan for employees to return to their offices. The firm created a policy that required
+employees to take a self-assessment each morning before being permitted to come to the office.
+Steptoe & Johnson needed a way to deliver this assessment to all employees efficiently and
+effectively.
+&ldquo;The functionality of UniversitySite is such that I don't need to look left or right.&rdquo;
+TL
+Toni Limbers
+Steptoe & Johnson PLLC
+## The solution: a daily self-assessment
+UniversitySite provided a solution. All employees of the firm already had access to
+UniversitySite. The platform allowed office managers to know if an employee was clear to come
+to the office while preserving medical confidentiality — only select members of management
+were given full access to results.
+The firm published the assessment through UniversitySite. A link was sent to all employees and
+pushed to their mobile phones, allowing them to quickly comply with the new company policy.
+## The benefits
+Using their existing UniversitySite platform for COVID-19 safety compliance saved Steptoe &
+Johnson time, money, and resources. UniversitySite was already in place, and it could manage
+daily self-assessments, so there was no need to spend time and money researching any other
+system. The lawyers and support staff already knew how to use it.
+- No staff member had to be assigned to track results by hand.
+- No separate tracking system had to be built or bought.
+- No one had to take temperatures at the door each day.
+- Employees completed the assessment with little to no resistance to the process.
+Using existing systems that people already knew, the firm could put their time, money, and
+resources toward other purposes. The experience helped the firm see that there are many unique
+and creative ways to use UniversitySite to their benefit.
+## About Profiscience
+The Profiscience team has more than 20 years of experience providing learning and performance
+   >>> DO NOT STATE — duration/tenure: 20 years
+management solutions specific to the unique needs of the legal industry. We are dedicated to
+helping our clients leverage UniversitySite to meet all of their business objectives, and we
+continue to actively develop and aggressively enhance our flagship product to meet the evolving
+needs of law firms.
+### At a glance
+Solution
+UniversitySite was used for daily self-assessments.
+Campaign KPI
+Management was able to quickly handle any issues regarding COVID-19 before an employee entered the building.
+Core theme
+COVID-19 created a need for firms to assess the safety of employees returning to the office.
+PDF
+Steptoe & Johnson
+View the case study PDF
+## See what your firm could do with the platform it already has.
+Fifteen minutes, a discovery call, and a straight answer about fit.
+Let's Talk
+Read more case studies
+
+======================================================================
+case-study-verrill.html
+======================================================================
+
+&larr; All resources
+Case Study &middot; Onboarding
+# Verrill uses UniversitySite to rapidly scale for the future.
+A growing New England firm needed an LMS that could keep pace with hiring — and go live in 90 days.
+View the PDF
+Let's Talk
+## Overview
+Verrill, a growing New England law firm, has quickly increased their number of staff and
+attorneys. As a result, they realized a Learning Management System (LMS) was necessary to equip
+their firm for future growth.
+Through an arduous evaluation process they concluded that UniversitySite fit their needs. After
+implementing it, they feel equipped to accomplish more than they initially envisioned — because
+of the platform's many features, versatility, and ease of use.
+## The product
+UniversitySite is an excellent tool for establishing learning plans for different groups of
+users and then measuring individual performance against each plan. It enables a firm to schedule
+and manage training to support its technology initiatives.
+It also allows for building a university-style continuing education program with instructor-led
+learning and eLearning — which can ultimately lead to creating a culture of learning and
+accountability.
+## The benefits
+Verrill gained robust reporting features and learning plans for employee development, with
+training and compliance tracked across the moments that matter most:
+- Onboarding new employees
+- Security awareness
+- Software rollouts
+- Professional development
+## About Verrill
+Verrill has offices in New England and serves clients around the globe. While the practice of law
+has certainly changed since its founding in 1862, the values upon which the firm was built —
+mutual respect and camaraderie; commitment to public service, the community, and the legal
+profession — remain at the heart of Verrill today.
+## About Profiscience
+The Profiscience team has more than 20 years of experience providing learning and performance
+   >>> DO NOT STATE — duration/tenure: 20 years
+management solutions specific to the unique needs of the legal industry. We are dedicated to
+helping our clients leverage UniversitySite to meet all of their business objectives, and we
+continue to actively develop and aggressively enhance our flagship product to meet the evolving
+needs of law firms.
+### At a glance
+Solution
+UniversitySite provided the foundational components of an LMS with full support from Profiscience experts.
+Core theme
+Implement an LMS to track and report training more efficiently — moving faster, and with accuracy.
+### Campaign KPI
+- Go live within 90 days
+- Easy for attorneys & staff
+- A tech partner meeting current needs, with room for growth
+PDF
+Verrill
+View the case study PDF
+## Growing fast? Get the LMS in place before you need it.
+See what a 90-day go-live actually looks like.
+Let's Talk
+Read more case studies
+
+======================================================================
+case-study-bond-schoeneck-king.html
+======================================================================
+
+&larr; All resources
+Case Study &middot; Legal & CLE
+# Bond, Schoeneck & King leverages UniversitySite to serve hundreds of clients.
+A new state training mandate became a revenue line worth as much as a Top 50 client — delivered on UniversitySite.
+View the PDF
+Let's Talk
+## Overview
+Bond is a reputable law firm with a long history, having been founded in Syracuse, New York over a
+century ago. Initially known for its expertise in labor and employment law, the firm has since
+expanded its scope to include 33 practice areas across 11 industry groups, serving clients in five
+states through 15 offices.
+In 2019, the state of New York enacted a law requiring all employers to provide sexual harassment
+training to their employees. Bond, which had previously offered in-person training to clients, saw
+the opportunity to expand its reach and created an online platform for the training program.
+This resulted in a significant source of revenue for the firm — equivalent to that of a Top 50
+client. Beyond the revenue, Bond needed a solution that could accommodate hundreds of clients with
+multiple learning plans and thousands of users.
+&ldquo;We've provided sexual harassment training to 20,000 people and received overwhelmingly positive feedback.&rdquo;
+BSK
+Bond, Schoeneck & King
+On the first year of the program
+## Why UniversitySite
+Asked why the firm continues the partnership, Bond's answer was direct: &ldquo;We continue to do
+business with Profiscience because UniversitySite is the best fit for our needs.&rdquo; In the
+firm's own words, &ldquo;In just the first year, UniversitySite has exceeded our expectations for
+our online training programs,&rdquo; and &ldquo;The more I learn about UniversitySite, the more
+confident I feel in its capabilities.&rdquo;
+&ldquo;We've been using UniversitySite for four years and I have had no reason to consider
+switching to another platform. It has proven to be able to handle all of our clients' needs.&rdquo;
+BSK
+Bond, Schoeneck & King
+On four years on the platform
+## Advice from Bond, Schoeneck & King
+Asked what advice they would give someone starting a similar journey, Bond recommends seeking
+training from Profiscience and setting up test scenarios until you feel confident in your
+understanding of the product. It is also important to keep using the product during the lead-up to
+going live, to ensure a smooth transition.
+## About Profiscience
+The Profiscience team has more than 20 years of experience providing learning and performance
+   >>> DO NOT STATE — duration/tenure: 20 years
+management solutions specific to the unique needs of the legal industry. Thousands of hours of
+ongoing research and development have been invested in UniversitySite, and we continue to actively
+develop and aggressively enhance our flagship product to meet the evolving needs of law firms.
+### At a glance
+Product
+UniversitySite
+Scale
+Hundreds of client organizations, multiple learning plans, thousands of users.
+Impact
+A revenue source equivalent to a Top 50 client.
+### Key features
+- Email integration
+- Accessibility of information for managers
+- Overall strength and reliability of UniversitySite
+PDF
+Bond, Schoeneck & King
+View the case study PDF
+## Training your clients, not just your firm?
+UniversitySite scales to hundreds of client organizations. Let's talk about yours.
+Let's Talk
+Read more case studies
