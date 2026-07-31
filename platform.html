@@ -40,8 +40,119 @@
   </div>
 </section>
 
-<!-- ── 2. UNIVERSITYSITE ──────────────────────────────────── -->
-<section class="platform-platform-section" id="UniversitySite">
+<!-- ── 2. PLATFORM OVERVIEW ─────────────────────────────── -->
+<section class="platform-platform-section" id="PlatformOverview">
+  <div class="container">
+    <div class="section-head left reveal">
+      <span class="eyebrow">Platform Overview</span>
+      <h2>One connected platform for learning, CLE, and the workflows around them.</h2>
+      <p>Profiscience begins with a shared learning foundation. Firms can then add specialized CLE administration, integrations, extensions, and external learning experiences based on their priorities.</p>
+    </div>
+
+    <div class="platform-overview" aria-labelledby="platform-overview-heading" data-platform-overview>
+      <h3 id="platform-overview-heading" class="visually-hidden">Interactive platform architecture</h3>
+
+      <div class="platform-overview-toolbar reveal">
+        <div class="platform-overview-toolbar-group" role="group" aria-label="Platform overview controls">
+          <button type="button" class="btn btn-ghost platform-overview-control" data-platform-tour-toggle aria-pressed="false">Guided Tour</button>
+          <button type="button" class="btn btn-ghost platform-overview-control" data-platform-reset>Reset View</button>
+          <button type="button" class="btn btn-ghost platform-overview-control" data-platform-expand aria-haspopup="dialog">Expand Platform Overview</button>
+        </div>
+        <p class="platform-overview-note">Select any component to update the explanation panel.</p>
+      </div>
+
+      <div class="platform-overview-app reveal" data-platform-app>
+        <div class="platform-overview-diagram" aria-label="Platform architecture infographic">
+          <div class="platform-overview-connectors" aria-hidden="true"></div>
+
+          <div class="platform-overview-experiences" role="group" aria-label="UniversitySite principal experiences">
+            <button type="button" class="platform-node platform-node--experience" data-platform-node="instructor" aria-pressed="false">
+              <span class="platform-node-label">Principal experience</span>
+              <span class="platform-node-name">InstructorSite</span>
+            </button>
+            <button type="button" class="platform-node platform-node--experience" data-platform-node="learning" aria-pressed="false">
+              <span class="platform-node-label">Principal experience</span>
+              <span class="platform-node-name">LearningSite</span>
+            </button>
+            <button type="button" class="platform-node platform-node--experience" data-platform-node="manager" aria-pressed="false">
+              <span class="platform-node-label-row">
+                <span class="platform-node-label">Principal experience</span>
+              </span>
+              <span class="platform-node-name">ManagerSite</span>
+            </button>
+          </div>
+
+          <button type="button" class="platform-node platform-node--foundation" data-platform-node="university" aria-pressed="true">
+            <span class="platform-node-kicker">Shared Foundation</span>
+            <span class="platform-node-name">UniversitySite</span>
+            <span class="platform-node-body">Organizes programs, audiences, assignments, learning content, participation records, and reporting for the firm.</span>
+            <span class="platform-node-chip-row" aria-hidden="true">
+              <span class="platform-node-chip">Programs</span>
+              <span class="platform-node-chip">Audiences</span>
+              <span class="platform-node-chip">Assignments</span>
+              <span class="platform-node-chip">Learning content</span>
+              <span class="platform-node-chip">Participation records</span>
+              <span class="platform-node-chip">Reporting</span>
+            </span>
+          </button>
+
+          <button type="button" class="platform-node platform-node--cle" data-platform-node="clesite" aria-pressed="false">
+            <span class="platform-node-kicker">Specialized CLE Administration</span>
+            <span class="platform-node-name">CLESite</span>
+            <span class="platform-node-power">Built on UniversitySite</span>
+          </button>
+
+          <div class="platform-overview-support" role="group" aria-label="Additional platform capabilities">
+            <button type="button" class="platform-node platform-node--support" data-platform-node="integrations" aria-pressed="false">
+              <span class="platform-node-name">Integrations</span>
+            </button>
+            <button type="button" class="platform-node platform-node--support" data-platform-node="extensions" aria-pressed="false">
+              <span class="platform-node-name">Extensions</span>
+            </button>
+            <button type="button" class="platform-node platform-node--support" data-platform-node="beyond" aria-pressed="false">
+              <span class="platform-node-name">Learning Beyond the Firm</span>
+            </button>
+          </div>
+        </div>
+
+        <aside class="platform-overview-detail" aria-label="Selected component details">
+          <p class="platform-overview-detail-kicker" data-platform-detail-kicker>Shared learning foundation</p>
+          <h4 class="platform-overview-detail-title" data-platform-detail-title>UniversitySite</h4>
+          <p class="platform-overview-detail-copy" data-platform-detail-copy>Bring learning programs, assignments, content, participation records, and reporting into one environment for attorneys, staff, and administrators.</p>
+          <p class="platform-overview-detail-point" data-platform-detail-point><strong>Why it matters:</strong> When learning is spread across separate tools and processes, oversight becomes harder and administrative work increases. UniversitySite provides a connected foundation the firm can build on.</p>
+          <div class="platform-overview-detail-examples" data-platform-detail-examples></div>
+          <button type="button" class="btn btn-ghost platform-overview-detail-back" data-platform-detail-back>Back to Diagram</button>
+          <p class="platform-overview-live visually-hidden" aria-live="polite" data-platform-live></p>
+        </aside>
+      </div>
+
+      <div class="platform-overview-summary reveal" aria-label="Platform architecture summary">
+        <h4>Architecture Summary</h4>
+        <ul>
+          <li>UniversitySite brings programs, assignments, learning content, participation records, and reporting into one connected environment for attorneys, staff, and administrators.</li>
+          <li>InstructorSite, LearningSite, and ManagerSite provide connected experiences for administration, learner participation, and manager visibility inside the UniversitySite foundation.</li>
+          <li>CLESite adds specialized CLE administration by connecting CLE records, certificates, jurisdiction-specific requirements, attorney access, and firmwide oversight.</li>
+          <li>Integrations and Extensions can be added based on firm priorities, while ProviderSite and ClientSite extend selected learning to external audiences.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="platform-overview-dialog" data-platform-dialog hidden>
+      <div class="platform-overview-dialog-backdrop" data-platform-dialog-close></div>
+      <div class="platform-overview-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="platform-overview-dialog-title" tabindex="-1" data-platform-dialog-panel>
+        <div class="platform-overview-dialog-head">
+          <h3 id="platform-overview-dialog-title">Platform Overview</h3>
+          <button type="button" class="platform-overview-dialog-close" aria-label="Close expanded platform overview" data-platform-dialog-close>&times;</button>
+        </div>
+        <p class="platform-overview-dialog-sub">Expanded view for presentations and side-by-side walkthroughs.</p>
+        <div class="platform-overview-dialog-host" data-platform-dialog-host></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 3. UNIVERSITYSITE ──────────────────────────────────── -->
+<section class="alt platform-platform-section" id="UniversitySite">
   <div class="container">
 
     <div class="section-head left reveal">
@@ -76,12 +187,12 @@
   </div>
 </section>
 
-<!-- ── 3. CLESITE ─────────────────────────────────────────── -->
+<!-- ── 4. CLESITE ─────────────────────────────────────────── -->
 <section class="platform-clesite-section" id="CLESite">
   <div class="container">
 
     <div class="platform-clesite-head reveal">
-      <span class="eyebrow inverse">CLESite &middot; Powered by UniversitySite</span>
+      <span class="eyebrow inverse">CLESite &middot; Built on UniversitySite</span>
       <h2>Bring CLE records, obligations, and oversight into <span class="gradient-text">one connected environment.</span></h2>
       <p>CLESite builds specialized CLE administration on the UniversitySite learning foundation, so learning activity, attorney records, certificates, provider information, and compliance reporting can be managed through connected workflows rather than separate systems.</p>
     </div>
@@ -152,30 +263,12 @@
   </div>
 </section>
 
-<!-- ── 4. ADDITIONAL OPTIONS ──────────────────────────────── -->
+<!-- ── 5. ADDITIONAL OPTIONS ──────────────────────────────── -->
 <section class="alt platform-additional-section" id="additional-capabilities">
   <div class="container">
     <div class="section-head left reveal">
       <span class="eyebrow">Additional Capabilities</span>
       <h2>Add the capabilities and connections your firm needs.</h2>
-    </div>
-
-    <!-- ProviderSite ClientSite -->
-    <div id="learning-beyond-the-firm" class="platform-subsection platform-subsection--first reveal">
-      <h3 class="platform-subsection-heading">Learning Beyond the Firm</h3>
-      <p class="platform-subsection-intro">Publish learning for clients and other external audiences through a dedicated learning experience.</p>
-      <div class="platform-clientsite-grid">
-        <div class="platform-clientsite-card">
-          <span class="platform-experience-label">ACCREDITED CLE PROGRAMS</span>
-          <h4>ProviderSite</h4>
-          <p>Designed for accredited CLE providers that want to publish recorded programs, award eligible credit upon completion, and issue CLE certificates.</p>
-        </div>
-        <div class="platform-clientsite-card">
-          <span class="platform-experience-label">Broader client education</span>
-          <h4>ClientSite</h4>
-          <p>Designed for client education and external learning that is not centered on CLE accreditation, credit calculation, or certificate administration.</p>
-        </div>
-      </div>
     </div>
 
     <!-- Integrations subsection -->
@@ -213,6 +306,7 @@
         </div>
       </div>
     </div>
+
     <!-- Extensions subsection -->
     <div id="extensions" class="platform-subsection reveal">
       <h3 class="platform-subsection-heading">Extensions</h3>
@@ -265,10 +359,28 @@
       </div>
     </div>
 
+    <!-- ProviderSite ClientSite -->
+    <div id="learning-beyond-the-firm" class="platform-subsection platform-subsection--first reveal">
+      <h3 class="platform-subsection-heading">Learning Beyond the Firm</h3>
+      <p class="platform-subsection-intro">Publish learning for clients and other external audiences through a dedicated learning experience.</p>
+      <div class="platform-clientsite-grid">
+        <div class="platform-clientsite-card">
+          <span class="platform-experience-label">ACCREDITED CLE PROGRAMS</span>
+          <h4>ProviderSite</h4>
+          <p>Designed for accredited CLE providers that want to publish recorded programs, award eligible credit upon completion, and issue CLE certificates.</p>
+        </div>
+        <div class="platform-clientsite-card">
+          <span class="platform-experience-label">Broader client education</span>
+          <h4>ClientSite</h4>
+          <p>Designed for client education and external learning that is not centered on CLE accreditation, credit calculation, or certificate administration.</p>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
-<!-- ── 5. CHOOSING WHAT FITS ──────────────────────────────── -->
+<!-- ── 6. CHOOSING WHAT FITS ──────────────────────────────── -->
 <section class="platform-config-section" id="choosing-what-fits">
   <div class="container">
     <div class="platform-config-layout reveal">
@@ -301,7 +413,7 @@
   </div>
 </section>
 
-<!-- ── 6. FINAL CTA ───────────────────────────────────────── -->
+<!-- ── 7. FINAL CTA ───────────────────────────────────────── -->
 <section class="cta-band">
   <div class="container">
     <span class="eyebrow inverse">Start With Your Priorities</span>
@@ -316,6 +428,7 @@
 <div id="site-footer"></div>
 
 <script src="js/main.js"></script>
+<script src="js/platform-overview.js" defer></script>
 <script src="js/chat.js" defer></script>
 </body>
 </html>
