@@ -121,9 +121,41 @@ body.admin { background: var(--pf-mist); }
 .adm-row.sub {
   grid-template-columns: 1.4fr 1fr 1fr 120px 110px 90px;
 }
-/* Conversation rows: started, opening question, turns, outcome, actions */
+/* Conversation rows: started, opening question, turns, cost, outcome, actions */
 .adm-row.chat {
-  grid-template-columns: 110px 1fr 70px 110px 90px;
+  grid-template-columns: 110px 1fr 60px 90px 110px 90px;
+}
+.chat-cost {
+  font-variant-numeric: tabular-nums;
+  color: var(--pf-mute);
+  font-size: .85rem;
+}
+
+/* Spend strip in the Chats header */
+.chat-spend { text-align: right; }
+.chat-spend-now {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--pf-ink);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.chat-spend-now span {
+  display: block;
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--pf-mute);
+  margin-top: 2px;
+}
+.chat-spend-prev { font-size: .8rem; color: var(--pf-mute); margin-top: 6px; }
+.chat-spend-warn {
+  margin-top: 8px;
+  font-size: .78rem;
+  font-weight: 600;
+  color: #B91C1C;
+  max-width: 260px;
 }
 /* The opening question is the only way to recognise a conversation at a
    glance, so give it the row and clip rather than wrap — a visitor can

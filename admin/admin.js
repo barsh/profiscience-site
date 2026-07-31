@@ -41,7 +41,8 @@ function boot() {
     imageUrl: null,
     subscribers: [],
     subsLoaded: false,
-    chats: [],              // rows from the chat_conversations view
+    chats: [],              // rows from the chat_conversations_with_cost view
+    chatMonths: [],         // rows from chat_costs_monthly, for the spend strip
     chatsLoaded: false,
     chatSearchIds: null,    // Set of session_ids matching the search, or null for "no search"
     openChat: null,         // session_id currently shown in the drawer
@@ -609,30 +610,73 @@ function boot() {
   // there for where to find it. Blank is a supported state, not a broken
   // one: the lead id renders as text instead of a link.
 
-  // Transcripts are visitor-typed text echoed back by a model, so every
-  // value here is untrusted. The rest of this file interpolates
-  // editor-authored content into innerHTML; that is not safe for this data.
-  function escHtml(v) {
-    return String(v == null ? "" : v).replace(
-      /[&<>"']/g,
-      (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c],
-    );
+  // Costs are pennies, so the usual 2dp is all zeros. Four decimals for a
+  // single conversation, two once it is a monthly total.
+  //
+  // Every figure this renders is an ESTIMATE — our own token counts times
+  // published rates — so it is prefixed with a tilde. The authority is the
+  // Anthropic bill; record it in chat_actual_costs and compare through
+  // chat_cost_reconciliation.
+  function fmtUsd(v, dp) {
+    const n = Number(v || 0);
+    return "~$" + n.toFixed(dp == null ? 4 : dp);
   }
 
   async function loadChats() {
-    const { data, error } = await sb
-      .from("chat_conversations")
-      .select("*")
-      .order("last_at", { ascending: false })
-      .limit(500);
+    const [convos, months] = await Promise.all([
+      sb
+        .from("chat_conversations_with_cost")
+        .select("*")
+        .order("last_at", { ascending: false })
+        .limit(500),
+      sb.from("chat_costs_monthly").select("*").limit(12),
+    ]);
 
-    if (error) {
-      note($("appNote"), "Couldn't load chats: " + error.message, "error");
+    if (convos.error) {
+      note($("appNote"), "Couldn't load chats: " + convos.error.message, "error");
       return;
     }
-    state.chats = data || [];
+    state.chats = convos.data || [];
+
+    // Cost views live in add-chat-costs.sql, which is a separate migration.
+    // If it has not been run the conversations still list fine — the spend
+    // strip just stays empty rather than the whole tab failing.
+    state.chatMonths = months.error ? [] : months.data || [];
+    if (months.error) console.warn("[admin] cost views unavailable:", months.error.message);
+
     state.chatsLoaded = true;
+    renderChatSpend();
     renderChats();
+  }
+
+  function renderChatSpend() {
+    const el = $("chatSpend");
+    const months = state.chatMonths || [];
+    if (!months.length) {
+      el.innerHTML = "";
+      return;
+    }
+    const thisMonth = new Date().toISOString().slice(0, 7);
+    const cur = months.find((m) => String(m.month).slice(0, 7) === thisMonth);
+    const prev = months.find((m) => String(m.month).slice(0, 7) !== thisMonth);
+
+    el.innerHTML =
+      '<div class="chat-spend-now">' +
+      fmtUsd(cur ? cur.est_total_usd : 0, 2) +
+      "<span>estimated this month</span></div>" +
+      (prev
+        ? '<div class="chat-spend-prev">' +
+          fmtUsd(prev.est_total_usd, 2) +
+          " in " +
+          esc(String(prev.month).slice(0, 7)) +
+          "</div>"
+        : "") +
+      // Cache writes should be a rounding error against reads. When they
+      // are not, the prefix is being invalidated and the same prompt is
+      // being paid for at roughly ten times the rate.
+      (cur && Number(cur.est_cache_write_usd) > Number(cur.est_cache_read_usd)
+        ? '<div class="chat-spend-warn">Cache writes exceed reads — prefix is being invalidated</div>'
+        : "");
   }
 
   function visibleChats() {
@@ -687,22 +731,25 @@ function boot() {
       .map(
         (c) =>
           '<div class="adm-row chat" data-session="' +
-          escHtml(c.session_id) +
+          esc(c.session_id) +
           '">' +
           "<span>" +
           fmtDate(c.started_at) +
           "</span>" +
           '<span class="chat-q">' +
-          escHtml(c.first_question) +
+          esc(c.first_question) +
           "</span>" +
           "<span>" +
           c.turns +
+          "</span>" +
+          '<span class="chat-cost">' +
+          fmtUsd(c.est_cost_usd) +
           "</span>" +
           "<span>" +
           outcomeLabel(c) +
           "</span>" +
           '<span><button class="btn-sm" data-open="' +
-          escHtml(c.session_id) +
+          esc(c.session_id) +
           '">Open</button></span>' +
           "</div>",
       )
@@ -775,9 +822,9 @@ function boot() {
       .map(
         (r) =>
           '<div class="chat-lead-row"><span>' +
-          escHtml(r[0]) +
+          esc(r[0]) +
           "</span><span>" +
-          escHtml(r[1]) +
+          esc(r[1]) +
           "</span></div>",
       )
       .join("");
@@ -786,14 +833,14 @@ function boot() {
     if (c.pipedrive_lead_id && PIPEDRIVE_DOMAIN) {
       crm =
         '<a class="btn-sm" target="_blank" rel="noopener" href="https://' +
-        escHtml(PIPEDRIVE_DOMAIN) +
+        esc(PIPEDRIVE_DOMAIN) +
         ".pipedrive.com/leads/inbox/" +
         encodeURIComponent(c.pipedrive_lead_id) +
         '">Open in Pipedrive</a>';
     } else if (c.pipedrive_lead_id) {
       // No domain configured — show the id so it can still be pasted into
       // Pipedrive's search rather than pretending the link doesn't exist.
-      crm = '<span class="adm-note info">Pipedrive lead ' + escHtml(c.pipedrive_lead_id) + "</span>";
+      crm = '<span class="adm-note info">Pipedrive lead ' + esc(c.pipedrive_lead_id) + "</span>";
     } else {
       // Written to Supabase but never synced: this is the replay queue in
       // chat_leads, and it means someone should push it manually.
@@ -805,7 +852,7 @@ function boot() {
       "<h3>Lead captured</h3>" +
       rows +
       (c.lead_summary
-        ? '<p class="chat-lead-summary">' + escHtml(c.lead_summary) + "</p>"
+        ? '<p class="chat-lead-summary">' + esc(c.lead_summary) + "</p>"
         : "") +
       '<div class="chat-lead-crm">' +
       crm +
@@ -818,7 +865,10 @@ function boot() {
     const convo = state.chats.find((c) => c.session_id === sessionId);
     state.openChat = sessionId;
 
-    $("chatDrawerTitle").textContent = "Conversation · " + fmtDate(convo && convo.started_at);
+    $("chatDrawerTitle").textContent =
+      "Conversation · " +
+      fmtDate(convo && convo.started_at) +
+      (convo ? " · " + fmtUsd(convo.est_cost_usd) : "");
     $("chatDrawerNote").textContent = "";
     $("chatLeadCard").innerHTML = leadCard(convo);
     $("chatThread").innerHTML = '<p class="adm-note info">Loading…</p>';
@@ -834,7 +884,7 @@ function boot() {
 
     if (error) {
       $("chatThread").innerHTML =
-        '<p class="adm-note error">' + escHtml(error.message) + "</p>";
+        '<p class="adm-note error">' + esc(error.message) + "</p>";
       return;
     }
 
@@ -843,13 +893,13 @@ function boot() {
         (t) =>
           '<div class="chat-turn">' +
           '<div class="chat-msg user"><span class="who">Visitor</span>' +
-          escHtml(t.question) +
+          esc(t.question) +
           "</div>" +
           '<div class="chat-msg bot"><span class="who">Assistant</span>' +
-          escHtml(t.reply) +
+          esc(t.reply) +
           "</div>" +
           (t.tool_called
-            ? '<div class="chat-tool">called ' + escHtml(t.tool_called) + "</div>"
+            ? '<div class="chat-tool">called ' + esc(t.tool_called) + "</div>"
             : "") +
           "</div>",
       )
@@ -864,6 +914,69 @@ function boot() {
 
   $("closeChatDrawer").addEventListener("click", closeChat);
   $("chatScrim").addEventListener("click", closeChat);
+
+  // Pull the authoritative figure from Anthropic's Cost API into
+  // chat_actual_costs. The Admin API key never comes near this page — the
+  // sync-costs Edge Function holds it and checks this editor's session
+  // before using it.
+  $("chatSyncCosts").addEventListener("click", async () => {
+    const btn = $("chatSyncCosts");
+    btn.disabled = true;
+    btn.textContent = "Syncing…";
+
+    try {
+      const { data } = await sb.auth.getSession();
+      const token = data.session && data.session.access_token;
+      if (!token) throw new Error("Session expired — sign in again.");
+
+      const res = await fetch(SUPABASE_URL + "/functions/v1/sync-costs", {
+        method: "POST",
+        headers: { "content-type": "application/json", authorization: "Bearer " + token },
+        body: JSON.stringify({ months: 3 }),
+      });
+      const body = await res.json();
+
+      if (!res.ok) {
+        // The function distinguishes "not set up" from "misconfigured";
+        // pass its own wording through rather than flattening both to
+        // "sync failed", because the fixes are completely different.
+        note($("appNote"), body.detail || body.error || "Sync failed.", "error");
+        return;
+      }
+
+      note(
+        $("appNote"),
+        "Recorded " +
+          body.months_written +
+          " month(s)." +
+          (body.workspace_scoped
+            ? ""
+            : " Organization-wide totals — not scoped to the chat widget."),
+        body.workspace_scoped ? "success" : "info",
+      );
+      state.chatsLoaded = false;
+      await loadChats();
+    } catch (err) {
+      // fetch() rejects with a bare "Failed to fetch" for a missing
+      // function, a CORS refusal, and an offline browser alike. Say which
+      // is most likely, because the fixes are unrelated — and the usual
+      // cause is simply that sync-costs has never been deployed.
+      const msg = String((err && err.message) || err);
+      note(
+        $("appNote"),
+        /failed to fetch|networkerror|load failed/i.test(msg)
+          ? "Couldn't reach sync-costs. It is optional and probably not deployed " +
+              "(supabase functions deploy sync-costs). If it is deployed, add this " +
+              "page's origin to ALLOWED_ORIGIN — opening the admin from file:// " +
+              "sends a null origin that CORS will reject."
+          : msg,
+        "error",
+      );
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "Sync actual";
+    }
+  });
 
   $("chatDeleteBtn").addEventListener("click", async () => {
     if (!state.openChat) return;
