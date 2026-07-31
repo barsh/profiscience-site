@@ -39,6 +39,11 @@ const PAGES = [
   "pricing.html",
   "about.html",
   "support.html",
+  // The founder's book. Easy to overlook as marketing, but the chapter
+  // summaries are the only place on the site that discuss CPD, non-US
+  // regulators, and multi-jurisdictional compliance — the exact questions
+  // an Australian or UK firm arrives with.
+  "stay-clever.html",
   "clients.html",
   "case-study-foley-lardner.html",
   "case-study-haynes-boone.html",

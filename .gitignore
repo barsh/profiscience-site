@@ -3,3 +3,12 @@ node_modules/
 # Supabase CLI local state — machine-specific, and pooler-url can carry
 # credentials depending on how the project was linked.
 supabase/.temp/
+
+# Local secrets for `supabase functions serve --env-file`. These hold the
+# Anthropic key and the Supabase SERVICE-ROLE key, which bypasses RLS —
+# committing one would expose every table to anyone with the repo.
+.env
+.env.*
+!.env.example
+supabase/.env
+supabase/.env.*

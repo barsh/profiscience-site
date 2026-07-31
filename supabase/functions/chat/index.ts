@@ -24,6 +24,7 @@
 
 import Anthropic from "npm:@anthropic-ai/sdk@0.70.0";
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { KNOWLEDGE } from "./knowledge.ts";
 
 const MODEL = "claude-opus-4-8";
 
@@ -68,22 +69,33 @@ async function checkQuota(ip: string): Promise<{ allowed: boolean; reason: strin
   }
 }
 
+/**
+ * Behavioural rules only. Everything factual lives in knowledge.ts and is
+ * sent as a separate, cached system block ahead of this one.
+ *
+ * The split is deliberate and the order matters: reference material first,
+ * rules last. Instructions that FOLLOW the data they constrain are followed
+ * more reliably than instructions that precede it — and the whole risk of
+ * shipping a knowledge base is that it out-argues the guardrails.
+ */
 const SYSTEM_PROMPT = `You are the assistant on profiscience.com, the website of Profiscience — a learning and compliance software company serving law firms.
 
-## Products (the only three)
-- **UniversitySite** — the learning platform. Onboarding, skills development, leadership training, firm-wide content delivery.
-- **CLESite** — the compliance platform. MCLE tracking across 50 states, credit reporting, deadline management, bar-ready reports.
-- **ScormFly** — the content delivery layer. SCORM 1.2/2004, AICC, xAPI, cmi5 packaging, media hosting, multi-region playback.
-
-Notable capabilities: AI Knowledge Check (turns an uploaded course video into a draft assessment for an SME to review); AI Connector (route AI features through the customer's own vetted LLM — OpenAI, Anthropic, Azure OpenAI, AWS Bedrock, or a private gateway — with audit logging, usage caps, and PII redaction); CLE add-ons (50-state MCLE rules engine, attorney self-certification, category tagging for ethics/bias/wellness).
-
-Packages are UniversitySite (Core), UniversitySite + CLESite (Professional), and Custom Bundle. There is a 30-day proof-of-value with a solutions engineer rather than a self-serve free trial.
+The reference document above is what you know. It is authoritative, and it
+is also the boundary: where it is silent, you are too.
 
 ## What you must not do
 - **Never state a price.** Pricing is quoted per firm. Say a specialist will scope it.
-- **Never give legal or compliance advice**, and never assert what a specific state bar requires. You can say CLESite tracks 50-state MCLE rules; you cannot tell someone their CLE obligation.
-- **Never cite specific statistics, customer counts, or years-in-business figures.** If asked how big or how established Profiscience is, speak qualitatively ("we work with firms from roughly 200 to 5,000 attorneys") and offer to connect them with someone.
-- **Never invent** features, integrations, certifications, or customer names. If you don't know, say so and offer the contact route.
+- **Never give legal or compliance advice**, and never assert what a regulator requires of someone. You can say CLESite applies jurisdiction-specific rules; you cannot tell a visitor what their own CLE or CPD obligation is.
+- **Never deny a capability.** If the reference document doesn't describe something, you don't know whether Profiscience offers it — hand off. A false "we don't do that" sends a real prospect to a competitor and nobody at Profiscience ever finds out.
+- **Never cite specific statistics, customer counts, or years-in-business figures**, and never name a client firm — including the ones in the reference document's case-study material. Asked how big or established Profiscience is, answer qualitatively (firms from a few hundred to several thousand attorneys) and offer to connect them.
+- **Never invent** features, integrations, certifications, packages, or customer names. The reference document lists what is contested or unverified; on those, route to the team rather than picking an answer.
+- **Never promise a free trial, self-serve signup, or a named pricing tier.** None exist.
+
+If you catch yourself reaching for a plausible-sounding detail that isn't in
+the reference document, that is the moment to hand off to a human — see
+"Hand off, don't stonewall" above for how. A technical question you can't
+answer is a buying signal, not a dead end: route it warmly, name who will
+answer it, and offer the next step. Never answer with a bare "I don't know."
 
 ## How to route
 Work out which of three situations you're in, and don't ask for an email until you're in the first one.
@@ -95,7 +107,30 @@ Work out which of three situations you're in, and don't ask for an email until y
 3. **Just browsing or asking a general question.** Answer it. Point at the relevant page. Don't push for contact details; mention the contact page only if it's genuinely useful.
 
 ## Tone
-Direct and knowledgeable, the way a competent solutions engineer talks. These are legal-industry professionals — no exclamation marks, no hard-sell, no "Great question!". Keep replies to a few sentences; this is a chat widget, not a document. If someone asks something you can't answer, say that plainly and route them.`;
+Direct and knowledgeable, the way a competent solutions engineer talks. These are legal-industry professionals — no exclamation marks, no hard-sell, no "Great question!". Keep replies to a few sentences; this is a chat widget, not a document. When a question is beyond you, hand it off warmly rather than declining flatly.`;
+
+/**
+ * The cached prefix. Prompt caching is a prefix match over the rendered
+ * request — tools, then system, then messages — so the breakpoint on the
+ * LAST system block covers the tool definitions and both system blocks in
+ * one entry.
+ *
+ * Nothing here varies per request or per visitor: no timestamps, no session
+ * IDs, no interpolation. That is what makes a single cache entry shared by
+ * every visitor to the site rather than one entry per conversation. Keep it
+ * that way — splicing anything dynamic in front of the breakpoint would give
+ * each visitor their own entry and turn every cache read into a write.
+ *
+ * The 1-hour TTL costs 2x on a write instead of 1.25x, which is the right
+ * trade here precisely because the entry is shared: writes are paid a few
+ * times a day across all traffic, not once per visitor. The window also
+ * slides — each read refreshes it — so steady traffic keeps it warm and the
+ * only writes are after genuine gaps or a deploy of this file.
+ */
+const SYSTEM: Anthropic.MessageCreateParams["system"] = [
+  { type: "text", text: KNOWLEDGE },
+  { type: "text", text: SYSTEM_PROMPT, cache_control: { type: "ephemeral", ttl: "1h" } },
+];
 
 const tools: Anthropic.Tool[] = [
   {
@@ -157,7 +192,7 @@ const tools: Anthropic.Tool[] = [
  * and can be replayed. Losing a qualified lead to a third-party 500 is
  * the one failure mode worth engineering against here.
  */
-async function captureLead(input: Record<string, unknown>) {
+async function captureLead(input: Record<string, unknown>, sessionId: string) {
   const row = {
     name: String(input.name ?? ""),
     work_email: String(input.work_email ?? ""),
@@ -166,16 +201,23 @@ async function captureLead(input: Record<string, unknown>) {
     interest: String(input.interest ?? "other"),
     summary: String(input.summary ?? ""),
     source: "site_chat",
+    // Ties the lead to the conversation that produced it, so the admin can
+    // show the actual exchange next to the agent's summary of it.
+    session_id: sessionId,
     pipedrive_synced: false,
   };
 
   const { data, error } = await supabase.from("chat_leads").insert(row).select("id").single();
   if (error) console.error("[chat] supabase insert failed:", error.message);
 
-  const synced = await pushToPipedrive(row);
-  if (synced && data?.id) {
-    await supabase.from("chat_leads").update({ pipedrive_synced: true }).eq("id", data.id);
+  const pipedriveLeadId = await pushToPipedrive(row);
+  if (pipedriveLeadId && data?.id) {
+    await supabase
+      .from("chat_leads")
+      .update({ pipedrive_synced: true, pipedrive_lead_id: pipedriveLeadId })
+      .eq("id", data.id);
   }
+  const synced = Boolean(pipedriveLeadId);
 
   // The model only needs to know whether to promise a follow-up. It must
   // not learn about our storage internals, so the result stays coarse.
@@ -189,11 +231,13 @@ async function captureLead(input: Record<string, unknown>) {
  * Written against the v1 API. Verify against current Pipedrive docs before
  * relying on it — this is the part most likely to drift.
  */
-async function pushToPipedrive(row: Record<string, string | boolean>): Promise<boolean> {
+async function pushToPipedrive(
+  row: Record<string, string | boolean>,
+): Promise<string | null> {
   const token = Deno.env.get("PIPEDRIVE_API_TOKEN");
   if (!token) {
     console.warn("[chat] PIPEDRIVE_API_TOKEN unset — lead stored in Supabase only.");
-    return false;
+    return null;
   }
   const base = "https://api.pipedrive.com/v1";
   try {
@@ -208,7 +252,7 @@ async function pushToPipedrive(row: Record<string, string | boolean>): Promise<b
     const person = await personRes.json();
     if (!personRes.ok || !person?.data?.id) {
       console.error("[chat] pipedrive person failed:", personRes.status, JSON.stringify(person));
-      return false;
+      return null;
     }
 
     const title = row.firm_name
@@ -223,7 +267,7 @@ async function pushToPipedrive(row: Record<string, string | boolean>): Promise<b
     const lead = await leadRes.json();
     if (!leadRes.ok || !lead?.data?.id) {
       console.error("[chat] pipedrive lead failed:", leadRes.status, JSON.stringify(lead));
-      return false;
+      return null;
     }
 
     // Context goes on a note so the sales team sees why this person came in.
@@ -237,10 +281,55 @@ async function pushToPipedrive(row: Record<string, string | boolean>): Promise<b
           `Size: ${row.firm_size || "not given"}<br>Interest: ${row.interest}<br><br>${row.summary}`,
       }),
     });
-    return true;
+    // The lead id, not just success: the admin uses it to deep-link into
+    // the CRM record instead of making someone search Pipedrive by email.
+    return String(lead.data.id);
   } catch (err) {
     console.error("[chat] pipedrive threw:", err);
-    return false;
+    return null;
+  }
+}
+
+/**
+ * Record one exchange for review. See supabase/add-chat-transcripts.sql for
+ * the schema, the review views, and the retention caveat — this table holds
+ * whatever visitors type, which on a law-firm site includes names, work
+ * emails, and firm names.
+ *
+ * The agent's worst failures are silent: it invents a limitation, the
+ * prospect leaves, and nothing is logged as an error. This is the only way
+ * those surface without someone testing the exact question by hand.
+ *
+ * Never throws. A logging failure must not cost the visitor their answer —
+ * losing a row of review data is a nuisance, losing the reply is the actual
+ * product breaking.
+ */
+async function logTranscript(row: {
+  session_id: string;
+  turn: number;
+  question: string;
+  reply: string;
+  tool_called: string | null;
+  stop_reason: string | null;
+  usage: Anthropic.Usage;
+}) {
+  try {
+    const { error } = await supabase.from("chat_transcripts").insert({
+      session_id: row.session_id,
+      turn: row.turn,
+      question: row.question,
+      reply: row.reply,
+      tool_called: row.tool_called,
+      stop_reason: row.stop_reason,
+      model: MODEL,
+      input_tokens: row.usage.input_tokens ?? null,
+      output_tokens: row.usage.output_tokens ?? null,
+      cache_read_tokens: row.usage.cache_read_input_tokens ?? null,
+      cache_write_tokens: row.usage.cache_creation_input_tokens ?? null,
+    });
+    if (error) console.error("[chat] transcript insert failed:", error.message);
+  } catch (err) {
+    console.error("[chat] transcript insert threw:", err);
   }
 }
 
@@ -303,7 +392,10 @@ Deno.serve(async (req) => {
     });
   }
 
-  let body: { messages?: Array<{ role: string; content: string }> };
+  let body: {
+    messages?: Array<{ role: string; content: string }>;
+    session_id?: unknown;
+  };
   try {
     body = await req.json();
   } catch {
@@ -330,6 +422,18 @@ Deno.serve(async (req) => {
       content: m.content.slice(0, MAX_MESSAGE_CHARS),
     }));
 
+  // Client-supplied and therefore untrusted: bound it and don't let it into
+  // the database unchecked. It groups turns of one conversation for review;
+  // it is not an identity and is not tied to a person or an IP.
+  const sessionId =
+    typeof body.session_id === "string" && body.session_id.trim()
+      ? body.session_id.trim().slice(0, 64)
+      : "unknown";
+
+  // Turn number for the review views. Counts user messages in the history
+  // the client replayed, so it survives the server being stateless.
+  const turn = messages.filter((m) => m.role === "user").length;
+
   if (messages.length === 0 || messages[messages.length - 1].role !== "user") {
     return new Response(JSON.stringify({ error: "expected_user_message" }), {
       status: 400,
@@ -339,17 +443,34 @@ Deno.serve(async (req) => {
 
   const client = new Anthropic({ apiKey: Deno.env.get("ANTHROPIC_API_KEY") });
 
+  // Hoisted so the initial call and every tool-loop continuation send a
+  // byte-identical prefix. If these drifted apart, each would write its own
+  // cache entry and neither would ever read the other's.
+  const request = {
+    model: MODEL,
+    max_tokens: 1024,
+    system: SYSTEM,
+    // SDK 0.70.0 predates adaptive thinking: its ThinkingConfigParam union
+    // is still "enabled" | "disabled". The wire value here is the correct
+    // one — adaptive is what Opus 4.8 expects, and it is what this function
+    // has been sending in production — so assert past the stale type rather
+    // than downgrade the request to match an old type definition.
+    // Remove the assertion once the pinned SDK version is raised.
+    thinking: { type: "adaptive" } as unknown as NonNullable<
+      Anthropic.MessageCreateParams["thinking"]
+    >,
+    output_config: { effort: EFFORT },
+    tools,
+  };
+
+  // The visitor's message, captured before the tool loop appends to
+  // `messages`, so the logged question is what they actually asked.
+  const question = String(messages[messages.length - 1].content);
+  let toolCalled: string | null = null;
+
   try {
     let rounds = 0;
-    let response = await client.messages.create({
-      model: MODEL,
-      max_tokens: 1024,
-      system: SYSTEM_PROMPT,
-      thinking: { type: "adaptive" },
-      output_config: { effort: EFFORT },
-      tools,
-      messages,
-    });
+    let response = await client.messages.create({ ...request, messages });
 
     // Manual tool loop rather than the SDK tool runner: this path creates
     // CRM records from untrusted input, so the execution point stays
@@ -361,9 +482,10 @@ Deno.serve(async (req) => {
       const results: Anthropic.ToolResultBlockParam[] = [];
       for (const block of response.content) {
         if (block.type !== "tool_use") continue;
+        toolCalled = block.name;
         const out =
           block.name === "capture_lead"
-            ? await captureLead(block.input as Record<string, unknown>)
+            ? await captureLead(block.input as Record<string, unknown>, sessionId)
             : block.name === "route_to_support"
             ? routeToSupport()
             : `Unknown tool: ${block.name}`;
@@ -371,39 +493,44 @@ Deno.serve(async (req) => {
       }
 
       messages.push({ role: "user", content: results });
-      response = await client.messages.create({
-        model: MODEL,
-        max_tokens: 1024,
-        system: SYSTEM_PROMPT,
-        thinking: { type: "adaptive" },
-        output_config: { effort: EFFORT },
-        tools,
-        messages,
-      });
+      response = await client.messages.create({ ...request, messages });
     }
 
-    if (response.stop_reason === "refusal") {
-      return new Response(
-        JSON.stringify({
-          reply:
-            "I can't help with that one. For anything else about UniversitySite, CLESite, or ScormFly, ask away.",
-        }),
-        { headers: { ...cors, "content-type": "application/json" } },
-      );
-    }
+    // Cache health at a glance while developing. The durable version of
+    // this lives in the chat_cache_health view; this line is what you watch
+    // during `supabase functions serve`. Steady reads are the expected
+    // state — persistent zeroes mean the prefix is being invalidated and
+    // every visitor is paying full price for the knowledge base.
+    const { cache_read_input_tokens: read, cache_creation_input_tokens: written } =
+      response.usage;
+    console.log(`[chat] cache read=${read ?? 0} write=${written ?? 0}`);
 
-    const reply = response.content
-      .filter((b): b is Anthropic.TextBlock => b.type === "text")
-      .map((b) => b.text)
-      .join("\n")
-      .trim();
+    const reply =
+      response.stop_reason === "refusal"
+        ? "I can't help with that one. For anything else about UniversitySite, CLESite, or ScormFly, ask away."
+        : response.content
+          .filter((b): b is Anthropic.TextBlock => b.type === "text")
+          .map((b) => b.text)
+          .join("\n")
+          .trim() || "Sorry — I didn't catch that. Could you rephrase?";
 
-    return new Response(
-      JSON.stringify({
-        reply: reply || "Sorry — I didn't catch that. Could you rephrase?",
-      }),
-      { headers: { ...cors, "content-type": "application/json" } },
-    );
+    // Awaited rather than fired-and-forgotten: the Edge Function's runtime
+    // can be torn down as soon as the response is returned, which would
+    // drop an un-awaited insert. It's one row, and logTranscript can't
+    // throw, so the cost is a few milliseconds and the risk is nil.
+    await logTranscript({
+      session_id: sessionId,
+      turn,
+      question,
+      reply,
+      tool_called: toolCalled,
+      stop_reason: response.stop_reason ?? null,
+      usage: response.usage,
+    });
+
+    return new Response(JSON.stringify({ reply }), {
+      headers: { ...cors, "content-type": "application/json" },
+    });
   } catch (err) {
     console.error("[chat] anthropic call failed:", err);
     return new Response(

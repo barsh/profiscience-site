@@ -21,7 +21,19 @@ create table if not exists public.chat_leads (
   created_at       timestamptz not null default now()
 );
 
+-- Added after the transcript log shipped: ties a lead back to the
+-- conversation that produced it, so the admin can show the exchange that
+-- earned it rather than just the agent's summary. Nullable, because leads
+-- captured before transcripts existed have no conversation to point at.
+alter table public.chat_leads add column if not exists session_id text;
+
+-- Pipedrive's lead id, captured at push time so the admin can deep-link
+-- straight into the CRM record. Null when the push failed (see the
+-- pipedrive_synced replay queue below) or predates this column.
+alter table public.chat_leads add column if not exists pipedrive_lead_id text;
+
 create index if not exists chat_leads_created_idx on public.chat_leads (created_at desc);
+create index if not exists chat_leads_session_idx on public.chat_leads (session_id);
 
 -- Partial index: the only query that matters operationally is "what still
 -- needs replaying into Pipedrive", and that set should normally be empty.

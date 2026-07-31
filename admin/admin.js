@@ -10,7 +10,12 @@
    ========================================================= */
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { SUPABASE_URL, SUPABASE_ANON_KEY, isConfigured } from "../js/supabase-config.js";
+import {
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY,
+  PIPEDRIVE_DOMAIN,
+  isConfigured,
+} from "../js/supabase-config.js";
 
 const $ = (id) => document.getElementById(id);
 
@@ -36,6 +41,10 @@ function boot() {
     imageUrl: null,
     subscribers: [],
     subsLoaded: false,
+    chats: [],              // rows from the chat_conversations view
+    chatsLoaded: false,
+    chatSearchIds: null,    // Set of session_ids matching the search, or null for "no search"
+    openChat: null,         // session_id currently shown in the drawer
   };
 
   // ---------- helpers ----------
@@ -469,10 +478,11 @@ function boot() {
       document.querySelectorAll(".adm-tab").forEach((t) => t.classList.remove("active"));
       tab.classList.add("active");
       const panelId = tab.getAttribute("data-panel");
-      ["resourcesPanel", "subscribersPanel"].forEach((id) => {
+      ["resourcesPanel", "subscribersPanel", "chatsPanel"].forEach((id) => {
         $(id).classList.toggle("is-hidden", id !== panelId);
       });
       if (panelId === "subscribersPanel" && !state.subsLoaded) loadSubscribers();
+      if (panelId === "chatsPanel" && !state.chatsLoaded) loadChats();
     });
   });
 
@@ -587,6 +597,295 @@ function boot() {
     a.download = "profiscience-subscribers.csv";
     a.click();
     URL.revokeObjectURL(url);
+  });
+
+  // ---------- chats ----------
+  //
+  // Conversations with the site assistant. Two jobs: read the exchanges the
+  // agent couldn't answer (those are gaps to fill in knowledge.ts) and get
+  // from a captured lead to its Pipedrive record without searching by email.
+
+  // PIPEDRIVE_DOMAIN comes from js/supabase-config.js — see the comment
+  // there for where to find it. Blank is a supported state, not a broken
+  // one: the lead id renders as text instead of a link.
+
+  // Transcripts are visitor-typed text echoed back by a model, so every
+  // value here is untrusted. The rest of this file interpolates
+  // editor-authored content into innerHTML; that is not safe for this data.
+  function escHtml(v) {
+    return String(v == null ? "" : v).replace(
+      /[&<>"']/g,
+      (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c],
+    );
+  }
+
+  async function loadChats() {
+    const { data, error } = await sb
+      .from("chat_conversations")
+      .select("*")
+      .order("last_at", { ascending: false })
+      .limit(500);
+
+    if (error) {
+      note($("appNote"), "Couldn't load chats: " + error.message, "error");
+      return;
+    }
+    state.chats = data || [];
+    state.chatsLoaded = true;
+    renderChats();
+  }
+
+  function visibleChats() {
+    const period = $("chatPeriod").value;
+    const lead = $("chatFilterLead").value;
+    const matched = state.chatSearchIds; // null = no active search
+
+    let cutoff = null;
+    if (period !== "__all") {
+      cutoff = Date.now() - Number(period) * 86400000;
+    }
+
+    return state.chats.filter((c) => {
+      if (cutoff && new Date(c.last_at).getTime() < cutoff) return false;
+      if (lead === "lead" && !c.captured_lead) return false;
+      if (lead === "nolead" && c.captured_lead) return false;
+      if (lead === "support" && !c.routed_support) return false;
+      if (matched && !matched.has(c.session_id)) return false;
+      return true;
+    });
+  }
+
+  function outcomeLabel(c) {
+    if (c.captured_lead) {
+      return '<span class="chat-pill lead">Lead</span>';
+    }
+    if (c.routed_support) return '<span class="chat-pill support">Support</span>';
+    return '<span class="chat-pill">—</span>';
+  }
+
+  function renderChats() {
+    const items = visibleChats();
+    const total = state.chats.length;
+    const leads = state.chats.filter((c) => c.captured_lead).length;
+    $("chatCount").textContent =
+      total === 0
+        ? "No conversations yet."
+        : total + " conversations · " + leads + " produced a lead";
+
+    const rows = $("chatRows");
+    if (!items.length) {
+      rows.innerHTML = "";
+      show($("chatEmpty"));
+      $("chatEmpty").textContent = total
+        ? "Nothing matches those filters."
+        : "No conversations yet.";
+      return;
+    }
+    hide($("chatEmpty"));
+
+    rows.innerHTML = items
+      .map(
+        (c) =>
+          '<div class="adm-row chat" data-session="' +
+          escHtml(c.session_id) +
+          '">' +
+          "<span>" +
+          fmtDate(c.started_at) +
+          "</span>" +
+          '<span class="chat-q">' +
+          escHtml(c.first_question) +
+          "</span>" +
+          "<span>" +
+          c.turns +
+          "</span>" +
+          "<span>" +
+          outcomeLabel(c) +
+          "</span>" +
+          '<span><button class="btn-sm" data-open="' +
+          escHtml(c.session_id) +
+          '">Open</button></span>' +
+          "</div>",
+      )
+      .join("");
+
+    rows.querySelectorAll("[data-open]").forEach((btn) => {
+      btn.addEventListener("click", () => openChat(btn.getAttribute("data-open")));
+    });
+  }
+
+  // Search runs server-side across every turn, not just the opening question
+  // held in the conversation index — someone looking for "Australia" wants
+  // the chat where it came up on turn four as much as turn one.
+  let searchTimer = null;
+  async function runChatSearch() {
+    const q = $("chatSearch").value.trim();
+    if (q.length < 2) {
+      state.chatSearchIds = null;
+      renderChats();
+      return;
+    }
+    const like = "%" + q.replace(/[%_]/g, "\\$&") + "%";
+    const { data, error } = await sb
+      .from("chat_transcripts")
+      .select("session_id")
+      .or("question.ilike." + like + ",reply.ilike." + like)
+      .limit(2000);
+
+    if (error) {
+      note($("appNote"), "Search failed: " + error.message, "error");
+      return;
+    }
+    const ids = new Set((data || []).map((r) => r.session_id));
+
+    // Lead fields live on the conversation index rather than the turns, so
+    // match them here too — otherwise searching someone's firm name finds
+    // nothing even though their lead is right there.
+    const ql = q.toLowerCase();
+    state.chats.forEach((c) => {
+      const hay = [c.lead_name, c.lead_email, c.lead_firm, c.lead_summary]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+      if (hay.includes(ql)) ids.add(c.session_id);
+    });
+
+    state.chatSearchIds = ids;
+    renderChats();
+  }
+
+  $("chatSearch").addEventListener("input", () => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(runChatSearch, 250);
+  });
+  ["chatPeriod", "chatFilterLead"].forEach((id) => {
+    $(id).addEventListener("change", renderChats);
+  });
+
+  function leadCard(c) {
+    if (!c || !c.captured_lead) return "";
+
+    const rows = [
+      ["Name", c.lead_name],
+      ["Email", c.lead_email],
+      ["Firm", c.lead_firm],
+      ["Size", c.lead_firm_size],
+      ["Interest", c.lead_interest],
+    ]
+      .filter((r) => r[1])
+      .map(
+        (r) =>
+          '<div class="chat-lead-row"><span>' +
+          escHtml(r[0]) +
+          "</span><span>" +
+          escHtml(r[1]) +
+          "</span></div>",
+      )
+      .join("");
+
+    let crm = "";
+    if (c.pipedrive_lead_id && PIPEDRIVE_DOMAIN) {
+      crm =
+        '<a class="btn-sm" target="_blank" rel="noopener" href="https://' +
+        escHtml(PIPEDRIVE_DOMAIN) +
+        ".pipedrive.com/leads/inbox/" +
+        encodeURIComponent(c.pipedrive_lead_id) +
+        '">Open in Pipedrive</a>';
+    } else if (c.pipedrive_lead_id) {
+      // No domain configured — show the id so it can still be pasted into
+      // Pipedrive's search rather than pretending the link doesn't exist.
+      crm = '<span class="adm-note info">Pipedrive lead ' + escHtml(c.pipedrive_lead_id) + "</span>";
+    } else {
+      // Written to Supabase but never synced: this is the replay queue in
+      // chat_leads, and it means someone should push it manually.
+      crm = '<span class="adm-note error">Not synced to Pipedrive</span>';
+    }
+
+    return (
+      '<div class="chat-lead">' +
+      "<h3>Lead captured</h3>" +
+      rows +
+      (c.lead_summary
+        ? '<p class="chat-lead-summary">' + escHtml(c.lead_summary) + "</p>"
+        : "") +
+      '<div class="chat-lead-crm">' +
+      crm +
+      "</div>" +
+      "</div>"
+    );
+  }
+
+  async function openChat(sessionId) {
+    const convo = state.chats.find((c) => c.session_id === sessionId);
+    state.openChat = sessionId;
+
+    $("chatDrawerTitle").textContent = "Conversation · " + fmtDate(convo && convo.started_at);
+    $("chatDrawerNote").textContent = "";
+    $("chatLeadCard").innerHTML = leadCard(convo);
+    $("chatThread").innerHTML = '<p class="adm-note info">Loading…</p>';
+    show($("chatScrim"));
+    show($("chatDrawer"));
+
+    const { data, error } = await sb
+      .from("chat_transcripts")
+      .select("turn,created_at,question,reply,tool_called")
+      .eq("session_id", sessionId)
+      .order("turn", { ascending: true })
+      .order("created_at", { ascending: true });
+
+    if (error) {
+      $("chatThread").innerHTML =
+        '<p class="adm-note error">' + escHtml(error.message) + "</p>";
+      return;
+    }
+
+    $("chatThread").innerHTML = (data || [])
+      .map(
+        (t) =>
+          '<div class="chat-turn">' +
+          '<div class="chat-msg user"><span class="who">Visitor</span>' +
+          escHtml(t.question) +
+          "</div>" +
+          '<div class="chat-msg bot"><span class="who">Assistant</span>' +
+          escHtml(t.reply) +
+          "</div>" +
+          (t.tool_called
+            ? '<div class="chat-tool">called ' + escHtml(t.tool_called) + "</div>"
+            : "") +
+          "</div>",
+      )
+      .join("");
+  }
+
+  function closeChat() {
+    hide($("chatScrim"));
+    hide($("chatDrawer"));
+    state.openChat = null;
+  }
+
+  $("closeChatDrawer").addEventListener("click", closeChat);
+  $("chatScrim").addEventListener("click", closeChat);
+
+  $("chatDeleteBtn").addEventListener("click", async () => {
+    if (!state.openChat) return;
+    const convo = state.chats.find((c) => c.session_id === state.openChat);
+    const warn = convo && convo.captured_lead
+      ? "Delete this conversation AND its captured lead? The Pipedrive record is not affected."
+      : "Delete this conversation? This cannot be undone.";
+    if (!confirm(warn)) return;
+
+    // One RPC rather than two deletes, so a removed test conversation can't
+    // leave its lead row orphaned. The is_editor() check lives in Postgres.
+    const { error } = await sb.rpc("chat_delete_conversation", {
+      p_session_id: state.openChat,
+    });
+    if (error) {
+      note($("chatDrawerNote"), error.message, "error");
+      return;
+    }
+    state.chats = state.chats.filter((c) => c.session_id !== state.openChat);
+    closeChat();
+    renderChats();
+    note($("appNote"), "Conversation deleted.", "info");
   });
 
   // ---------- go ----------

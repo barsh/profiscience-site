@@ -68,6 +68,7 @@
     <div class="adm-tabs">
       <button class="adm-tab active" id="tabResources" data-panel="resourcesPanel">Resources</button>
       <button class="adm-tab" id="tabSubscribers" data-panel="subscribersPanel">Subscribers</button>
+      <button class="adm-tab" id="tabChats" data-panel="chatsPanel">Chats</button>
     </div>
 
     <div id="appNote" class="adm-note is-hidden"></div>
@@ -145,8 +146,68 @@
 
       <div class="adm-empty is-hidden" id="subEmpty">No subscribers yet.</div>
     </section>
+
+    <!-- ===== Chats panel ===== -->
+    <section id="chatsPanel" class="is-hidden">
+      <div class="adm-head">
+        <div>
+          <h1>Chats</h1>
+          <p id="chatCount">Conversations with the site assistant.</p>
+        </div>
+      </div>
+
+      <div class="adm-toolbar">
+        <input class="adm-search" id="chatSearch" type="text"
+               placeholder="Search questions, replies, name, email, firm…" />
+        <select class="btn-sm" id="chatPeriod" style="padding:8px 12px">
+          <option value="7">Last 7 days</option>
+          <option value="30" selected>Last 30 days</option>
+          <option value="90">Last 90 days</option>
+          <option value="__all">All time</option>
+        </select>
+        <select class="btn-sm" id="chatFilterLead" style="padding:8px 12px">
+          <option value="__all">All conversations</option>
+          <option value="lead">Produced a lead</option>
+          <option value="nolead">No lead</option>
+          <option value="support">Routed to support</option>
+        </select>
+      </div>
+
+      <div class="adm-list" id="chatList">
+        <div class="adm-row chat head">
+          <span>Started</span>
+          <span>Opening question</span>
+          <span>Turns</span>
+          <span>Outcome</span>
+          <span></span>
+        </div>
+        <div id="chatRows"></div>
+      </div>
+
+      <div class="adm-empty is-hidden" id="chatEmpty">No conversations yet.</div>
+    </section>
   </main>
 </div>
+
+<!-- ============ CONVERSATION DRAWER ============ -->
+<div id="chatScrim" class="adm-scrim is-hidden"></div>
+<aside id="chatDrawer" class="adm-drawer is-hidden" aria-label="Conversation">
+  <div class="adm-drawer-head">
+    <h2 id="chatDrawerTitle">Conversation</h2>
+    <button class="btn-sm" id="closeChatDrawer">Close</button>
+  </div>
+
+  <div class="adm-drawer-body">
+    <div id="chatLeadCard"></div>
+    <div id="chatThread" class="chat-thread"></div>
+  </div>
+
+  <div class="adm-drawer-foot">
+    <button class="btn-sm danger" id="chatDeleteBtn">Delete conversation</button>
+    <div class="spacer"></div>
+    <span id="chatDrawerNote" class="adm-note"></span>
+  </div>
+</aside>
 
 <!-- ============ EDITOR DRAWER ============ -->
 <div id="scrim" class="adm-scrim is-hidden"></div>

@@ -151,16 +151,16 @@ KG
 Kurt Geisler
 CTO
 Haynes Boone
-"UniversitySite and CLESite have helped a small team support a much larger organization. From automated reminders and learning plans to CLE dashboards and reporting, the system gives us the structure we need to scale training and compliance work without adding unnecessary manual effort."
-DK
-Daniel Kent
-Training Manager
-Foley Hoag
-"What stands out about Profiscience is how closely their team works with us. They are responsive, practical, and willing to adapt the platform to support the way our firm manages learning rather than expecting us to fit into a standard approach."
-PP
-Pamela Presley
-Technology Training Manager
-Akin
+"Our firm moved from separate CE Manager and LegalMind LMS systems to Profiscience, creating a more connected environment for learning and CLE administration. Bringing these functions together has made it easier to coordinate training, compliance tracking, reporting, content, and the integrations our firm depends on."
+CT
+Chief Training Officer
+New York
+"After evaluating where we were headed with viLMS CLE and Workday Learning, we chose to consolidate on Profiscience's platform for managing our CLE administration and learning. Profiscience understands the specialized learning and compliance workflows a law firm needs to manage."
+SM
+Senior Manager
+950 users
+   >>> DO NOT STATE — headcount: 950 users
+Los Angeles
 Read client perspectives
 Security & Trust
 ## Enterprise-grade security, designed for sensitive law-firm environments.
@@ -259,6 +259,23 @@ Designed for accredited CLE providers that want to publish recorded programs, aw
 Broader client education
 #### ClientSite
 Designed for client education and external learning that is not centered on CLE accreditation, credit calculation, or certificate administration.
+### Integrations
+Connect UniversitySite with the systems your firm already uses.
+#### Identity and user data
+Connect UniversitySite with the systems your firm uses to authenticate users and maintain employee information.
+- SAML single sign-on
+- HRIS-driven user provisioning
+#### Virtual learning
+Support instructor-led and virtual-learning workflows using the meeting platforms already familiar to your firm.
+- Microsoft Teams
+- Webex
+- Zoom
+#### External learning content
+Bring selected external learning content into the firm's broader learning environment.
+- LinkedIn Learning
+- CeriFi LegalEdge
+- NBI and IPE
+- PLI
 ### Extensions
 Add focused capabilities where they solve a defined need.
 #### Learning content and participation
@@ -285,23 +302,6 @@ Make approved learning content and metadata available for use in supported firm 
 -
 Mobile App
 Give learners an additional way to discover programs and access supported learning from mobile devices.
-### Integrations
-Connect UniversitySite with the systems your firm already uses.
-#### Identity and user data
-Connect UniversitySite with the systems your firm uses to authenticate users and maintain employee information.
-- SAML single sign-on
-- HRIS-driven user provisioning
-#### Virtual learning
-Support instructor-led and virtual-learning workflows using the meeting platforms already familiar to your firm.
-- Microsoft Teams
-- Webex
-- Zoom
-#### External learning content
-Bring selected external learning content into the firm's broader learning environment.
-- LinkedIn Learning
-- CeriFi LegalEdge
-- NBI and IPE
-- PLI
 Choosing What Fits
 ## Your firm does not need every option.
 Start with the problems your firm needs to solve now. Add other capabilities when they become useful—without replacing the platform or starting over.
@@ -869,29 +869,263 @@ Email support
 Contact form
 
 ======================================================================
+stay-clever.html
+======================================================================
+
+The Book
+# Stay CLEver! Freeing lawyers to focus on clients, not compliance.
+A practical playbook for Professional Development and CLE leaders at AmLaw-scale firms — filled with hard-won advice you won't find anywhere else. From the team that built UniversitySite and CLESite.
+Buy print edition
+Buy Kindle edition
+Get a free copy
+By Michael Barshinger, CEO of Profiscience
+What's inside
+## CLE shouldn't be a fire drill.
+For most firms, continuing legal education is a recurring scramble — chasing deadlines across
+jurisdictions, reconciling spreadsheets, and hoping nothing slips before a bar audit. It quietly
+drains billable hours and creates real risk.
+Stay CLEver! lays out how leading Professional Development and CLE teams flip that script —
+turning compliance from a liability into a forecastable, transparent advantage your firm can actually
+build on.
+- ✓Turn CLE from a burden into a competitive advantage
+- ✓Forecast compliance instead of firefighting deadlines
+- ✓Close the visibility gap for attorneys and leadership
+- ✓Automate the admin and stop the billable-hour leak
+- ✓Prove compliance to regulators and firm leadership with confidence
+Chapter by chapter
+## Explore the chapters.
+Fifteen focused chapters — tap any chapter to read its five-minute summary. From the hidden cost of getting CLE wrong to launching your firm's compliance advantage.
+In
+Introduction
+### The High Cost of Getting CLE Wrong
+&#9662;
+A five-minute read that could save your firm hundreds of hours
+Every firm has a CLE story that starts with good intentions and ends with unnecessary chaos—lost hours, lost revenue, and anxious partners. The truth? CLE (or CPD, as it’s known in many regions) isn’t red tape. It’s strategic infrastructure.
+When managed well, CLE protects revenue, reputation, and morale—freeing lawyers to focus on client work instead of compliance firefighting. When managed poorly, it quietly drains thousands of billable hours every year.
+Whether you’re a Director of Professional Development, HR leader, or CLE specialist, this resource helps you start the conversation about turning compliance from a burden into a strategic advantage.
+1
+Chapter 1
+### The Hidden Risks
+&#9662;
+A five-minute read that could prevent your next compliance crisis
+Even the most seasoned lawyer can stumble on jurisdictional fine print. One partner expanded into New York, logged every required CLE hour, and still found himself out of compliance—because “newly admitted” attorneys must complete specific live programs. He caught the issue just in time. Many don’t.
+The lesson: CLE and CPD rules are complex, unforgiving, and constantly changing. A single technicality can cascade into firm-wide fallout—lost billable hours, client reassignments, and reputational damage that costs far more than any fine.
+Whether you oversee CLE, CPD, or professional development, this summary helps you explain why compliance isn’t just administrative—it’s operational risk management.
+2
+Chapter 2
+### The Jurisdictional Maze
+&#9662;
+A five-minute read that could save hours, reduce risk, and boost leadership visibility
+Multi-jurisdictional CLE and CPD isn’t a checklist—it’s a moving target managed by 70+ regulators across the U.S., Canada, the U.K., and Australia. Manual tracking can’t keep pace with shifting categories, deadlines, and carryover rules.
+This TL;DR distills the chapter’s core lesson: complexity is constant; automation and visibility are the only scalable responses. Use it to brief partners, align PD and HR, and make the case for systems over spreadsheets.
+Whether you manage CLE/CPD centrally or coordinate it with attorneys, this summary helps you brief stakeholders, prioritize fixes, and choose the right tooling—it’s practical, concise, and designed for quick adoption.
+3
+Chapter 3
+### The Billable-Hour Leak
+&#9662;
+A five-minute read that could reclaim hidden billable hours
+Every hour an attorney spends hunting certificates, reconciling credits, or emailing for CLE confirmations is an hour not billed. This short summary shows how fragmented compliance workflows quietly drain profitability—and how a few targeted fixes can stop the leak.
+Use it to frame a quick discussion with Professional Development and HR about dashboards, automation, and integrations that save time, reduce risk, and improve leadership visibility.
+Whether you lead Professional Development, partner with HR, or manage CLE day to day, this summary helps you quantify the leak, align stakeholders, and prioritize fixes—fast, practical, and ready to share.
+4
+Chapter 4
+### The Visibility Gap
+&#9662;
+A five-minute read that could turn “we think so” into “we can prove it”
+When leadership asks: “Are we compliant today?” Too often, the answer is a hesitant silence. Compliance data often lives scattered across strewn systems. This short summary shows how to close that gap.
+You’ll learn why visibility—not effort—is the limiting factor, and how a connected compliance hub plus role-based dashboards can replace manual reporting with real-time confidence.
+Whether you support attorneys day to day or brief leadership, this summary helps you replace guesswork with visibility—and do it in a way that saves time, reduces risk, and builds trust.
+5
+Chapter 5
+### From Burden to Advantage
+&#9662;
+A five-minute read that could turn compliance into a client-facing advantage
+Compliance used to live in spreadsheets and fire drills. This chapter reframes CLE as reputation capital—proof that your lawyers are authorized today, your systems prevent lapses tomorrow, and your firm is ready to show its work to clients, regulators, and insurers.
+Whether you lead Professional Development or support business development, this summary helps you position compliance as proof of excellence—not paperwork. It’s practical, copy-and-pasteable, and ready for your next pitch.
+6
+Chapter 6
+### Forecasting, Not Fire Drills
+&#9662;
+A five-minute read that could end CLE surprises and save dozens of admin hours
+Most firms don’t miss deadlines because lawyers are careless; they miss them because systems are reactive. This chapter shows how to replace last-minute chaos with a steady, automated cadence that maps deadlines, flags risk early, and nudges attorneys to act before alarms go off.
+You’ll see how progressive reminders, simple thresholds, and clear dashboards flatten the panic curve—freeing PD teams to coach, not chase, and giving leadership real visibility into firm-wide readiness.
+Whether you manage CLE across multiple jurisdictions or support attorneys in a single jurisdiction, this summary helps you implement forecasting fast—clear steps, quick wins, and a playbook you can copy and adapt.
+7
+Chapter 7
+### Transparency and Trust
+&#9662;
+A five-minute read that could cut admin inquiries and build partner confidence
+When attorneys can see their own compliance status, trust goes up and chase work goes down. This chapter summary shows how clear dashboards, proactive reminders, and simple design choices turn CLE from a mystery into a shared responsibility.
+Whether you lead Professional Development, manage CLE operations, or sponsor firm-wide systems, this summary helps you make transparency practical—and measurably valuable.
+8
+Chapter 8
+### Principles for Compliance Systems
+&#9662;
+A five-minute read that could turn compliance from tracking to prevention
+BigLaw doesn’t need another learning tool—it needs a single pane of glass for learning, development, and compliance. This chapter summary distills how UniversitySite and CLESite evolved from an LMS into a compliance engine by applying four non-negotiables: integration, automation, proof, and visibility.
+Use this summary to stress-test your current setup, spot weak links, and focus your next sprint on work that saves hours, reduces risk, and improves leadership visibility.
+Whether you manage CLE for a single office or an AmLaw-scale firm, this summary helps you identify gaps, prioritize fixes, and communicate a clear plan to leadership—it’s practical, defensible, and immediately actionable.
+9
+Chapter 9
+### Integrations That Matter
+&#9662;
+A five-minute read that could save hours and de-risk audits
+Disconnected HR, LMS, and CLE systems create duplication, delays, and dangerous blind spots. This chapter summary shows how a unified ecosystem—HRIS as the source of truth, a best-of-breed LMS with a built-in CLE tracker, and automated feeds from third-party providers—turns compliance from chaos into clarity.
+You’ll see how “fixing the plumbing” beats adding staff or content. With clean data flows in both directions, leadership can finally trust dashboards, attorneys spend less time uploading certificates, and audits become routine rather than stressful.
+Whether you oversee PD, manage HR data, or support integrations in IT, this summary helps you map your most painful hand-offs and design a unified ecosystem that saves time, reduces risk, and improves visibility.
+10
+Chapter 10
+### Automating the Admin
+&#9662;
+A five-minute read that could save dozens of admin hours and lower audit risk
+When compliance runs on manual effort, one audit email can trigger days of scrambling. This chapter summary shows how to replace spreadsheets and inbox hunts with quiet, reliable automation—so attorneys self-serve proof, PD gains credibility, and leadership sees real-time status without fire drills.
+Use this summary to map the first few automations, set simple metrics, and build momentum. Start small, prove value, and expand the loop—Map → Automate → Measure → Refine → Expand.
+Whether you manage Professional Development, HR, or firm operations, this summary helps you pick the first automation, communicate its impact, and scale success—without disrupting attorneys’ work.
+11
+Chapter 11
+### Proving Compliance to Regulators and Leadership
+&#9662;
+A five-minute read that could turn audits from fire drills into one-click exports
+Compliance isn’t real until you can prove it. This chapter summary shows how to build an audit-ready system that produces defensible proof on demand—without spreadsheets, chase emails, or last-minute panic.
+From centralized certificate storage to leadership dashboards and one-click exports, you’ll see how automation creates an unbroken evidence trail that satisfies internal reviews and regulatory audits alike.
+Whether you’re tightening internal controls or preparing for a regulator request, this summary helps you standardize evidence, reduce scramble time, and build leadership confidence—fast, clear, and defensible.
+12
+Chapter 12
+### Launching Your Compliance Advantage
+&#9662;
+A five-minute read that could return billable hours and boost adoption
+Compliance launches succeed when leadership, clear communication, and measurable outcomes work together. This TL;DR distills how to move from compliance chaos to clarity—so attorneys spend less time chasing credits and more time serving clients.
+Inside, you’ll see how a PD director turned a firm-wide rollout into a strategic win, plus the practical steps to replicate it: align stakeholders, automate quietly, pressure-test with an audit check, and report ROI in terms leaders care about.
+Whether you are preparing a firm-wide “day one” launch or refining an existing process, this summary helps you align leadership, reduce risk, and show impact fast—clear, practical, and ready to use.
+C
+Conclusion
+### Staying CLEver
+&#9662;
+A five-minute read that could save hours and strengthen trust
+CLE doesn’t have to be a time sink. When designed well, compliance becomes a force multiplier—turning scattered requirements into visible progress, transforming reporting into trust, and freeing attorneys to focus on client work.
+With visibility, automation, and forecasting, compliance risk becomes preventable—not personal. This chapter summary captures the mindset and first moves to make CLE a time-saver and trust builder across your firm.
+Whether you lead Professional Development, run CLE operations, or advise practice leaders, this summary helps you align around a shared vision, pick a high-leverage starting point, and show progress quickly—it’s practical, concise, and ready to share.
+A
+Appendix A
+### UniversitySite & CLESite — A Practical Foundation
+&#9662;
+A five-minute read that could save your firm time, reduce risk, and boost visibility
+UniversitySite and CLESite were built to solve a common problem at large firms: fragmented learning and compliance spread across too many systems. This short summary shows how a single, unified front door for learning (UniversitySite) pairs with pragmatic compliance automation (CLESite) to turn administration into insight.
+You’ll see how one destination simplifies life for employees, how coordinators gain hours back through purpose-built tools, and how leadership finally gets a complete picture of learning and compliance across the firm.
+Whether you’re evaluating platforms or mapping an upgrade path, this summary helps you frame a unified approach—practical, scalable, and ready for AmLaw complexity.
+The CLE Corner
+## Get a free copy & stay ahead of every rule change.
+Want a copy of Stay CLEver! for your PD or CLE team? Reach out and we'll get one to you.
+You can also join The CLE Corner — our insider newsletter for CLE coordinators at
+law firms, curating the latest updates, tools, and insights to simplify compliance and keep your firm
+ahead of change.
+Request a free copy
+Join The CLE Corner
+&times;
+### Get your free copy
+Tell us where to send Stay CLEver! — we'll be in touch to arrange your copy.
+Name
+Work email
+Firm
+Request my copy
+✓ Thanks! We'll be in touch about your copy shortly.
+&times;
+### Join The CLE Corner
+Your insider newsletter for CLE coordinators at law firms — the latest updates, tools, and insights to keep your firm ahead of change. One email a month, strictly useful.
+Name
+Work email
+Subscribe
+✓ You're in. First issue lands next month.
+
+======================================================================
 clients.html
 ======================================================================
 
 Our Clients
-# Trusted by the best law firms
-Over the past fifteen years Profiscience has built an impressive clientele — law firms with 200 to 5,000 attorneys who rely on UniversitySite, CLESite, and ScormFly every day.
-   >>> DO NOT STATE — headcount: 5,000 attorneys
-## Case Studies
-See how leading firms put UniversitySite, CLESite, and ScormFly to work.
-Steptoe & Johnson
+# What would change if learning and CLE were easier to manage?
+See how our clients work with Profiscience to reduce administrative effort, improve visibility, and support attorneys more effectively.
+Client Stories
+## How are law firms putting Profiscience to work?
+Explore how firms use Profiscience to support learning, manage CLE obligations, and simplify the workflows surrounding both.
+More value from an existing platform
 Read case study
-Verrill
+Ready for growth in 90 days
 Read case study
-Womble Bond Dickinson
+A client idea built into the product
 Read case study
+Training visibility where employees work
+Read case study
+Bringing external content into one platform
+Read case study
+Extending learning to clients
+Read case study
+What clients say
+## Why do law firms continue to
+work with Profiscience?
+Hear what clients value about the platform, the support they receive, and the team behind both.
+"After evaluating Workday Learning, we concluded that replacing UniversitySite would not improve how we manage learning. Instead, we integrated the platforms, publishing completed learning activity from UniversitySite into Workday. This gave us the connectivity we needed while retaining a platform designed for law firms."
+KG
+Kurt Geisler
+CTO
 Haynes Boone
-Read case study
-Foley & Lardner
-Read case study
-Bond, Schoeneck & King
-Read case study
-## Law Firm Partners
-A selection of the firms we're proud to partner with.
+"Our firm moved from separate CE Manager and LegalMind LMS systems to Profiscience, creating a more connected environment for learning and CLE administration. Bringing these functions together has made it easier to coordinate training, compliance tracking, reporting, content, and the integrations our firm depends on."
+CT
+Chief Training Officer
+New York
+"After evaluating where we were headed with viLMS CLE and Workday Learning, we chose to consolidate on Profiscience's platform for managing our CLE administration and learning. Profiscience understands the specialized learning and compliance workflows a law firm needs to manage."
+SM
+Senior Manager
+950 users
+   >>> DO NOT STATE — headcount: 950 users
+Los Angeles
+"UniversitySite and CLESite have helped a small team support a much larger organization. From automated reminders and learning plans to CLE dashboards and reporting, the system gives us the structure we need to scale training and compliance work without adding unnecessary manual effort."
+DK
+Daniel Kent
+Training Manager
+Foley Hoag
+"What stands out about Profiscience is how closely their team works with us. They are responsive, practical, and willing to adapt the platform to support the way our firm manages learning rather than expecting us to fit into a standard approach."
+PP
+Pamela Presley
+Technology Training Manager
+Akin
+"Profiscience has been a collaborative partner as we’ve expanded our learning environment. Their team worked closely with us to integrate LinkedIn Learning with UniversitySite and helped us create a more connected experience for our learners and administrators."
+KW
+Kevin Wind
+Manager of Technology Training
+Nixon Peabody
+"Over the years, I have seen UniversitySite continue to evolve, including improvements shaped by feedback from our team. It provides a flexible, practical foundation for law-firm learning, with clear visibility for learners and administrators and reporting that supports both day-to-day management and deeper analysis. Just as important, the Profiscience team is responsive, knowledgeable, and easy to work with."
+MT
+Manager, Technical Training
+1500 users, Toronto
+   >>> DO NOT STATE — headcount: 1500 users
+"UniversitySite has been a remarkably reliable platform for our firm, and we rarely have questions. When they do arise, the team at Profiscience is responsive, knowledgeable, and easy to work with."
+SA
+Senior Analyst
+600 users, New York
+   >>> DO NOT STATE — headcount: 600 users
+"UniversitySite gives us a practical, user-friendly way to manage both instructor-led training and eLearning across the firm. Registration is straightforward for learners, administration is manageable for our team, and the reporting gives HR clear visibility into participation and completions. When we need assistance, the Profiscience team responds quickly with thorough, helpful answers."
+MT
+Manager, Training & QA
+1100 users, Calgary
+   >>> DO NOT STATE — headcount: 1100 users
+"UniversitySite helps us create structured, blended learning experiences that combine instructor-led training, eLearning, and other resources. Learning plans guide users through the right content in the right sequence, making it easier for them to build the knowledge they need without navigating the course catalog on their own. The Profiscience team understands how law firms manage learning and works with us to support practical, effective programs."
+CS
+Carolyn Sneed
+Technology Training Coordinator
+Akin, Dallas
+"UniversitySite is an awesome tool giving end-users direct access to knowledge, specific training requests and e-learning. It's a trainer's dream tool that can be used to introduce training opportunities in a variety of ways. Not everyone is comfortable learning in a group setting and some learn only when they can train at their own pace. UniversitySite is a win-win for the firm, the employees and the trainer!"
+BW
+Becky Winn
+Technology Support Services Manager
+Munsch Hardt Kopf & Harr, Dallas
+"Profiscience is one of our most trusted partners. Their team is knowledgeable, responsive, and willing to work with us as our needs evolve. We use UniversitySite not only for IT training, onboarding, and eLearning, but also to coordinate a wide range of firm programs, from wellness initiatives to financial education. That flexibility has made it a valuable platform across the organization."
+IT
+Manager of IT Training
+800 users, New York
+   >>> DO NOT STATE — headcount: 800 users
+Show more client perspectives
+## Who works with Profiscience?
+A selection of law firms across regions, sizes, and operating models.
 All regions
 Australia
 Canada
@@ -967,72 +1201,13 @@ Venable LLP
 Wachtell Lipton
 Winstead
 Young Conaway
+See more partners
 No partners listed for this region yet.
-What clients say
-## Law firms trust Profiscience.
-Attorneys, trainers, and CLE coordinators across our client base consistently rate Profiscience as a reliable partner.
-"After evaluating Workday Learning, we concluded that replacing UniversitySite would not improve how we manage learning. Instead, we integrated the platforms, publishing completed learning activity from UniversitySite into Workday. This gave us the connectivity we needed while retaining a platform designed for law firms."
-KG
-Kurt Geisler
-CTO
-Haynes Boone
-"Our firm moved from separate CE Manager and LegalMind LMS systems to Profiscience, creating a more connected environment for learning and CLE administration. Bringing these functions together has made it easier to coordinate training, compliance tracking, reporting, content, and the integrations our firm depends on."
-CT
-Chief Training Officer
-New York
-"After evaluating where we were headed with viLMS CLE and Workday Learning, we chose to consolidate on Profiscience's platform for managing our CLE administration and learning. Profiscience understands the specialized learning and compliance workflows a law firm needs to manage."
-SM
-Senior Manager
-950 users
-   >>> DO NOT STATE — headcount: 950 users
-Los Angeles
-"UniversitySite and CLESite have helped a small team support a much larger organization. From automated reminders and learning plans to CLE dashboards and reporting, the system gives us the structure we need to scale training and compliance work without adding unnecessary manual effort."
-DK
-Daniel Kent
-Training Manager
-Foley Hoag
-"What stands out about Profiscience is how closely their team works with us. They are responsive, practical, and willing to adapt the platform to support the way our firm manages learning rather than expecting us to fit into a standard approach."
-PP
-Pamela Presley
-Technology Training Manager
-Akin
-"Profiscience has been a collaborative partner as we’ve expanded our learning environment. Their team worked closely with us to integrate LinkedIn Learning with UniversitySite and helped us create a more connected experience for our learners and administrators."
-KW
-Kevin Wind
-Manager of Technology Training
-Nixon Peabody
-"Over the years, I have seen UniversitySite continue to evolve, including improvements shaped by feedback from our team. It provides a flexible, practical foundation for law-firm learning, with clear visibility for learners and administrators and reporting that supports both day-to-day management and deeper analysis. Just as important, the Profiscience team is responsive, knowledgeable, and easy to work with."
-MT
-Manager, Technical Training
-1500 users, Toronto
-   >>> DO NOT STATE — headcount: 1500 users
-"UniversitySite has been a remarkably reliable platform for our firm, and we rarely have questions. When they do arise, the team at Profiscience is responsive, knowledgeable, and easy to work with."
-SA
-Senior Analyst
-600 users, New York
-   >>> DO NOT STATE — headcount: 600 users
-"UniversitySite gives us a practical, user-friendly way to manage both instructor-led training and eLearning across the firm. Registration is straightforward for learners, administration is manageable for our team, and the reporting gives HR clear visibility into participation and completions. When we need assistance, the Profiscience team responds quickly with thorough, helpful answers."
-MT
-Manager, Training & QA
-1100 users, Calgary
-   >>> DO NOT STATE — headcount: 1100 users
-"UniversitySite helps us create structured, blended learning experiences that combine instructor-led training, eLearning, and other resources. Learning plans guide users through the right content in the right sequence, making it easier for them to build the knowledge they need without navigating the course catalog on their own. The Profiscience team understands how law firms manage learning and works with us to support practical, effective programs."
-CS
-Carolyn Sneed
-Technology Training Coordinator
-Akin, Dallas
-"UniversitySite is an awesome tool giving end-users direct access to knowledge, specific training requests and e-learning. It's a trainer's dream tool that can be used to introduce training opportunities in a variety of ways. Not everyone is comfortable learning in a group setting and some learn only when they can train at their own pace. UniversitySite is a win-win for the firm, the employees and the trainer!"
-BW
-Becky Winn
-Technology Support Services Manager
-Munsch Hardt Kopf & Harr, Dallas
-"Profiscience is one of our most trusted partners. Their team is knowledgeable, responsive, and willing to work with us as our needs evolve. We use UniversitySite not only for IT training, onboarding, and eLearning, but also to coordinate a wide range of firm programs, from wellness initiatives to financial education. That flexibility has made it a valuable platform across the organization."
-IT
-Manager of IT Training
-800 users, New York
-   >>> DO NOT STATE — headcount: 800 users
-Show more client perspectives
-Get in touch
+## See how Profiscience
+could fit your firm.
+Tell us what your firm is trying to improve, and we’ll explore whether Profiscience can help.
+Start a Conversation
+Explore the Platform
 
 ======================================================================
 case-study-foley-lardner.html

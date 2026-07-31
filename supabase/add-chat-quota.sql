@@ -43,11 +43,27 @@ alter table public.chat_rate_limit enable row level security;
 -- Returns the FIRST limit breached so the caller can respond
 -- differently to "you're too fast" vs "the site is done for today".
 -- ---------------------------------------------------------
+-- The global default assumes the chat function's cached prompt prefix is
+-- actually being cached. That prefix measures 8,224 tokens (the knowledge
+-- base in functions/chat/knowledge.ts, the system prompt, and the tool
+-- definitions) and is sent on every request, so its billing rate sets the
+-- ceiling. Measured against Opus 4.8 rather than estimated:
+--
+--   cache hit   ~$0.016/request  ->  ~$2.50/day at 150 requests
+--   cache miss  ~$0.053/request  ->  ~$8/day at 150 requests
+--
+-- (prefix + ~800 tokens of replayed conversation + ~300 output tokens)
+--
+-- Both are survivable, which is the point of the cap. But if the chat
+-- function ever starts interpolating something per-request or per-visitor
+-- ahead of the cache_control breakpoint, every request becomes a miss and
+-- this number quietly triples. The function logs read/write token counts on
+-- every reply — check those before assuming the ceiling still holds.
 create or replace function public.chat_check_quota(
   p_ip             text,
   p_per_minute     integer default 10,     -- burst, per IP
   p_per_day_ip     integer default 40,     -- sustained, per IP
-  p_per_day_global integer default 150     -- the bill ceiling: ~$3/day
+  p_per_day_global integer default 150     -- the bill ceiling: see note above
 )
 returns table (allowed boolean, reason text)
 language plpgsql

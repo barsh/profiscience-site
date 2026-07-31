@@ -30,3 +30,24 @@ export const SUPABASE_ANON_KEY = "sb_publishable_Y-lJeRmMpUi3Xd13_psUtg_GHpjkDWf
 
 export const isConfigured =
   !SUPABASE_URL.startsWith("PASTE_") && !SUPABASE_ANON_KEY.startsWith("PASTE_");
+
+/* ---------------------------------------------------------
+   Pipedrive — admin only
+
+   Just the subdomain, not the whole URL. Open any lead in Pipedrive and
+   look at the address bar:
+
+     https://acme.pipedrive.com/leads/inbox/abc123
+             ^^^^  <- this part
+
+   so you would put "acme" below.
+
+   Used by the admin Chats tab to turn a captured lead into a direct link
+   into the CRM. Leave it empty and the admin shows the Pipedrive lead id
+   as plain text instead — still useful to paste into Pipedrive's search,
+   and better than a link that 404s.
+
+   Safe to commit: a company subdomain is not a credential. The API token
+   that actually talks to Pipedrive lives in Supabase secrets, server-side.
+   --------------------------------------------------------- */
+export const PIPEDRIVE_DOMAIN = "profiscience";

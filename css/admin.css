@@ -121,6 +121,87 @@ body.admin { background: var(--pf-mist); }
 .adm-row.sub {
   grid-template-columns: 1.4fr 1fr 1fr 120px 110px 90px;
 }
+/* Conversation rows: started, opening question, turns, outcome, actions */
+.adm-row.chat {
+  grid-template-columns: 110px 1fr 70px 110px 90px;
+}
+/* The opening question is the only way to recognise a conversation at a
+   glance, so give it the row and clip rather than wrap — a visitor can
+   paste a paragraph and every row would be a different height. */
+.chat-q {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--pf-ink);
+}
+
+.chat-pill {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  background: var(--pf-mist);
+  color: var(--pf-mute);
+}
+.chat-pill.lead    { background: rgba(16,185,129,.12); color: #0B7A5B; }
+.chat-pill.support { background: rgba(20,99,255,.10);  color: var(--pf-navy); }
+
+/* ---- conversation drawer ---- */
+.chat-lead {
+  border: 1px solid var(--pf-line);
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-bottom: 22px;
+  background: var(--pf-mist);
+}
+.chat-lead h3 { margin: 0 0 12px; font-size: .95rem; }
+.chat-lead-row {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 10px;
+  padding: 3px 0;
+  font-size: .9rem;
+}
+.chat-lead-row span:first-child { color: var(--pf-mute); }
+.chat-lead-summary {
+  margin: 12px 0 0;
+  font-size: .9rem;
+  color: var(--pf-ink);
+  font-style: italic;
+}
+.chat-lead-crm { margin-top: 14px; }
+
+.chat-thread { display: flex; flex-direction: column; gap: 20px; }
+.chat-turn { display: flex; flex-direction: column; gap: 8px; }
+.chat-msg {
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: .92rem;
+  line-height: 1.55;
+  /* Transcript text is arbitrary visitor input: preserve the newlines the
+     agent wrote, and break anything unspaced rather than blow out the
+     drawer width. */
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.chat-msg .who {
+  display: block;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--pf-mute);
+  margin-bottom: 6px;
+}
+.chat-msg.user { background: var(--pf-mist); }
+.chat-msg.bot  { background: #fff; border: 1px solid var(--pf-line); }
+.chat-tool {
+  font-size: .72rem;
+  color: var(--pf-mute);
+  letter-spacing: .04em;
+}
 .adm-row:last-child { border-bottom: 0; }
 .adm-row:hover { background: var(--pf-mist); }
 .adm-row.head {

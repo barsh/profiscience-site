@@ -17,9 +17,40 @@
   // The deployed Edge Function. Public by design — it is an endpoint, not
   // a credential; every secret stays server-side. Access is controlled by
   // the CORS allow-list and the quota check, not by hiding this URL.
-  var CHAT_ENDPOINT = "https://rqkbjvyxhdknbjhaszya.supabase.co/functions/v1/chat";
+  var PROD_ENDPOINT = "https://rqkbjvyxhdknbjhaszya.supabase.co/functions/v1/chat";
+
+  // Served from localhost? Talk to `supabase functions serve` instead.
+  // Without this the widget silently hits production even while a local
+  // function is running, so you end up testing the deployed agent and
+  // concluding your changes did nothing. The hostname check means this can
+  // never affect a real visitor, and there is nothing to remember to revert
+  // before deploying.
+  var IS_LOCAL =
+    location.hostname === "localhost" ||
+    location.hostname === "127.0.0.1" ||
+    location.hostname === "[::1]";
+
+  var CHAT_ENDPOINT = IS_LOCAL
+    ? "http://localhost:54321/functions/v1/chat"
+    : PROD_ENDPOINT;
 
   var MAX_TURNS = 24; // trim client-side too; the server enforces its own cap
+
+  // Groups this conversation's turns together in the transcript table so a
+  // reviewer can read an exchange in order. Deliberately NOT an identity:
+  // generated per page load, never stored, never sent anywhere else, and
+  // not tied to the visitor or their IP. A refresh starts a new one, which
+  // is the intended trade — grouping for review, not tracking.
+  var SESSION_ID = (function () {
+    try {
+      if (window.crypto && window.crypto.randomUUID) {
+        return window.crypto.randomUUID();
+      }
+    } catch (e) {
+      /* fall through to the non-crypto id below */
+    }
+    return "s-" + Math.random().toString(36).slice(2) + Date.now().toString(36);
+  })();
 
   function init() {
     var launcher = document.querySelector(".bot-launcher");
@@ -120,7 +151,7 @@
       fetch(CHAT_ENDPOINT, {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ messages: history }),
+        body: JSON.stringify({ messages: history, session_id: SESSION_ID }),
       })
         .then(function (r) {
           // A 429 or 502 still carries a usable body, so parse either way
