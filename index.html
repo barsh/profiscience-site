@@ -145,8 +145,19 @@
               aria-hidden="true"
             />
 
-            <span class="platform-graphic__mobile-label platform-graphic__mobile-label--learning" aria-hidden="true">LMS</span>
-            <span class="platform-graphic__mobile-label platform-graphic__mobile-label--cle" aria-hidden="true">CLE</span>
+            <!-- Shown only under 700px, where the product copy moves below the
+                 image and each circle is left empty. aria-hidden because the
+                 cards below carry the same names as real content. -->
+            <span class="platform-graphic__mobile-label platform-graphic__mobile-label--learning" aria-hidden="true">
+              <span class="platform-graphic__mobile-label-kicker">UniversitySite</span>
+              <span class="platform-graphic__mobile-label-title">LMS</span>
+              <span class="platform-graphic__mobile-label-note">Firm-wide training</span>
+            </span>
+            <span class="platform-graphic__mobile-label platform-graphic__mobile-label--cle" aria-hidden="true">
+              <span class="platform-graphic__mobile-label-kicker">CLESite</span>
+              <span class="platform-graphic__mobile-label-title">CLE</span>
+              <span class="platform-graphic__mobile-label-note">Credits &amp; compliance</span>
+            </span>
           </div>
 
           <div class="platform-graphic__product platform-graphic__product--learning" id="platform-graphic-universitysite">

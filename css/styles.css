@@ -3120,7 +3120,7 @@ footer .foot-admin:hover { color: #fff; }
   border: 1px solid var(--pf-line);
   border-radius: var(--r-lg);
   padding: 28px;
-  text-align: left;
+  text-align: center;
   transition: transform .25s ease, box-shadow .25s ease;
 }
 .team-card:hover { transform: translateY(-3px); box-shadow: var(--sh-md); }
@@ -3142,7 +3142,7 @@ footer .foot-admin:hover { color: #fff; }
   border-radius: 50%;
   object-fit: cover;
   display: block;
-  margin-bottom: 18px;
+  margin: 0 auto 18px;
   box-shadow: 0 20px 60px -15px rgba(14,74,201,.45);
 }
 .team-card b { display: block; font-size: 1.1rem; color: var(--pf-ink); }
@@ -4202,27 +4202,72 @@ footer .foot-admin:hover { color: #fff; }
   object-fit: contain;
 }
 
+/*
+  The circles sit empty on mobile once the product copy drops below the image,
+  so the label stack fills them: product name, the plain word for what it does,
+  and one line of detail.
+
+  Width is 36% of the stage against a circle roughly 50% wide. A circle's
+  widest point is its middle, which is where this block is centred, but 36%
+  still keeps the text clear of both the outer edge and the wave motif in the
+  centre of the image.
+*/
 .platform-graphic__mobile-label {
   display: none;
   position: absolute;
-  top: 46%;
-  width: 19%;
+  top: 48%;
+  width: 36%;
   transform: translate(-50%, -50%);
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 0.3rem;
   font-family: "Space Grotesk", sans-serif;
-  font-size: clamp(1rem, 2.6vw, 1.3rem);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  line-height: 1;
-  color: rgba(255, 255, 255, 0.96);
   text-align: center;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
+  text-wrap: balance;
   pointer-events: none;
+  /* White on both circles. It carries easily on the navy; on the cyan it is
+     the shadow rather than the fill doing the work, so keep the shadow. */
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.38), 0 2px 12px rgba(0, 0, 0, 0.3);
 }
 
+/* nowrap on both: "UniversitySite" breaking into "University / Site" reads as
+   a mistake. The block is centred on the circle, which is half the stage wide,
+   so a line wider than the 36% box still has room to sit in. */
+.platform-graphic__mobile-label-kicker {
+  font-size: clamp(0.66rem, 2.8vw, 0.95rem);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 1;
+  white-space: nowrap;
+  opacity: 0.85;
+}
+
+.platform-graphic__mobile-label-title {
+  font-size: clamp(1.35rem, 6.6vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+  white-space: nowrap;
+}
+
+/* The detail line breaks over two lines by design — a single long line under a
+   three-letter title looks bottom-heavy, and the circle has the height to
+   spare. The ch cap is what forces the break; without it "Firm-wide training"
+   fits on one line and the stack goes wide instead of tall. */
+.platform-graphic__mobile-label-note {
+  font-size: clamp(0.66rem, 2.7vw, 0.92rem);
+  font-weight: 500;
+  line-height: 1.25;
+  max-width: 10ch;
+  opacity: 0.9;
+}
+
+/* The two modifiers only place the block; color is shared above. */
 .platform-graphic__mobile-label--learning {
-  left: 25.5%;
+  left: 26%;
 }
 
 .platform-graphic__mobile-label--cle {
@@ -4231,7 +4276,7 @@ footer .foot-admin:hover { color: #fff; }
 
 .platform-graphic__product {
   position: absolute;
-  top: 36%;
+  top: 45%;
   width: 30%;
   color: #fff;
   z-index: 2;
@@ -4246,7 +4291,7 @@ footer .foot-admin:hover { color: #fff; }
 
 .platform-graphic__product--cle {
   right: 11%;
-  top: 39.5%;
+  top: 46%;
   width: 24.5%;
 }
 
