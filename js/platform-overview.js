@@ -41,12 +41,15 @@
     clesite: {
       kicker: "Specialized CLE administration",
       title: "CLESite",
-      copy: "Connect CLE records, certificates, jurisdiction-specific requirements, attorney access, and firmwide compliance oversight.",
+      copy: "Connect CLE and CPD records, certificates, jurisdiction-specific requirements, attorney access, and firmwide compliance oversight.",
       whyItMatters: "When CLE is managed separately from learning, firms often duplicate records and rely on manual reconciliation. CLESite brings the two together on the UniversitySite foundation.",
       examplesHeading: "What it supports",
       examples: [
-        "CLE records and certificates",
-        "Jurisdiction-specific compliance",
+        "Jurisdiction-specific rules updated weekly",
+        "CLE and CPD records and certificates",
+        "Compliance reports for CLE and CPD globally",
+        "Legal-learning providers: PLI, NBI, CeriFy",
+        "Live and on-demand CLE programs",
         "Attorney access",
         "Firmwide oversight and reporting"
       ]
@@ -54,18 +57,15 @@
     integrations: {
       kicker: "Connect the systems your firm relies on",
       title: "Integrations",
-      copy: "Connect Profiscience with selected identity, HR, meeting, learning-content, and CLE-provider systems.",
+      copy: "Connect the platform with selected identity, HR, meeting, learning-content, and CLE-provider systems.",
       whyItMatters: "Where is your team still re-entering information or reconciling activity between systems? Integrations can reduce those points of friction and support more reliable records.",
       examplesHeading: "Examples",
       examples: [
         "Identity and HR systems",
-        "Outlook and virtual-learning platforms",
-        "PLI",
-        "NBI",
-        "Certify",
-        "Other learning and CLE providers"
+        "Outlook, Teams, Webex, Zoom",
+        "LinkedIn Learning",
+        "Legal-learning providers: PLI, NBI, CeriFy"
       ],
-      disclaimer: "Available connections and implementation requirements vary by firm and provider."
     },
     extensions: {
       kicker: "Add capabilities where they are useful",
@@ -74,7 +74,7 @@
       whyItMatters: "Your firm may not need every option. Extensions allow Profiscience to address specific requirements without making the entire platform more complicated.",
       examplesHeading: "Examples",
       examples: [
-        "ScormFly",
+        "Video Streaming and Compliance",
         "Knowledge checks and evaluations",
         "SQL Reporting",
         "API access",
@@ -96,7 +96,7 @@
   };
 
   var defaultKey = "university";
-  var selectedKey = defaultKey;
+  var selectedKey = null;
   var nodes = Array.prototype.slice.call(root.querySelectorAll("[data-platform-node]"));
   var titleEl = root.querySelector("[data-platform-detail-title]");
   var kickerEl = root.querySelector("[data-platform-detail-kicker]");
@@ -111,7 +111,7 @@
   var resetBtn = root.querySelector("[data-platform-reset]");
   var expandBtn = root.querySelector("[data-platform-expand]");
 
-  var tourOrder = ["university", "instructor", "learning", "manager", "clesite", "integrations", "extensions", "beyond"];
+  var tourOrder = ["university", "clesite", "instructor", "learning", "manager", "integrations", "extensions", "beyond"];
   var tourTimer = null;
   var tourStepIndex = -1;
   var reduceMotionMedia = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -149,6 +149,20 @@
     });
   }
 
+  function renderEmptyState() {
+    if (kickerEl) kickerEl.textContent = "Interactive overview";
+    if (titleEl) titleEl.textContent = "Select a component";
+    if (copyEl) {
+      copyEl.textContent = "Choose any card in the diagram to see what it is and why it matters.";
+    }
+    if (pointEl) {
+      pointEl.innerHTML = "<strong>Start here:</strong> Select UniversitySite, CLESite, or a supporting capability to explore the platform structure.";
+    }
+    if (examplesEl) examplesEl.innerHTML = "";
+    setPressedState(null);
+    if (liveEl) liveEl.textContent = "";
+  }
+
   function renderExamples(item) {
     if (!examplesEl) return;
     if (!item.examples || !item.examples.length) {
@@ -175,7 +189,7 @@
 
     if (kickerEl) kickerEl.textContent = item.kicker;
     if (titleEl) titleEl.textContent = item.title;
-    if (copyEl) copyEl.textContent = item.copy;
+    if (copyEl) copyEl.innerHTML = "<strong>What it is:</strong> " + escapeHtml(item.copy || "");
     if (pointEl) {
       pointEl.innerHTML = "<strong>Why it matters:</strong> " + escapeHtml(item.whyItMatters || item.point || "");
     }
@@ -428,7 +442,8 @@
     resetBtn.addEventListener("click", function () {
       stopTour();
       tourStepIndex = -1;
-      selectNode(defaultKey, true);
+      selectedKey = null;
+      renderEmptyState();
     });
   }
 
@@ -452,5 +467,5 @@
     });
   }
 
-  selectNode(defaultKey, false);
+  renderEmptyState();
 })();
