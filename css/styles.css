@@ -116,6 +116,19 @@ p  { margin: 0 0 1rem; color: var(--pf-slate); }
   border-color: rgba(255,255,255,.2);
 }
 
+/* Keep the long homepage hero eyebrow on one line at phone widths. */
+@media (max-width: 640px) {
+  .eyebrow--hero-nowrap {
+    white-space: nowrap;
+    font-size: .7rem;
+    letter-spacing: .08em;
+    padding: 5px 10px;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
 .page-hero .eyebrow {
   color: var(--pf-mist);
   background: rgba(255,255,255,.08);
@@ -626,7 +639,10 @@ section.dark .gradient-text,
   display: grid;
   grid-template-columns: 1.1fr 1fr;
   gap: 60px;
-  align-items: center;
+  align-items: start;
+}
+.hero-full-width-head {
+  grid-column: 1 / -1;
 }
 .hero-actions {
   display: flex;
@@ -663,15 +679,19 @@ section.dark .gradient-text,
 .hero-stat-strip {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 24px 28px;
-  margin-top: 8px;
-  padding-top: 28px;
-  border-top: 1px solid rgba(255,255,255,.15);
+  gap: 16px;
+  margin-top: 0;
+  align-self: start;
 }
 .hss-item {
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: var(--r-lg);
+  padding: 24px 20px;
+  backdrop-filter: blur(10px);
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 6px;
 }
 .hss-item strong {
   font-family: var(--font-display);
@@ -679,12 +699,16 @@ section.dark .gradient-text,
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1;
-  color: white;
+  background: linear-gradient(135deg, #FFFFFF 0%, #BEE1FF 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 .hss-item span {
   font-size: .82rem;
   color: rgba(255,255,255,.6);
   font-weight: 500;
+  line-height: 1.3;
 }
 .ai-powered-badge {
   display: inline-flex;
@@ -2452,67 +2476,6 @@ footer .foot-admin:hover { color: #fff; }
   align-items: stretch;
 }
 
-.platform-foundation-band {
-  --option-accent: rgba(26,166,230,.65);
-  grid-column: 1 / -1;
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(180px, 240px) minmax(0, 1fr);
-  gap: 18px 28px;
-  align-items: center;
-  padding: 18px 28px;
-  border-radius: var(--r-xl);
-  border: 1px solid rgba(255,255,255,.12);
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.05) 0%, rgba(255,255,255,.03) 100%),
-    linear-gradient(180deg, rgba(12,37,68,.94) 0%, rgba(10,37,64,.94) 100%);
-  box-shadow: 0 16px 40px rgba(2,8,23,.18);
-  color: rgba(255,255,255,.9);
-}
-
-.platform-foundation-band::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  background: linear-gradient(135deg, var(--option-accent), transparent 40%);
-  opacity: .18;
-}
-
-.platform-foundation-band::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  bottom: -18px;
-  width: 1px;
-  height: 18px;
-  transform: translateX(-50%);
-  background: linear-gradient(to bottom, rgba(255,255,255,.22), rgba(255,255,255,0));
-  pointer-events: none;
-}
-
-.platform-foundation-band__kicker {
-  display: inline-block;
-  color: rgba(190,225,255,.94);
-  font-size: .74rem;
-  font-weight: 700;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-}
-
-.platform-foundation-band__content h3 {
-  margin: 0 0 8px;
-  color: #fff;
-  font-size: 1.28rem;
-}
-
-.platform-foundation-band__content p {
-  margin: 0;
-  color: rgba(255,255,255,.74);
-  max-width: 68ch;
-}
-
 .platform-option-card {
   --option-accent: rgba(26,166,230,.45);
   position: relative;
@@ -2665,15 +2628,12 @@ footer .foot-admin:hover { color: #fff; }
 
 @media (max-width: 1100px) {
   .platform-options-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .platform-foundation-band { grid-template-columns: 1fr; }
   .platform-option-card--integrations { grid-column: 1 / -1; }
 }
 
 @media (max-width: 760px) {
   .platform-options-section { padding: 76px 0; }
   .platform-options-grid { grid-template-columns: 1fr; }
-  .platform-foundation-band { padding: 20px 22px; }
-  .platform-foundation-band::after { display: none; }
   .platform-option-card--integrations { grid-column: auto; }
   .platform-option-card { padding: 24px; }
   .platform-option-list--two-col { grid-template-columns: 1fr; }
@@ -4419,6 +4379,15 @@ footer .foot-admin:hover { color: #fff; }
   width: min(100%, 1100px);
   margin-inline: auto;
   padding:0;
+}
+
+.platform-graphic__cta {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 26px;
 }
 
 .platform-graphic__canvas {
