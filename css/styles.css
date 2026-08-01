@@ -1779,6 +1779,39 @@ section.dark p { color: rgba(255,255,255,.75); }
   border: 1px solid rgba(245,166,35,.35);
 }
 
+/* CLESite mock (home page CLESite section) — dense 5-row list, so scale its
+   contents with the box via container-query units, otherwise the rows spill
+   out the bottom of the fixed 4/3 frame on narrow screens. */
+#clesite-powered-by-universitysite .split-media { container-type: inline-size; }
+#clesite-powered-by-universitysite .split-media .mock {
+  inset: clamp(14px, 4.3cqw, 24px);
+  padding: clamp(12px, 3.5cqw, 20px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+#clesite-powered-by-universitysite .cle-dash-head b { font-size: clamp(.74rem, 2.6cqw, .92rem); }
+#clesite-powered-by-universitysite .cle-dash-head .cle-tag {
+  font-size: clamp(.55rem, 1.85cqw, .64rem);
+  padding: clamp(2px, .8cqw, 4px) clamp(6px, 1.8cqw, 10px);
+}
+#clesite-powered-by-universitysite .cle-row {
+  gap: clamp(8px, 2.6cqw, 12px);
+  padding: clamp(4px, 1.6cqw, 9px) 0;
+}
+#clesite-powered-by-universitysite .cle-av {
+  width: clamp(22px, 6.6cqw, 30px);
+  height: clamp(22px, 6.6cqw, 30px);
+  font-size: clamp(.58rem, 1.9cqw, .7rem);
+}
+#clesite-powered-by-universitysite .cle-meta b { font-size: clamp(.68rem, 2.3cqw, .82rem); }
+#clesite-powered-by-universitysite .cle-meta span { font-size: clamp(.58rem, 1.9cqw, .7rem); }
+#clesite-powered-by-universitysite .cle-badge {
+  font-size: clamp(.56rem, 1.9cqw, .68rem);
+  padding: clamp(2px, .9cqw, 4px) clamp(6px, 1.8cqw, 9px);
+}
+
 /* LMS stats dashboard mock (home page UniversitySite section) */
 /* The LMS mock is the densest of the split-media mocks, so its metrics scale
    with the box instead of being fixed — otherwise it outgrows the 4/3 frame. */
@@ -1973,10 +2006,14 @@ section[id],
   margin: 0 0 20px;
   flex: 1;
 }
+/* Attribution stacks under the quote: avatar on its own line, name/title/firm
+   centered beneath it. Column direction means the avatar no longer sits beside
+   a ragged text block, so nothing needs the old -20px lift to look balanced. */
 .test-card .who {
-  display: flex; align-items: center; gap: 12px;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
   padding-top: 16px;
   border-top: 1px solid var(--pf-line);
+  text-align: center;
 }
 .avatar {
   width: 40px; height: 40px; border-radius: 50%;
@@ -1986,7 +2023,7 @@ section[id],
   display: grid; place-items: center;
   font-weight: 700;
 }
-.test-card .avatar { margin-top: -20px; }
+.test-card .avatar { margin-top: 0; }
 .who-name { display: block; color: var(--pf-ink); font-size: .95rem; }
 .who-title, .who-firm { display: block; line-height: 1.6; color: var(--pf-mute); font-size: .85rem; }
 
