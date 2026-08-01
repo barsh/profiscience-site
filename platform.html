@@ -65,23 +65,6 @@
         <div class="platform-overview-diagram" aria-label="Platform architecture infographic">
           <div class="platform-overview-connectors" aria-hidden="true"></div>
 
-          <div class="platform-overview-experiences" role="group" aria-label="UniversitySite principal experiences">
-            <button type="button" class="platform-node platform-node--experience" data-platform-node="instructor" aria-pressed="false">
-              <span class="platform-node-label">Principal experience</span>
-              <span class="platform-node-name">InstructorSite</span>
-            </button>
-            <button type="button" class="platform-node platform-node--experience" data-platform-node="learning" aria-pressed="false">
-              <span class="platform-node-label">Principal experience</span>
-              <span class="platform-node-name">LearningSite</span>
-            </button>
-            <button type="button" class="platform-node platform-node--experience" data-platform-node="manager" aria-pressed="false">
-              <span class="platform-node-label-row">
-                <span class="platform-node-label">Principal experience</span>
-              </span>
-              <span class="platform-node-name">ManagerSite</span>
-            </button>
-          </div>
-
           <button type="button" class="platform-node platform-node--foundation" data-platform-node="university" aria-pressed="true">
             <span class="platform-node-kicker">Shared Foundation</span>
             <span class="platform-node-name">UniversitySite</span>
@@ -95,12 +78,30 @@
               <span class="platform-node-chip">Reporting</span>
             </span>
           </button>
+          
+          <div class="platform-overview-secondary" role="group" aria-label="CLESite and principal experiences">
+            <button type="button" class="platform-node platform-node--cle" data-platform-node="clesite" aria-pressed="false">
+              <span class="platform-node-kicker">Specialized CLE Administration</span>
+              <span class="platform-node-name">CLESite</span>
+              <span class="platform-node-power">Built on UniversitySite</span>
+            </button>
 
-          <button type="button" class="platform-node platform-node--cle" data-platform-node="clesite" aria-pressed="false">
-            <span class="platform-node-kicker">Specialized CLE Administration</span>
-            <span class="platform-node-name">CLESite</span>
-            <span class="platform-node-power">Built on UniversitySite</span>
-          </button>
+            <div class="platform-overview-experiences" role="group" aria-label="UniversitySite principal experiences">
+              <button type="button" class="platform-node platform-node--experience platform-node--experience-learning" data-platform-node="instructor" aria-pressed="false">
+                <span class="platform-node-label">Administration and coordination</span>
+                <span class="platform-node-name">InstructorSite</span>
+              </button>
+              <button type="button" class="platform-node platform-node--experience platform-node--experience-compliance" data-platform-node="learning" aria-pressed="false">
+                <span class="platform-node-label">The learner experience</span>
+                <span class="platform-node-name">LearningSite</span>
+              </button>              
+              <button type="button" class="platform-node platform-node--experience platform-node--experience-delivery" data-platform-node="manager" aria-pressed="false">
+                <span class="platform-node-label-row">
+                  <span class="platform-node-label">Manager visibility</span>
+                </span>
+                <span class="platform-node-name">ManagerSite</span>
+              </button>
+            </div>          </div>
 
           <div class="platform-overview-support" role="group" aria-label="Additional platform capabilities">
             <button type="button" class="platform-node platform-node--support" data-platform-node="integrations" aria-pressed="false">
@@ -118,8 +119,8 @@
         <aside class="platform-overview-detail" aria-label="Selected component details">
           <p class="platform-overview-detail-kicker" data-platform-detail-kicker>Shared learning foundation</p>
           <h4 class="platform-overview-detail-title" data-platform-detail-title>UniversitySite</h4>
-          <p class="platform-overview-detail-copy" data-platform-detail-copy>Bring learning programs, assignments, content, participation records, and reporting into one environment for attorneys, staff, and administrators.</p>
           <p class="platform-overview-detail-point" data-platform-detail-point><strong>Why it matters:</strong> When learning is spread across separate tools and processes, oversight becomes harder and administrative work increases. UniversitySite provides a connected foundation the firm can build on.</p>
+          <p class="platform-overview-detail-copy" data-platform-detail-copy>Bring learning programs, assignments, content, participation records, and reporting into one environment for attorneys, staff, and administrators.</p>
           <div class="platform-overview-detail-examples" data-platform-detail-examples></div>
           <button type="button" class="btn btn-ghost platform-overview-detail-back" data-platform-detail-back>Back to Diagram</button>
           <p class="platform-overview-live visually-hidden" aria-live="polite" data-platform-live></p>
