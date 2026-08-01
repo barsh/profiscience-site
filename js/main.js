@@ -88,20 +88,65 @@
   // --- Section dropdowns ---
   // Desktop opens them on hover (CSS). The caret is for touch/keyboard, where
   // hover never fires: it toggles the panel instead of following the link.
+  //
+  // Matches the 960px breakpoint in styles.css where .nav-links becomes the
+  // mobile sheet. Read per click rather than cached, so a rotation or a
+  // resize is picked up without re-binding anything.
+  const mobileNav = window.matchMedia("(max-width: 960px)");
+
+  function closeDropdowns() {
+    document.querySelectorAll(".nav-item.open").forEach((o) => {
+      o.classList.remove("open");
+      const c = o.querySelector(".nav-caret");
+      if (c) c.setAttribute("aria-expanded", "false");
+    });
+  }
+
+  function toggleDropdown(item) {
+    const caret = item.querySelector(".nav-caret");
+    const open = !item.classList.contains("open");
+    // One panel at a time so the mobile sheet doesn't become a wall of links.
+    closeDropdowns();
+    item.classList.toggle("open", open);
+    if (caret) caret.setAttribute("aria-expanded", String(open));
+  }
+
+  /**
+   * Does tapping this top-level label open its dropdown instead of leaving?
+   *
+   * On a phone the caret is a 44px target next to a full-width label, so the
+   * label is what gets hit — and navigating away is the one thing that makes
+   * the sections undiscoverable. Every dropdown carries its own page as an
+   * entry (Platform → "The Platform", Pricing → "Why no price tag"), so the
+   * page itself is still one tap further in, never stranded.
+   *
+   * Desktop is untouched: there the label is a link and hover reveals the panel.
+   */
+  function opensDropdownOnTap(a) {
+    const item = a.parentElement;
+    return (
+      mobileNav.matches &&
+      item &&
+      item.classList.contains("nav-item") &&
+      !!item.querySelector(".nav-caret")
+    );
+  }
+
   document.querySelectorAll(".nav-item").forEach((item) => {
     const caret = item.querySelector(".nav-caret");
     if (!caret) return;
+
     caret.addEventListener("click", (e) => {
       e.preventDefault();
-      const open = !item.classList.contains("open");
-      // One panel at a time so the mobile sheet doesn't become a wall of links.
-      document.querySelectorAll(".nav-item.open").forEach((o) => {
-        o.classList.remove("open");
-        const c = o.querySelector(".nav-caret");
-        if (c) c.setAttribute("aria-expanded", "false");
-      });
-      item.classList.toggle("open", open);
-      caret.setAttribute("aria-expanded", String(open));
+      toggleDropdown(item);
+    });
+
+    const link = item.querySelector(":scope > a");
+    if (!link) return;
+    link.addEventListener("click", (e) => {
+      if (!opensDropdownOnTap(link)) return;
+      e.preventDefault();
+      toggleDropdown(item);
     });
   });
 
@@ -109,28 +154,20 @@
   // doesn't reload, so the menu would otherwise stay covering the target.
   document.querySelectorAll(".nav-menu a, .nav-item > a").forEach((a) => {
     a.addEventListener("click", () => {
+      // ...but not when the tap only expanded a dropdown, which would tear
+      // the sheet away the instant it opened.
+      if (opensDropdownOnTap(a)) return;
       if (nav) nav.classList.remove("open");
-      document.querySelectorAll(".nav-item.open").forEach((o) => o.classList.remove("open"));
+      closeDropdowns();
     });
   });
 
   document.addEventListener("click", (e) => {
-    if (!e.target.closest(".nav-item")) {
-      document.querySelectorAll(".nav-item.open").forEach((o) => {
-        o.classList.remove("open");
-        const c = o.querySelector(".nav-caret");
-        if (c) c.setAttribute("aria-expanded", "false");
-      });
-    }
+    if (!e.target.closest(".nav-item")) closeDropdowns();
   });
 
   document.addEventListener("keydown", (e) => {
-    if (e.key !== "Escape") return;
-    document.querySelectorAll(".nav-item.open").forEach((o) => {
-      o.classList.remove("open");
-      const c = o.querySelector(".nav-caret");
-      if (c) c.setAttribute("aria-expanded", "false");
-    });
+    if (e.key === "Escape") closeDropdowns();
   });
 
   // --- Scroll reveal ---

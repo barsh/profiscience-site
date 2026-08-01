@@ -68,6 +68,13 @@
     // isn't told it already said something it didn't.
     var history = [];
     var busy = false;
+    // Whether the visitor still had the field focused when a request began —
+    // disabling an input blurs it, so it has to be captured before that.
+    var wasFocused = false;
+
+    // Matches the sheet breakpoint in styles.css. Read per call so a rotation
+    // is picked up without re-binding.
+    var phoneSheet = window.matchMedia("(max-width: 600px)");
 
     function scroll() {
       body.scrollTop = body.scrollHeight;
@@ -95,20 +102,31 @@
     }
 
     function setBusy(state) {
+      if (state) wasFocused = document.activeElement === input;
       busy = state;
       input.disabled = state;
       sendBtn.disabled = state;
-      if (!state) input.focus();
+      // Re-focusing after a reply is right when the visitor is still typing,
+      // but on a phone it drags the keyboard back over the answer they were
+      // waiting to read. Only take focus back if it was never given up.
+      if (!state && (!phoneSheet.matches || wasFocused)) input.focus();
     }
 
     function open() {
       panel.classList.add("open");
-      input.focus();
+      // The class drives the scroll lock and hides the launcher, both of
+      // which only apply at phone widths — the CSS scopes them, not this.
+      document.body.classList.add("bot-open");
+      // Autofocus opens the on-screen keyboard, which on a phone covers half
+      // the sheet before the visitor has read a word of it. Let them tap the
+      // field when they are ready; on desktop a focused input costs nothing.
+      if (!phoneSheet.matches) input.focus();
       if (window.pfTrack) window.pfTrack("chat_opened");
     }
 
     function close() {
       panel.classList.remove("open");
+      document.body.classList.remove("bot-open");
       launcher.focus();
     }
 

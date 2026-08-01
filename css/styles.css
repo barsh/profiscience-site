@@ -3691,15 +3691,63 @@ footer .foot-admin:hover { color: #fff; }
 .bot-foot button:disabled,
 .bot-foot input:disabled { opacity: .55; cursor: default; }
 
-/* Phones: full-width sheet rather than a floating card. */
-@media (max-width: 480px) {
+/* Phones: a bottom sheet, not a floating card.
+   ---------------------------------------------------------
+   The old rule kept a card inset on all four sides at 100vh minus a fixed
+   160px. Three things go wrong with that on a real phone: 100vh counts the
+   area behind the browser's URL bar, so the sheet is taller than the screen
+   and its top is clipped; the launcher floats on top of the panel it just
+   opened; and the page keeps scrolling behind it. A sheet anchored to the
+   bottom edge fixes all three and is what a phone user expects. */
+@media (max-width: 600px) {
   .bot-panel {
-    right: 12px; left: 12px;
-    bottom: 88px;
+    left: 0; right: 0; bottom: 0;
     width: auto; max-width: none;
-    height: calc(100vh - 160px);
+    /* dvh follows the URL bar AND the on-screen keyboard. vh follows
+       neither, which is why a vh-sized sheet hides its own input the moment
+       the keyboard appears. The vh line is the fallback for older browsers. */
+    height: 86vh;
+    height: 86dvh;
+    max-height: none;
+    /* Only the top corners round — the bottom edge is the screen edge. */
+    border-radius: 20px 20px 0 0;
+    border-bottom: 0;
   }
-  .bot-launcher { bottom: 16px; right: 16px; }
+  /* The launcher is a 60px circle sitting exactly where the sheet now is. */
+  body.bot-open .bot-launcher { display: none; }
+  /* Stop the page scrolling behind the sheet, and stop a flick inside the
+     transcript from chaining out to it once the log hits its end. */
+  body.bot-open { overflow: hidden; }
+  .bot-body { overscroll-behavior: contain; }
+
+  /* The short grabber that says "this is a sheet you can dismiss". */
+  .bot-header::before {
+    content: "";
+    position: absolute;
+    top: 7px; left: 50%;
+    width: 36px; height: 4px;
+    margin-left: -18px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.35);
+  }
+  .bot-header { padding: 20px 18px 16px; }
+  /* 44px is the smallest reliable touch target; the desktop button is ~32. */
+  .bot-close {
+    top: 8px; right: 6px;
+    width: 44px; height: 44px;
+    display: grid; place-items: center;
+    padding: 0;
+  }
+
+  .bot-msg { max-width: 90%; }
+
+  /* iOS zooms the entire page when a focused input is under 16px, which
+     leaves the site scaled up after the keyboard closes. This is the one
+     place the font size is not a free choice. */
+  .bot-foot input { font-size: 16px; }
+  /* Clear the home indicator on gesture-nav phones. */
+  .bot-foot { padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }
+  .bot-foot button { padding: 0 18px; min-height: 44px; }
 }
 
 /* =========================================================
