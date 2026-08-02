@@ -132,6 +132,10 @@
     return window.matchMedia("(max-width: 1160px)").matches;
   }
 
+  function isMobileOverviewLayout() {
+    return window.matchMedia("(max-width: 760px)").matches;
+  }
+
   function escapeHtml(text) {
     return String(text)
       .replace(/&/g, "&amp;")
@@ -254,6 +258,16 @@
     var container = getScrollContainer();
 
     if (container === window) {
+      if (isMobileOverviewLayout()) {
+        var diagramRect = diagramEl.getBoundingClientRect();
+        var targetTop = window.scrollY + diagramRect.top - 90;
+        window.scrollTo({
+          top: Math.max(0, targetTop),
+          behavior: reduceMotionMedia.matches ? "auto" : "smooth"
+        });
+        return;
+      }
+
       window.scrollTo({
         top: 0,
         behavior: reduceMotionMedia.matches ? "auto" : "smooth"
