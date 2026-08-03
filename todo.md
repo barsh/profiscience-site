@@ -1,8 +1,6 @@
 # todo
 
-- /STAY-CLEVER page
 - /resources page
-- /pricing page
 - REMOVE unlinked pages: solutions, features, pricing, etc
 - tour -add hover; swap instructions right to left
 - update pages to incorporate AUS CPD more
@@ -23,3 +21,5 @@
 - use icons from solutions.html or features.html
 - /CLIENTS page
 - /support page 
+- /STAY-CLEVER page
+- /pricing page

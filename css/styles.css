@@ -290,7 +290,7 @@ section.dark .gradient-text,
   position: relative;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   /* Padding bridges the gap to the panel so the pointer never leaves :hover. */
   padding: 24px 0;
 }
@@ -458,6 +458,15 @@ section.dark .gradient-text,
 @media (max-width: 1200px) and (min-width: 961px) {
   .nav-links { gap: 22px; margin-right: 22px; }
   .nav-cta .btn { padding: 10px 18px; }
+}
+
+/* Mid-size desktop widths can still run out of horizontal room with the full
+   nav + CTA visible. Hide the header CTA (it remains available in-page) and
+   remove the divider so labels never overlap the wordmark. */
+@media (max-width: 1080px) and (min-width: 961px) {
+  .nav-cta .btn { display: none; }
+  .nav-links { margin-right: 0; }
+  .nav-links::after { display: none; }
 }
 
 @media (max-width: 960px) {
@@ -1482,10 +1491,14 @@ section.dark p { color: rgba(255,255,255,.75); }
   .feat-grid { grid-template-columns: 1fr; }
   .why-grid { grid-template-columns: 1fr; }
   /* Center card content to match the single-column stack */
-  .why-card { text-align: center; padding-top: 76px; }
+  .why-card { text-align: center; }
   .why-card h3 { max-width: none; }
   /* Center the ghost numeral above the content so headings don't slide under it */
   .why-card-num { top: 20px; right: 0; left: 0; text-align: center; }
+}
+
+@media (min-width: 641px) and (max-width: 900px) {
+  .why-card { padding-top: 76px; }
 }
 
 /* =========================================================
@@ -3659,9 +3672,128 @@ footer .foot-admin:hover { color: #fff; }
   color: var(--pf-blue);
   font-weight: 700;
 }
+
+/* Pricing: implementation factors section */
+#implementation .section-head {
+  margin-bottom: 26px;
+}
+
+.impl-factors-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.impl-factor-card {
+  background: var(--pf-white);
+  border: 1px solid var(--pf-line);
+  border-radius: var(--r-lg);
+  padding: 20px;
+}
+
+.impl-factor-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid rgba(14,74,201,.2);
+  background: rgba(14,74,201,.06);
+  color: var(--pf-blue);
+  display: grid;
+  place-items: center;
+  margin-bottom: 12px;
+}
+
+.impl-factor-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.impl-factor-card h3 {
+  margin-bottom: 8px;
+  font-size: 1.02rem;
+  line-height: 1.3;
+}
+
+.impl-factor-card p {
+  margin: 0;
+  color: var(--pf-slate);
+  font-size: .93rem;
+  line-height: 1.52;
+}
+
+.impl-factor-card-wide {
+  grid-column: span 2;
+}
+
+.impl-migration-callout {
+  margin-top: 20px;
+  padding: 20px 22px;
+  border-radius: var(--r-lg);
+  border: 1px solid rgba(14,74,201,.25);
+  background: linear-gradient(180deg, rgba(14,74,201,.05), rgba(26,166,230,.06));
+}
+
+.impl-migration-callout h3 {
+  margin-bottom: 8px;
+  font-size: 1.05rem;
+}
+
+.impl-migration-callout p {
+  margin: 0;
+  font-size: .95rem;
+  color: var(--pf-slate);
+}
+
+.impl-closing-copy {
+  margin: 16px auto 0;
+  max-width: 920px;
+  text-align: center;
+  color: var(--pf-slate);
+}
+
 @media (max-width: 900px) {
   .price-grid { grid-template-columns: 1fr; }
   .price-card.featured { transform: none; }
+
+  .impl-factors-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .impl-factor-card-wide {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .impl-factors-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .impl-factor-card {
+    padding: 16px;
+  }
+
+  .impl-factor-card h3 {
+    font-size: .98rem;
+  }
+
+  .impl-factor-card p,
+  .impl-migration-callout p,
+  .impl-closing-copy {
+    font-size: .92rem;
+  }
+
+  .impl-closing-copy {
+    text-align: left;
+    max-width: none;
+    line-height: 1.5;
+  }
+
+  .impl-migration-callout {
+    margin-top: 16px;
+    padding: 16px;
+  }
 }
 
 /* =========================================================
