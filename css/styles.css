@@ -46,10 +46,14 @@
   --r-xl: 28px;
 
   --container: 1200px;
+  --pf-sticky-offset: 90px;
 }
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
 body {
   margin: 0;
   font-family: var(--font-sans);
@@ -109,9 +113,21 @@ p  { margin: 0 0 1rem; color: var(--pf-slate); }
   text-decoration: none;
 }
 
+.eyebrow-link[data-section-eyebrow-link] {
+  position: relative;
+  transition: background-color .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+
 .eyebrow-link:hover,
 .eyebrow-link:focus-visible {
   color: inherit;
+}
+
+.eyebrow-link[data-section-eyebrow-link]:hover,
+.eyebrow-link[data-section-eyebrow-link]:focus-visible {
+  background: rgba(14,74,201,.13);
+  border-color: rgba(14,74,201,.45);
+  box-shadow: 0 0 0 1px rgba(14,74,201,.14) inset;
 }
 
 .eyebrow.inverse {
@@ -2027,13 +2043,200 @@ section.dark p { color: rgba(255,255,255,.75); }
    TESTIMONIALS
    ========================================================= */
 /* Offset anchor targets so they clear the 72px sticky nav when linked from the nav dropdowns, footer, etc. */
+[data-page-section],
 section[id],
 #what-clients-say,
 .feature-detail,
 #ai-knowledge-check,
 .feat-card[id],
 .platform-subsection[id] {
-  scroll-margin-top: 90px;
+  scroll-margin-top: var(--pf-sticky-offset, 90px);
+}
+
+/* Compact page-section controller: fixed location for repeat next/prev clicks. */
+.section-nav-control {
+  position: fixed;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 38;
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  width: 68px;
+  padding: 8px 8px 10px;
+  border: 1px solid rgba(10,37,64,.16);
+  border-radius: 14px;
+  background: rgba(255,255,255,.94);
+  backdrop-filter: blur(8px);
+  box-shadow: var(--sh-sm);
+}
+
+.section-nav-btn,
+.section-nav-count {
+  width: 100%;
+  min-height: 30px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--pf-ink);
+  font-weight: 600;
+  font-size: .82rem;
+  line-height: 1.1;
+  text-align: center;
+  cursor: pointer;
+}
+
+.section-nav-btn {
+  display: grid;
+  place-items: center;
+  font-size: 1.05rem;
+}
+
+.section-nav-btn:hover,
+.section-nav-btn:focus-visible,
+.section-nav-count:hover,
+.section-nav-count:focus-visible {
+  background: rgba(14,74,201,.08);
+}
+
+.section-nav-btn.is-disabled {
+  opacity: .33;
+  cursor: default;
+  pointer-events: none;
+}
+
+.section-nav-count {
+  padding: 4px 2px;
+  color: var(--pf-slate);
+}
+
+.section-nav-count-text {
+  display: block;
+  font-size: .73rem;
+  letter-spacing: .01em;
+}
+
+.section-nav-tip {
+  position: absolute;
+  right: calc(100% + 10px);
+  width: min(280px, 34vw);
+  white-space: normal;
+  overflow-wrap: break-word;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--pf-line);
+  background: rgba(255,255,255,.98);
+  color: var(--pf-slate);
+  font-size: .73rem;
+  line-height: 1.35;
+  box-shadow: 0 2px 6px rgba(10, 37, 64, .10), 0 1px 3px rgba(10, 37, 64, .06);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(6px);
+  transition: opacity .16s ease, transform .16s ease;
+}
+
+.section-nav-tip-prev { top: 10px; }
+.section-nav-tip-next { bottom: 10px; }
+
+.section-nav-prev:hover ~ .section-nav-tip-prev,
+.section-nav-prev:focus-visible ~ .section-nav-tip-prev,
+.section-nav-next:hover ~ .section-nav-tip-next,
+.section-nav-next:focus-visible ~ .section-nav-tip-next {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.section-nav-menu {
+  position: absolute;
+  right: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%);
+  width: min(280px, 60vw);
+  max-height: min(64vh, 440px);
+  overflow: auto;
+  border: 1px solid var(--pf-line);
+  border-radius: 10px;
+  background: rgba(255,255,255,.98);
+  box-shadow: var(--sh-md);
+  padding: 8px;
+}
+
+.section-nav-menu-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.section-nav-menu-link {
+  display: block;
+  padding: 7px 8px;
+  border-radius: 7px;
+  color: var(--pf-slate);
+  font-size: .8rem;
+  line-height: 1.35;
+}
+
+.section-nav-menu-link:hover,
+.section-nav-menu-link:focus-visible {
+  color: var(--pf-ink);
+  background: rgba(14,74,201,.08);
+}
+
+.section-nav-menu-link.is-active {
+  color: var(--pf-ink);
+  background: rgba(14,74,201,.12);
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+  .section-nav-control {
+    top: auto;
+    right: auto;
+    left: 50%;
+    bottom: calc(14px + env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    grid-template-columns: 30px auto 30px;
+    align-items: center;
+    width: auto;
+    min-width: 170px;
+    padding: 7px;
+    gap: 8px;
+  }
+
+  .section-nav-btn,
+  .section-nav-count {
+    min-height: 34px;
+  }
+
+  .section-nav-tip {
+    display: none;
+  }
+
+  .section-nav-menu {
+    top: auto;
+    right: 50%;
+    bottom: calc(100% + 8px);
+    transform: translateX(50%);
+    width: min(320px, 88vw);
+    max-height: min(48vh, 360px);
+  }
+
+  .section-nav-control.section-nav-hidden-end {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-50%) translateY(10px);
+    transition: opacity .18s ease, transform .18s ease;
+  }
+}
+
+/* Keep the fixed navigator off medium desktop widths where it intrudes into
+   the centered 1200px content container; show it only with enough side gutter. */
+@media (min-width: 901px) and (max-width: 1420px) {
+  .section-nav-control {
+    display: none;
+  }
 }
 .test-grid {
   display: grid;
