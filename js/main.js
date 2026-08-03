@@ -78,6 +78,8 @@
   }
 
   function init() {
+  initEyebrowLinks();
+
   // --- Mobile nav ---
   const nav = document.querySelector(".nav");
   const toggle = document.querySelector(".nav-toggle");
@@ -169,6 +171,22 @@
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") closeDropdowns();
   });
+
+  function initEyebrowLinks() {
+    document.querySelectorAll(".eyebrow").forEach(function (eyebrow) {
+      if (eyebrow.closest("a")) return;
+
+      // Prefer the containing section/article so links jump to the section top.
+      var target = eyebrow.closest("section[id], article[id]") || eyebrow.closest("[id]");
+      if (!target || !target.id) return;
+
+      var link = document.createElement("a");
+      link.href = "#" + target.id;
+      link.className = eyebrow.className + " eyebrow-link";
+      link.innerHTML = eyebrow.innerHTML;
+      eyebrow.replaceWith(link);
+    });
+  }
 
   // --- Scroll reveal ---
   const revealEls = document.querySelectorAll(".reveal");

@@ -20,12 +20,12 @@ The redirect rules below fix that.
 | `/about.aspx#team` | `/about.html#leadership` | |
 | `/contact.aspx` | `/contact.html` | |
 | `/request-demo.aspx` | `/contact.html` | discovery-call form lives here now |
-| `/testimonials.aspx` | `/clients.html#testimonials` | |
+| `/testimonials.aspx` | `/clients.html#what-clients-say` | |
 | `/support` | `/support.html` | |
 | `/stay-clever-book` and `/stay-clever-book/` | `/stay-clever.html` | |
 | `/stay-clever-book/chapter0.aspx` … `chapter14.aspx` | `/stay-clever.html` | chapters are now accordions on one page |
-| `/stay-clever-book/cle-corner` | `/stay-clever.html#free-copy` | CLE Corner signup is the popup here |
-| `/opt-in.aspx` | `/stay-clever.html#free-copy` | old newsletter subscribe |
+| `/stay-clever-book/cle-corner` | `/stay-clever.html#the-cle-corner` | CLE Corner signup is the popup here |
+| `/opt-in.aspx` | `/stay-clever.html#the-cle-corner` | old newsletter subscribe |
 | `/CaseStudies/*.pdf` | keep serving, or → matching `/case-study-*.html` | see §3 |
 
 | `/opt-out.aspx` | `/unsubscribe.html` | ✅ built |
@@ -68,7 +68,7 @@ The redirect rules below fix that.
         </rule>
         <rule name="testimonials" stopProcessing="true">
           <match url="^testimonials\.aspx$" />
-          <action type="Redirect" url="/clients.html#testimonials" redirectType="Permanent" />
+          <action type="Redirect" url="/clients.html#what-clients-say" redirectType="Permanent" />
         </rule>
         <rule name="book-chapters" stopProcessing="true">
           <match url="^stay-clever-book/chapter[0-9]+\.aspx$" />
@@ -76,7 +76,7 @@ The redirect rules below fix that.
         </rule>
         <rule name="book-cle-corner" stopProcessing="true">
           <match url="^stay-clever-book/cle-corner/?$" />
-          <action type="Redirect" url="/stay-clever.html#free-copy" redirectType="Permanent" />
+          <action type="Redirect" url="/stay-clever.html#the-cle-corner" redirectType="Permanent" />
         </rule>
         <rule name="book" stopProcessing="true">
           <match url="^stay-clever-book/?$" />
@@ -84,7 +84,7 @@ The redirect rules below fix that.
         </rule>
         <rule name="opt-in" stopProcessing="true">
           <match url="^opt-in\.aspx$" />
-          <action type="Redirect" url="/stay-clever.html#free-copy" redirectType="Permanent" />
+          <action type="Redirect" url="/stay-clever.html#the-cle-corner" redirectType="Permanent" />
         </rule>
         <!-- TODO: opt-out.aspx -> /unsubscribe.html once that page exists -->
       </rules>
@@ -99,12 +99,12 @@ The redirect rules below fix that.
 /about.aspx                          /about.html               301
 /contact.aspx                        /contact.html             301
 /request-demo.aspx                   /contact.html             301
-/testimonials.aspx                   /clients.html#testimonials 301
+/testimonials.aspx                   /clients.html#what-clients-say 301
 /stay-clever-book                    /stay-clever.html         301
 /stay-clever-book/                   /stay-clever.html         301
-/stay-clever-book/cle-corner         /stay-clever.html#free-copy 301
+/stay-clever-book/cle-corner         /stay-clever.html#the-cle-corner 301
 /stay-clever-book/chapter*.aspx      /stay-clever.html         301
-/opt-in.aspx                         /stay-clever.html#free-copy 301
+/opt-in.aspx                         /stay-clever.html#the-cle-corner 301
 # /opt-out.aspx                      /unsubscribe.html         301   # once it exists
 ```
 

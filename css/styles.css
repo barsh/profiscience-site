@@ -104,6 +104,16 @@ p  { margin: 0 0 1rem; color: var(--pf-slate); }
   margin-bottom: 18px;
 }
 
+.eyebrow-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.eyebrow-link:hover,
+.eyebrow-link:focus-visible {
+  color: inherit;
+}
+
 .eyebrow.inverse {
   color: #BEE1FF;
   background: rgba(255,255,255,.10);
@@ -1515,40 +1525,40 @@ section.dark p { color: rgba(255,255,255,.75); }
 /* ---- Detached eyebrow in split sections (UniversitySite + CLESite) ---- */
 /* Desktop: eyebrow sits above the text column, mock spans both rows.       */
 @media (min-width: 901px) {
-  #universitysite-learning-platform .split,
-  #clesite-powered-by-universitysite .split {
+  #universitysite .split,
+  #clesite .split {
     row-gap: 0;
   }
   /* UniversitySite (.split.reverse): eyebrow + text in col-1, mock in col-2 */
-  #universitysite-learning-platform .split__eyebrow {
+  #universitysite .split__eyebrow {
     grid-column: 1; grid-row: 1; order: 0;
     justify-self: start;
   }
-  #universitysite-learning-platform .split-media {
+  #universitysite .split-media {
     grid-column: 2; grid-row: 1 / 3; order: 0;
   }
-  #universitysite-learning-platform .split > .reveal:not(.split-media) {
+  #universitysite .split > .reveal:not(.split-media) {
     grid-column: 1; grid-row: 2;
   }
   /* CLESite (.split): mock in col-1, eyebrow + text in col-2 */
-  #clesite-powered-by-universitysite .split__eyebrow {
+  #clesite .split__eyebrow {
     grid-column: 2; grid-row: 1;
     justify-self: start;
   }
-  #clesite-powered-by-universitysite .split-media {
+  #clesite .split-media {
     grid-column: 1; grid-row: 1 / 3;
   }
-  #clesite-powered-by-universitysite .split > .reveal:not(.split-media) {
+  #clesite .split > .reveal:not(.split-media) {
     grid-column: 2; grid-row: 2;
   }
 }
 /* Mobile: eyebrow → mock → text */
 @media (max-width: 900px) {
   .split__eyebrow { order: 1; text-align: center; justify-self: center; }
-  #universitysite-learning-platform .split-media,
-  #clesite-powered-by-universitysite .split-media { order: 2; }
-  #universitysite-learning-platform .split > .reveal:not(.split-media),
-  #clesite-powered-by-universitysite .split > .reveal:not(.split-media) { order: 3; }
+  #universitysite .split-media,
+  #clesite .split-media { order: 2; }
+  #universitysite .split > .reveal:not(.split-media),
+  #clesite .split > .reveal:not(.split-media) { order: 3; }
 }
 .split-media {
   border-radius: var(--r-xl);
@@ -1614,7 +1624,7 @@ section.dark p { color: rgba(255,255,255,.75); }
 }
 
 /* About mission visual */
-#mission .split {
+#our-mission .split {
   grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
   gap: 64px;
 }
@@ -1702,7 +1712,7 @@ section.dark p { color: rgba(255,255,255,.75); }
   line-height: 1.45;
 }
 @media (max-width: 900px) {
-  #mission .split {
+  #our-mission .split {
     grid-template-columns: 1fr;
     gap: 40px;
   }
@@ -1726,12 +1736,12 @@ section.dark p { color: rgba(255,255,255,.75); }
   }
 }
 @media (max-width: 620px) {
-  #mission .split {
+  #our-mission .split {
     grid-template-columns: 1fr;
     gap: 40px;
   }
 
-  #mission .split > * {
+  #our-mission .split > * {
     min-width: 0;
   }
   .mission-visual {
@@ -1805,38 +1815,38 @@ section.dark p { color: rgba(255,255,255,.75); }
 /* CLESite mock (home page CLESite section) — dense 5-row list, so scale its
    contents with the box via container-query units, otherwise the rows spill
    out the bottom of the fixed 4/3 frame on narrow screens. */
-#clesite-powered-by-universitysite .split-media { container-type: inline-size; }
-#clesite-powered-by-universitysite .split-media .mock {
+#clesite .split-media { container-type: inline-size; }
+#clesite .split-media .mock {
   inset: clamp(14px, 4.3cqw, 24px);
   padding: clamp(12px, 3.5cqw, 20px);
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
-#clesite-powered-by-universitysite .cle-dash-head {
+#clesite .cle-dash-head {
   flex: 1 1 0;
   min-height: 0;
   margin-bottom: 0;
 }
-#clesite-powered-by-universitysite .cle-dash-head b { font-size: clamp(.74rem, 2.6cqw, .92rem); }
-#clesite-powered-by-universitysite .cle-dash-head .cle-tag {
+#clesite .cle-dash-head b { font-size: clamp(.74rem, 2.6cqw, .92rem); }
+#clesite .cle-dash-head .cle-tag {
   font-size: clamp(.55rem, 1.85cqw, .64rem);
   padding: clamp(2px, .8cqw, 4px) clamp(6px, 1.8cqw, 10px);
 }
-#clesite-powered-by-universitysite .cle-row {
+#clesite .cle-row {
   flex: 1 1 0;
   min-height: 0;
   gap: clamp(8px, 2.6cqw, 12px);
   padding: 0;
 }
-#clesite-powered-by-universitysite .cle-av {
+#clesite .cle-av {
   width: clamp(22px, 6.6cqw, 30px);
   height: clamp(22px, 6.6cqw, 30px);
   font-size: clamp(.58rem, 1.9cqw, .7rem);
 }
-#clesite-powered-by-universitysite .cle-meta b { font-size: clamp(.68rem, 2.3cqw, .82rem); }
-#clesite-powered-by-universitysite .cle-meta span { font-size: clamp(.58rem, 1.9cqw, .7rem); }
-#clesite-powered-by-universitysite .cle-badge {
+#clesite .cle-meta b { font-size: clamp(.68rem, 2.3cqw, .82rem); }
+#clesite .cle-meta span { font-size: clamp(.58rem, 1.9cqw, .7rem); }
+#clesite .cle-badge {
   font-size: clamp(.56rem, 1.9cqw, .68rem);
   padding: clamp(2px, .9cqw, 4px) clamp(6px, 1.8cqw, 9px);
 }
@@ -1844,18 +1854,18 @@ section.dark p { color: rgba(255,255,255,.75); }
 /* LMS stats dashboard mock (home page UniversitySite section) */
 /* The LMS mock is the densest of the split-media mocks, so its metrics scale
    with the box instead of being fixed — otherwise it outgrows the 4/3 frame. */
-#universitysite-learning-platform .split-media {
+#universitysite .split-media {
   container-type: inline-size;
   aspect-ratio: auto;
 }
-#universitysite-learning-platform .split-media .mock {
+#universitysite .split-media .mock {
   position: relative;
   inset: auto;
   margin: clamp(14px, 4.3cqw, 24px);
   padding: clamp(12px, 3.5cqw, 20px);
 }
-#universitysite-learning-platform .cle-dash-head b { font-size: clamp(.74rem, 2.6cqw, .92rem); }
-#universitysite-learning-platform .cle-dash-head .cle-tag {
+#universitysite .cle-dash-head b { font-size: clamp(.74rem, 2.6cqw, .92rem); }
+#universitysite .cle-dash-head .cle-tag {
   font-size: clamp(.55rem, 1.85cqw, .64rem);
   padding: clamp(2px, .8cqw, 4px) clamp(6px, 1.8cqw, 10px);
 }
@@ -2018,7 +2028,7 @@ section.dark p { color: rgba(255,255,255,.75); }
    ========================================================= */
 /* Offset anchor targets so they clear the 72px sticky nav when linked from the nav dropdowns, footer, etc. */
 section[id],
-#testimonials,
+#what-clients-say,
 .feature-detail,
 #ai-knowledge-check,
 .feat-card[id],
@@ -2038,10 +2048,10 @@ section[id],
   display: flex; flex-direction: column;
 }
 .test-card blockquote {
+  margin: 0 0 20px;
   font-size: 1.05rem;
   color: var(--pf-ink);
   line-height: 1.55;
-  margin: 0 0 20px;
   flex: 1;
 }
 /* Attribution stacks under the quote: avatar on its own line, name/title/firm
@@ -3674,7 +3684,7 @@ footer .foot-admin:hover { color: #fff; }
 }
 
 /* Pricing: implementation factors section */
-#implementation .section-head {
+#implementation-scope .section-head {
   margin-bottom: 26px;
 }
 
