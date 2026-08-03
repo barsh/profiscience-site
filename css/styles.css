@@ -1498,6 +1498,45 @@ section.dark p { color: rgba(255,255,255,.75); }
   align-items: center;
 }
 .split.reverse .split-media { order: 2; }
+
+/* ---- Detached eyebrow in split sections (UniversitySite + CLESite) ---- */
+/* Desktop: eyebrow sits above the text column, mock spans both rows.       */
+@media (min-width: 901px) {
+  #universitysite-learning-platform .split,
+  #clesite-powered-by-universitysite .split {
+    row-gap: 0;
+  }
+  /* UniversitySite (.split.reverse): eyebrow + text in col-1, mock in col-2 */
+  #universitysite-learning-platform .split__eyebrow {
+    grid-column: 1; grid-row: 1; order: 0;
+    justify-self: start;
+  }
+  #universitysite-learning-platform .split-media {
+    grid-column: 2; grid-row: 1 / 3; order: 0;
+  }
+  #universitysite-learning-platform .split > .reveal:not(.split-media) {
+    grid-column: 1; grid-row: 2;
+  }
+  /* CLESite (.split): mock in col-1, eyebrow + text in col-2 */
+  #clesite-powered-by-universitysite .split__eyebrow {
+    grid-column: 2; grid-row: 1;
+    justify-self: start;
+  }
+  #clesite-powered-by-universitysite .split-media {
+    grid-column: 1; grid-row: 1 / 3;
+  }
+  #clesite-powered-by-universitysite .split > .reveal:not(.split-media) {
+    grid-column: 2; grid-row: 2;
+  }
+}
+/* Mobile: eyebrow → mock → text */
+@media (max-width: 900px) {
+  .split__eyebrow { order: 1; text-align: center; justify-self: center; }
+  #universitysite-learning-platform .split-media,
+  #clesite-powered-by-universitysite .split-media { order: 2; }
+  #universitysite-learning-platform .split > .reveal:not(.split-media),
+  #clesite-powered-by-universitysite .split > .reveal:not(.split-media) { order: 3; }
+}
 .split-media {
   border-radius: var(--r-xl);
   overflow: hidden;
@@ -1792,9 +1831,14 @@ section.dark p { color: rgba(255,255,255,.75); }
 /* LMS stats dashboard mock (home page UniversitySite section) */
 /* The LMS mock is the densest of the split-media mocks, so its metrics scale
    with the box instead of being fixed — otherwise it outgrows the 4/3 frame. */
-#universitysite-learning-platform .split-media { container-type: inline-size; }
+#universitysite-learning-platform .split-media {
+  container-type: inline-size;
+  aspect-ratio: auto;
+}
 #universitysite-learning-platform .split-media .mock {
-  inset: clamp(14px, 4.3cqw, 24px);
+  position: relative;
+  inset: auto;
+  margin: clamp(14px, 4.3cqw, 24px);
   padding: clamp(12px, 3.5cqw, 20px);
 }
 #universitysite-learning-platform .cle-dash-head b { font-size: clamp(.74rem, 2.6cqw, .92rem); }
@@ -1804,7 +1848,7 @@ section.dark p { color: rgba(255,255,255,.75); }
 }
 .lms-stats {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   gap: clamp(8px, 2.1cqw, 12px);
   margin-top: clamp(8px, 2.5cqw, 14px);
 }
@@ -1817,7 +1861,7 @@ section.dark p { color: rgba(255,255,255,.75); }
 .lms-stat strong {
   display: block;
   font-family: var(--font-display);
-  font-size: clamp(1.1rem, 4.9cqw, 1.7rem);
+  font-size: clamp(.85rem, 3.2cqw, 1rem);
   font-weight: 700;
   line-height: 1.05;
   background: var(--pf-white);
@@ -1838,7 +1882,7 @@ section.dark p { color: rgba(255,255,255,.75); }
 }
 .lms-comp-checks {
   display: grid;
-  grid-template-columns: repeat(2, auto);
+  grid-template-columns: repeat(3, auto);
   justify-content: start;
   gap: clamp(4px, 1.1cqw, 6px);
 }
@@ -4359,13 +4403,12 @@ footer .foot-admin:hover { color: #fff; }
 }
 .hero-trust span {
   display: inline-flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 7px;
   font-size: .82rem;
   font-weight: 600;
   letter-spacing: .01em;
   color: rgba(255,255,255,.82);
-  white-space: nowrap;
 }
 .hero-trust span::before {
   content: "";
@@ -4373,6 +4416,8 @@ footer .foot-admin:hover { color: #fff; }
   border-radius: 50%;
   background: var(--pf-cyan);
   box-shadow: 0 0 10px rgba(26,166,230,.8);
+  flex-shrink: 0;
+  margin-top: 0.5em;
 }
 
 /* =========================================================
