@@ -4,7 +4,9 @@
 - REMOVE unlinked pages: solutions, features, pricing, etc
 - tour -add hover; swap instructions right to left
 - update pages to incorporate AUS CPD more
-- Tour - ManagerSite card: add Examples- Practice Area Leader, Department Head, Team Lead...
+- Tour 
+    - ManagerSite card: add Examples- Practice Area Leader, Department Head, Team Lead...
+    - should platform dropdown in navbar include a link to the platform overview/tour?
 - customer quotes should have a theme
 
 ## low priority
