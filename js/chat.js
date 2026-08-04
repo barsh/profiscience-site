@@ -62,6 +62,7 @@
     var input = form.querySelector("input");
     var sendBtn = form.querySelector("button");
     var closeBtn = panel.querySelector(".bot-close");
+    var chatBadges = document.querySelectorAll(".ai-powered-badge");
 
     // Transcript sent to the model. The greeting in the markup is
     // presentational only — it is deliberately not in here, so the model
@@ -135,6 +136,19 @@
       else open();
     });
 
+    Array.prototype.forEach.call(chatBadges, function (badge) {
+      badge.addEventListener("click", function () {
+        if (!panel.classList.contains("open")) open();
+        else input.focus();
+      });
+      badge.addEventListener("keydown", function (e) {
+        if (e.key !== "Enter" && e.key !== " ") return;
+        e.preventDefault();
+        if (!panel.classList.contains("open")) open();
+        else input.focus();
+      });
+    });
+
     if (closeBtn) closeBtn.addEventListener("click", close);
 
     document.addEventListener("keydown", function (e) {
@@ -150,7 +164,7 @@
 
       if (!CHAT_ENDPOINT) {
         addMessage(
-          "Chat isn't configured yet. Email sales@profiscience.com and someone will help.",
+          "Profiscience AI isn't configured yet. Email sales@profiscience.com and someone will help.",
           "error"
         );
         input.value = "";
