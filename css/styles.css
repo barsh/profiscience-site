@@ -2086,6 +2086,10 @@ section[id],
   box-shadow: var(--sh-sm);
 }
 
+body.bot-open .section-nav-control {
+  display: none !important;
+}
+
 .section-nav-btn,
 .section-nav-count {
   width: 100%;
