@@ -507,7 +507,7 @@ Deno.serve(async (req) => {
 
     const reply =
       response.stop_reason === "refusal"
-        ? "I can't help with that one. For anything else about UniversitySite, CLESite, or ScormFly, ask away."
+        ? "I can't help with that one. For anything else about UniversitySite or CLESite, ask away."
         : response.content
           .filter((b): b is Anthropic.TextBlock => b.type === "text")
           .map((b) => b.text)

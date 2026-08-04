@@ -33,9 +33,6 @@ const OUT = join(ROOT, "scripts", "extracted.txt");
 const PAGES = [
   "index.html",
   "platform.html",
-  "features.html",
-  "solutions.html",
-  "integrations.html",
   "pricing.html",
   "about.html",
   "support.html",

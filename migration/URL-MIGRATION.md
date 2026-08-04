@@ -13,9 +13,9 @@ The redirect rules below fix that.
 | Old URL | New URL | Notes |
 |---|---|---|
 | `/` | `/` (index.html) | unchanged |
-| `/products.aspx` | `/features.html` | |
-| `/products.aspx#universitysite` | `/features.html` | anchor dropped |
-| `/products.aspx#clesite` | `/features.html#cle` | |
+| `/products.aspx` | `/platform` | |
+| `/products.aspx#universitysite` | `/platform` | anchor dropped |
+| `/products.aspx#clesite` | `/platform#cle` | |
 | `/about.aspx` | `/about.html` | |
 | `/about.aspx#team` | `/about.html#leadership` | |
 | `/contact.aspx` | `/contact.html` | |
@@ -56,7 +56,7 @@ The redirect rules below fix that.
       <rules>
         <rule name="products-cle" stopProcessing="true">
           <match url="^products\.aspx$" />
-          <action type="Redirect" url="/features.html" redirectType="Permanent" />
+          <action type="Redirect" url="/platform" redirectType="Permanent" />
         </rule>
         <rule name="about" stopProcessing="true">
           <match url="^about\.aspx$" />
@@ -95,7 +95,7 @@ The redirect rules below fix that.
 
 ### If moving to Netlify / Cloudflare Pages — `_redirects` at the site root
 ```
-/products.aspx                       /features.html            301
+/products.aspx                       /platform                 301
 /about.aspx                          /about.html               301
 /contact.aspx                        /contact.html             301
 /request-demo.aspx                   /contact.html             301

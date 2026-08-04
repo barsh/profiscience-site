@@ -320,7 +320,6 @@ Tell us about the audiences, workflows, and systems involved. We’ll help ident
 Start a Conversation
 
 ======================================================================
-features.html
 ======================================================================
 
 Platform
@@ -426,7 +425,6 @@ Let's Talk
 See pricing
 
 ======================================================================
-solutions.html
 ======================================================================
 
 Solutions
@@ -523,7 +521,6 @@ Tell us what you're trying to accomplish. We'll map it to Profiscience in under 
 Let's Talk
 
 ======================================================================
-integrations.html
 ======================================================================
 
 Integrations

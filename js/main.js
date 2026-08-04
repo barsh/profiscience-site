@@ -66,8 +66,8 @@
   });
 
   function setActiveNav() {
-    // Compare without the .html extension so active state works whether the
-    // server serves /solutions or /solutions.html (URLs are extensionless).
+    // Compare without the .html extension so active state works for the site’s
+    // extensionless URLs.
     var page = (location.pathname.split("/").pop() || "").replace(/\.html$/, "");
     // Only the top-level link gets the underline — dropdown entries share the
     // same base href and would all light up otherwise.

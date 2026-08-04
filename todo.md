@@ -1,7 +1,7 @@
 # todo
 
 - /resources page
-- REMOVE unlinked pages: solutions, features, etc
+- REMOVE unlinked pages: platform subpages and legacy content that no longer belong
 - tour -add hover; swap instructions right to left
 - Tour 
     - ManagerSite card: add Examples- Practice Area Leader, Department Head, Team Lead...
@@ -21,7 +21,7 @@
 
 ## done
 
-- use icons from solutions.html or features.html
+- use icons from the platform overview and supporting content
 - /CLIENTS page
 - /support page 
 - /STAY-CLEVER page

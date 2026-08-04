@@ -2,8 +2,8 @@
 
 These firms were on the website but are **not** on the current Cloud Report, so
 they were pulled from the live site (clients grid, homepage logo ticker, and the
-solutions.html trust strip). Their logo files are parked here so they can be
-restored quickly if a firm returns.
+legacy trust strip). Their logo files are parked here so they can be restored
+quickly if a firm returns.
 
 **To restore a firm:**
 1. Move its logo file back to `assets/clients/` (e.g. `git mv assets/clients/unlisted/bracewell.png assets/clients/`).

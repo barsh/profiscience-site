@@ -41,19 +41,9 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.profiscience.com/features</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://www.profiscience.com/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://www.profiscience.com/integrations</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.profiscience.com/pricing</loc>
@@ -67,11 +57,6 @@
   </url>
   <url>
     <loc>https://www.profiscience.com/resources</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.profiscience.com/solutions</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
