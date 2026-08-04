@@ -4,9 +4,12 @@
     "Legal & CLE",
     "AI & Product",
     "Onboarding",
+    "Growth and Implementation",
     "Integrations",
     "Compliance",
-    "Research"
+    "Research",
+    "Platform Flexibility",
+    "Customer Collaboration"
   ],
   "types": [
     "Case Study",
@@ -19,10 +22,10 @@
   "articles": [
     {
       "id": "steptoe-johnson-case-study",
-      "title": "Steptoe & Johnson",
+      "title": "Responding Quickly Without Adding Another System",
       "type": "Case Study",
-      "subject": "Legal & CLE",
-      "excerpt": "How a national firm standardizes training and CLE tracking on Profiscience.",
+      "subject": "Platform Flexibility",
+      "excerpt": "How Steptoe & Johnson adapted UniversitySite to support an urgent firmwide process using technology employees already knew.",
       "readTime": "",
       "image": "assets/clients/steptoe.png",
       "imageAlt": "Steptoe logo",
@@ -32,10 +35,10 @@
     },
     {
       "id": "verrill-equips-for-growth",
-      "title": "Verrill Equips for Growth",
+      "title": "Preparing Learning for a Growing Firm",
       "type": "Case Study",
-      "subject": "Onboarding",
-      "excerpt": "Scaling onboarding and continuing education as the firm grows.",
+      "subject": "Growth and Implementation",
+      "excerpt": "How Verrill implemented UniversitySite in 90 days to bring more structure to onboarding, required training, and professional development.",
       "readTime": "",
       "image": "assets/clients/verrill.png",
       "imageAlt": "Verrill logo",
@@ -45,10 +48,10 @@
     },
     {
       "id": "wbd-closed-captioning",
-      "title": "Womble Bond Dickinson: Closed Captioning at Scale",
+      "title": "From Client Challenge to Platform Capability",
       "type": "Case Study",
-      "subject": "AI & Product",
-      "excerpt": "Delivering accessible, captioned video learning across the firm.",
+      "subject": "Customer Collaboration",
+      "excerpt": "How Womble Bond Dickinson and Profiscience turned an accessibility challenge into a ScormFly capability available to every client.",
       "readTime": "",
       "image": "assets/clients/womble.png",
       "imageAlt": "Womble Bond Dickinson logo",

@@ -32,8 +32,8 @@
 <section class="page-hero">
   <div class="container">
     <span class="eyebrow">Resources</span>
-    <h1>Ideas, benchmarks, and playbooks <span class="gradient-text">for modern L&amp;D.</span></h1>
-    <p>The latest from the Profiscience team and our customer community — whitepapers, case studies, webinars, and field guides.</p>
+    <h1>How are law firms <span class="gradient-text">improving learning and CLE administration?</span></h1>
+    <p>Explore customer stories and practical perspectives on law-firm learning, professional development, CLE, and compliance.</p>
   </div>
 </section>
 
@@ -50,7 +50,10 @@
         <div class="res-filter-group" id="resSubjectFilters" role="group" aria-label="Filter resources by subject"></div>
       </div> -->
     </div>
-    <p class="res-count" id="resCount"></p>
+    <div class="res-count-row">
+      <p class="res-count" id="resCount"></p>
+      <button type="button" class="res-show-all" id="resShowAll" style="display:none">Show all</button>
+    </div>
 
     <!-- Cards rendered client-side by js/resources.js -->
     <div class="res-grid" id="resGrid"></div>
@@ -67,8 +70,8 @@
     <div class="split">
       <div class="reveal">
         <span class="eyebrow">Newsletter</span>
-        <h2>One email. Once a month.<br /><span class="gradient-text">Strictly useful.</span></h2>
-        <p>Benchmarks, case studies, product launches. No fluff, no recycled marketing emails.</p>
+        <h2>Ideas worth sharing with your team.</h2>
+        <p>Receive new case studies, practical guidance, and selected product developments for law-firm learning and compliance teams.</p>
       </div>
       <div class="form-card reveal">
         <form id="newsletterForm" class="newsletter-form" data-source="resources-page">
@@ -81,7 +84,7 @@
             <input id="nl-email" type="email" name="email" placeholder="you@company.com" required />
           </div>
           <div class="form-group">
-            <label for="nl-company">Company</label>
+            <label for="nl-company">Firm</label>
             <input id="nl-company" type="text" name="company" placeholder="Your firm" required />
           </div>
           <button type="submit" class="btn btn-primary btn-arrow" style="width:100%; justify-content:center" data-cta="nl_signup" id="nlSubmit">Subscribe</button>
@@ -96,10 +99,10 @@
 <section class="cta-band">
   <div class="container">
     <div class="reveal">
-      <h2>Want the platform walkthrough too?</h2>
-      <p>Content is great. A working discovery call is better.</p>
+      <h2>Have a question about your firm’s priorities?</h2>
+      <p>The resources may give you a starting point. Our team can help you think through how the issues apply to your firm.</p>
       <div class="btns">
-        <a href="contact" class="btn btn-primary btn-arrow" data-cta="res_demo">Let's Talk</a>
+        <a href="contact" class="btn btn-primary btn-arrow" data-cta="res_demo">Start a conversation</a>
       </div>
     </div>
   </div>

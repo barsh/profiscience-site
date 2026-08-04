@@ -421,6 +421,10 @@
 
     function replaceHashWithoutHistory(id) {
       if (!id) return;
+      // Preserve structured hash state (for example filter hashes like
+      // #type=Case+Study) used by page-specific scripts.
+      var currentRawHash = window.location.hash.replace(/^#/, "");
+      if (currentRawHash.indexOf("=") !== -1) return;
       var nextHash = "#" + id;
       if (window.location.hash === nextHash) return;
       history.replaceState(null, "", nextHash);

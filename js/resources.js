@@ -17,6 +17,7 @@ if (grid) {
   const typeFilters = document.getElementById("resTypeFilters");
   const subjFilters = document.getElementById("resSubjectFilters");
   const countEl = document.getElementById("resCount");
+  const showAllBtn = document.getElementById("resShowAll");
   const emptyEl = document.getElementById("resEmpty");
 
   const esc = (s) =>
@@ -25,6 +26,76 @@ if (grid) {
     }[c]));
 
   const state = { articles: [], type: "__all", subject: "__all" };
+
+  function uniq(list) {
+    return list.filter((v, i) => v && list.indexOf(v) === i);
+  }
+
+  function availableTypes() {
+    return uniq(state.articles.map((a) => a.type));
+  }
+
+  function availableSubjects() {
+    return uniq(state.articles.map((a) => a.subject));
+  }
+
+  function normalizeFilterValue(value, allowedValues) {
+    if (!value || value === "__all") return "__all";
+    return allowedValues.includes(value) ? value : "__all";
+  }
+
+  function setActiveChip(container, value) {
+    if (!container) return;
+    container.querySelectorAll(".res-chip").forEach((chip) => {
+      chip.classList.toggle("active", chip.getAttribute("data-value") === value);
+    });
+  }
+
+  // Hash format: #type=Case%20Study&subject=AI
+  // Non-filter hashes like #library or #newsletter are ignored.
+  function parseFilterHash() {
+    const raw = (window.location.hash || "").replace(/^#/, "");
+    if (!raw) {
+      return { type: "__all", subject: "__all" };
+    }
+    if (!raw.includes("=")) return null;
+
+    const params = new URLSearchParams(raw);
+    const hasFilterKey = params.has("type") || params.has("subject");
+    if (!hasFilterKey) return null;
+
+    return {
+      type: params.get("type") || "__all",
+      subject: params.get("subject") || "__all",
+    };
+  }
+
+  function writeFilterHash() {
+    const params = new URLSearchParams();
+    if (state.type !== "__all") params.set("type", state.type);
+    if (state.subject !== "__all") params.set("subject", state.subject);
+    const nextHash = params.toString();
+    const currentHash = (window.location.hash || "").replace(/^#/, "");
+    if (currentHash === nextHash) return;
+
+    const nextUrl =
+      window.location.pathname +
+      window.location.search +
+      (nextHash ? "#" + nextHash : "");
+    window.history.replaceState(null, "", nextUrl);
+  }
+  function applyHashToFilters() {
+    const parsed = parseFilterHash();
+    if (!parsed) return false;
+
+    state.type = normalizeFilterValue(parsed.type, availableTypes());
+    state.subject = normalizeFilterValue(parsed.subject, availableSubjects());
+    writeFilterHash();
+    setActiveChip(typeFilters, state.type);
+    setActiveChip(subjFilters, state.subject);
+    render();
+    return true;    return true;
+  }
 
   // --- Load ------------------------------------------------
   async function loadFromSupabase() {
@@ -134,13 +205,23 @@ if (grid) {
 
   function render() {
     const items = visible();
+    const total = state.articles.length;
+    const isFiltered = state.type !== "__all" || state.subject !== "__all";
+    const hasHiddenItems = items.length < total;
     grid.innerHTML = items.map(cardHtml).join("");
 
     if (countEl) {
-      countEl.textContent =
-        items.length === state.articles.length
-          ? state.articles.length + (state.articles.length === 1 ? " resource" : " resources")
-          : "Showing " + items.length + " of " + state.articles.length;
+      if (!isFiltered || !hasHiddenItems) {
+        countEl.textContent =
+          total + (total === 1 ? " resource" : " resources");
+      } else {
+        countEl.textContent =
+          "Showing " + items.length + " of " + total + " resources";
+      }
+    }
+
+    if (showAllBtn) {
+      showAllBtn.style.display = isFiltered && hasHiddenItems ? "inline-flex" : "none";
     }
 
     if (emptyEl) {
@@ -156,15 +237,20 @@ if (grid) {
       const btn = e.target.closest(".res-chip");
       if (!btn) return;
       state[key] = btn.getAttribute("data-value");
-      container.querySelectorAll(".res-chip").forEach((c) => c.classList.remove("active"));
-      btn.classList.add("active");
+      setActiveChip(container, state[key]);
+      writeFilterHash();
       render();
       if (window.pfTrack) window.pfTrack("resource_filter", { [key]: state[key] });
     });
   }
 
-  function uniq(list) {
-    return list.filter((v, i) => v && list.indexOf(v) === i);
+  function clearFilters() {
+    state.type = "__all";
+    state.subject = "__all";
+    setActiveChip(typeFilters, state.type);
+    setActiveChip(subjFilters, state.subject);
+    writeFilterHash();
+    render();
   }
 
   // --- Boot ------------------------------------------------
@@ -201,12 +287,24 @@ if (grid) {
       return;
     }
 
-    if (typeFilters) typeFilters.innerHTML = chipsHtml(uniq(articles.map((a) => a.type)), "__all");
-    if (subjFilters) subjFilters.innerHTML = chipsHtml(uniq(articles.map((a) => a.subject)), "__all");
+    if (typeFilters) typeFilters.innerHTML = chipsHtml(availableTypes(), "__all");
+    if (subjFilters) subjFilters.innerHTML = chipsHtml(availableSubjects(), "__all");
     wireChips(typeFilters, "type");
     wireChips(subjFilters, "subject");
+    if (showAllBtn) {
+      showAllBtn.addEventListener("click", () => {
+        clearFilters();
+        if (window.pfTrack) window.pfTrack("resource_filter_clear", { source: "show_all" });
+      });
+    }
 
-    render();
+    if (!applyHashToFilters()) {
+      render();
+    }
+
+    window.addEventListener("hashchange", () => {
+      applyHashToFilters();
+    });
   })();
 }
 

@@ -1,8 +1,5 @@
 # todo
 
--   /clients 
-    - add explore more client stories CTA
-    - add workday client story
 - /resources page
 - REMOVE unlinked pages: solutions, features, pricing, etc
 - tour -add hover; swap instructions right to left
@@ -19,6 +16,7 @@
 
 ## themes to incorporate
 
+- create a page or area to incorporate what we hear about other long-standing CLE trackers
 - build 1 minute per month pays for itself
 - cost of not switching or staying with status quo
 

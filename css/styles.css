@@ -4145,6 +4145,27 @@ footer .foot-admin:hover { color: #fff; }
   font-size: .88rem;
   margin: 6px 0 26px;
 }
+.res-count-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.res-show-all {
+  margin: 0 0 24px;
+  border: 0;
+  background: transparent;
+  color: var(--pf-blue);
+  font-size: .88rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+  padding: 0;
+}
+.res-show-all:hover {
+  color: var(--pf-blue-dark);
+}
 
 /* Pipedrive embedded web form.
    Reserve height so the card doesn't collapse then jump when the iframe loads. */
@@ -4482,6 +4503,19 @@ footer .foot-admin:hover { color: #fff; }
 .cs-prose > *:first-child { margin-top: 0; }
 .cs-prose h2 { font-size: 1.7rem; margin: 44px 0 16px; }
 .cs-prose h2:first-child { margin-top: 0; }
+.cs-prose .eyebrow {
+  font-size: .8rem;
+  line-height: 1.2;
+  margin-top: 34px;
+  margin-bottom: 10px;
+}
+.cs-prose > .eyebrow:first-child {
+  margin-top: 1rem;
+}
+.cs-prose .eyebrow + h2,
+.cs-prose .eyebrow + h3 {
+  margin-top: 1rem;
+}
 .cs-prose p { font-size: 1.05rem; line-height: 1.75; }
 .cs-prose ul {
   margin: 0 0 1rem;
