@@ -5197,6 +5197,10 @@ footer .foot-admin:hover { color: #fff; }
   font-weight: 600;
 }
 
+.platform-overview-control[hidden] {
+  display: none !important;
+}
+
 .platform-overview .platform-overview-control.btn-ghost {
   background: #ffffff;
   color: var(--pf-navy);
@@ -5224,7 +5228,7 @@ footer .foot-admin:hover { color: #fff; }
 .platform-overview-app {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 66%) minmax(0, 34%);
+  grid-template-columns: minmax(0, 34%) minmax(0, 66%);
   gap: 18px;
   align-items: stretch;
   border: 1px solid rgba(14, 46, 84, 0.12);
@@ -5235,6 +5239,7 @@ footer .foot-admin:hover { color: #fff; }
 }
 
 .platform-overview-diagram {
+  order: 2;
   position: relative;
   display: grid;
   grid-template-rows: auto auto auto;
@@ -5654,6 +5659,7 @@ footer .foot-admin:hover { color: #fff; }
 }
 
 .platform-overview-detail {
+  order: 1;
   display: flex;
   flex-direction: column;
   border: 1px solid rgba(14, 46, 84, 0.12);
@@ -5770,78 +5776,6 @@ footer .foot-admin:hover { color: #fff; }
   line-height: 1.5;
 }
 
-.platform-overview-dialog {
-  position: fixed;
-  inset: 0;
-  z-index: 1200;
-  display: grid;
-  place-items: center;
-  padding: 22px;
-}
-
-.platform-overview-dialog[hidden] {
-  display: none !important;
-}
-
-.platform-overview-dialog-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(10, 37, 64, 0.56);
-  backdrop-filter: blur(4px);
-}
-
-.platform-overview-dialog-panel {
-  position: relative;
-  z-index: 1;
-  width: min(1260px, calc(100vw - 44px));
-  max-height: calc(100vh - 44px);
-  overflow: auto;
-  background: #fff;
-  border-radius: var(--r-xl);
-  border: 1px solid rgba(14, 46, 84, 0.18);
-  box-shadow: var(--sh-lg);
-  padding: 16px;
-}
-
-.platform-overview-dialog-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-}
-
-.platform-overview-dialog-head h3 {
-  margin: 0;
-  font-size: 1.28rem;
-  color: var(--pf-navy);
-}
-
-.platform-overview-dialog-close {
-  border: 1px solid var(--pf-line);
-  background: #fff;
-  color: var(--pf-mute);
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  font-size: 1.5rem;
-  line-height: 1;
-  cursor: pointer;
-}
-
-.platform-overview-dialog-sub {
-  margin: 8px 0 12px;
-  color: var(--pf-slate);
-  font-size: 0.9rem;
-}
-
-.platform-overview-dialog-host .platform-overview-app {
-  border-color: rgba(14, 46, 84, 0.15);
-}
-
-.platform-overview-dialog-open {
-  overflow: hidden;
-}
-
 @media (max-width: 1160px) {
   .platform-overview-app {
     grid-template-columns: 1fr;
@@ -5854,6 +5788,31 @@ footer .foot-admin:hover { color: #fff; }
 
   .platform-overview-detail-back {
     display: inline-flex;
+  }
+}
+
+@media (max-width: 1160px) and (min-width: 761px) and (hover: hover) and (pointer: fine) {
+  .platform-node {
+    position: relative;
+    padding-bottom: 30px;
+  }
+
+  .platform-node::after {
+    content: "Click to view";
+    position: absolute;
+    right: 10px;
+    bottom: 8px;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #ffffff;
+    background: rgba(8, 23, 44, 0.58);
+    border: 1px solid rgba(255, 255, 255, 0.54);
+    box-shadow: 0 8px 14px -10px rgba(8, 23, 44, 0.75);
+    border-radius: 999px;
+    padding: 4px 9px;
+    pointer-events: none;
   }
 }
 
@@ -5916,7 +5875,14 @@ footer .foot-admin:hover { color: #fff; }
   }
 
   .platform-overview-note {
-    font-size: 0.82rem;
+    font-size: 0.86rem;
+    font-weight: 700;
+    color: var(--pf-navy);
+    margin: 2px 0 0;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(14, 74, 201, 0.24);
+    background: linear-gradient(180deg, rgba(233, 244, 255, 0.92) 0%, rgba(223, 239, 255, 0.88) 100%);
   }
 
   .platform-overview-app {
@@ -5945,35 +5911,53 @@ footer .foot-admin:hover { color: #fff; }
     padding: 14px;
   }
 
-  .platform-overview-dialog-host .platform-overview-detail {
-    min-height: calc(100dvh - 44px);
-  }
-
   .platform-overview-detail-title {
     font-size: 1.24rem;
+  }
+
+  .platform-node {
+    position: relative;
+    padding-bottom: 30px;
+  }
+
+  .platform-node::after {
+    content: "Tap to view";
+    position: absolute;
+    right: 10px;
+    bottom: 8px;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #ffffff;
+    background: rgba(8, 23, 44, 0.58);
+    border: 1px solid rgba(255, 255, 255, 0.54);
+    box-shadow: 0 8px 14px -10px rgba(8, 23, 44, 0.75);
+    border-radius: 999px;
+    padding: 4px 9px;
+    pointer-events: none;
   }
 
   .platform-overview-summary {
     border-radius: var(--r-lg);
   }
 
-  .platform-overview-dialog {
-    padding: 10px;
+}
+
+@media (max-width: 760px) and (hover: hover) and (pointer: fine) {
+  .platform-node {
+    padding-bottom: 12px;
   }
 
-  .platform-overview-dialog-panel {
-    width: calc(100vw - 20px);
-    max-height: calc(100vh - 20px);
-    border-radius: var(--r-lg);
-    padding: 12px;
+  .platform-node::after {
+    content: none;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .platform-node,
   .platform-overview-app,
-  .platform-overview-diagram,
-  .platform-overview-dialog-panel {
+  .platform-overview-diagram {
     transition: none;
   }
 

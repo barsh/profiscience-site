@@ -109,20 +109,15 @@
   var liveEl = root.querySelector("[data-platform-live]");
   var tourBtn = root.querySelector("[data-platform-tour-toggle]");
   var resetBtn = root.querySelector("[data-platform-reset]");
-  var expandBtn = root.querySelector("[data-platform-expand]");
 
   var tourOrder = ["university", "clesite", "instructor", "learning", "manager", "integrations", "extensions", "beyond"];
   var tourTimer = null;
   var tourStepIndex = -1;
   var reduceMotionMedia = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var noteEl = root.querySelector(".platform-overview-note");
+  var supportsHoverMedia = window.matchMedia("(hover: hover) and (pointer: fine)");
 
-  var dialog = root.parentElement.querySelector("[data-platform-dialog]");
-  var dialogPanel = dialog ? dialog.querySelector("[data-platform-dialog-panel]") : null;
-  var dialogHost = dialog ? dialog.querySelector("[data-platform-dialog-host]") : null;
   var app = root.querySelector("[data-platform-app]");
-  var appHomeParent = app ? app.parentNode : null;
-  var appHomeNextSibling = app ? app.nextSibling : null;
-  var lastFocusedBeforeDialog = null;
 
   function setTourVisualState(active) {
     root.classList.toggle("platform-overview--tour-active", !!active);
@@ -134,6 +129,14 @@
 
   function isMobileOverviewLayout() {
     return window.matchMedia("(max-width: 760px)").matches;
+  }
+
+  function hasTouchScreen() {
+    return ("ontouchstart" in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
+  }
+
+  function canHoverToPreview() {
+    return supportsHoverMedia.matches && !hasTouchScreen() && !isStackedOverviewLayout();
   }
 
   function escapeHtml(text) {
@@ -154,6 +157,8 @@
   }
 
   function renderEmptyState() {
+    selectedKey = null;
+
     if (kickerEl) kickerEl.textContent = "Interactive overview";
     if (titleEl) titleEl.textContent = "Select a component";
     if (copyEl) {
@@ -165,6 +170,7 @@
     if (examplesEl) examplesEl.innerHTML = "";
     setPressedState(null);
     if (liveEl) liveEl.textContent = "";
+    updateResetVisibility();
   }
 
   function renderExamples(item) {
@@ -200,10 +206,17 @@
 
     renderExamples(item);
     setPressedState(key);
+    updateResetVisibility();
 
     if (announce && liveEl) {
       liveEl.textContent = item.title + ": " + item.kicker;
     }
+  }
+
+  function updateResetVisibility() {
+    if (!resetBtn) return;
+
+    resetBtn.hidden = !selectedKey;
   }
 
   function selectNode(key, announce) {
@@ -212,10 +225,6 @@
   }
 
   function getScrollContainer() {
-    if (dialog && !dialog.hidden && dialogPanel && dialogPanel.contains(detailEl)) {
-      return dialogPanel;
-    }
-
     return window;
   }
 
@@ -227,10 +236,6 @@
     var detailRect = detailEl.getBoundingClientRect();
 
     if (container === window) {
-      var viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-      var isVisible = detailRect.top >= 90 && detailRect.bottom <= viewportHeight - 12;
-      if (isVisible) return;
-
       var targetTop = window.scrollY + detailRect.top - 90;
       window.scrollTo({
         top: Math.max(0, targetTop),
@@ -258,18 +263,11 @@
     var container = getScrollContainer();
 
     if (container === window) {
-      if (isMobileOverviewLayout()) {
-        var diagramRect = diagramEl.getBoundingClientRect();
-        var targetTop = window.scrollY + diagramRect.top - 90;
-        window.scrollTo({
-          top: Math.max(0, targetTop),
-          behavior: reduceMotionMedia.matches ? "auto" : "smooth"
-        });
-        return;
-      }
-
+      var appTarget = app || diagramEl;
+      var appRect = appTarget.getBoundingClientRect();
+      var targetTop = window.scrollY + appRect.top - 90;
       window.scrollTo({
-        top: 0,
+        top: Math.max(0, targetTop),
         behavior: reduceMotionMedia.matches ? "auto" : "smooth"
       });
       return;
@@ -333,99 +331,33 @@
     }, 3200);
   }
 
-  function focusableElements(container) {
-    var selector = [
-      "a[href]",
-      "button:not([disabled])",
-      "textarea:not([disabled])",
-      "input:not([disabled])",
-      "select:not([disabled])",
-      "[tabindex]:not([tabindex='-1'])"
-    ].join(",");
-
-    return Array.prototype.slice.call(container.querySelectorAll(selector)).filter(function (el) {
-      return el.offsetWidth > 0 || el.offsetHeight > 0 || el === document.activeElement;
-    });
-  }
-
-  function closeDialog() {
-    if (!dialog || dialog.hidden) return;
-
-    document.removeEventListener("keydown", onDialogKeydown);
-    document.body.classList.remove("platform-overview-dialog-open");
-
-    if (app && appHomeParent) {
-      if (appHomeNextSibling && appHomeNextSibling.parentNode === appHomeParent) {
-        appHomeParent.insertBefore(app, appHomeNextSibling);
-      } else {
-        appHomeParent.appendChild(app);
-      }
-    }
-
-    dialog.hidden = true;
-
-    if (expandBtn) {
-      expandBtn.focus();
-    } else if (lastFocusedBeforeDialog && typeof lastFocusedBeforeDialog.focus === "function") {
-      lastFocusedBeforeDialog.focus();
-    }
-  }
-
-  function trapFocus(event) {
-    if (!dialogPanel || event.key !== "Tab") return;
-
-    var focusables = focusableElements(dialogPanel);
-    if (!focusables.length) {
-      event.preventDefault();
-      dialogPanel.focus();
-      return;
-    }
-
-    var first = focusables[0];
-    var last = focusables[focusables.length - 1];
-
-    if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault();
-      last.focus();
-      return;
-    }
-
-    if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault();
-      first.focus();
-    }
-  }
-
-  function onDialogKeydown(event) {
-    if (event.key === "Escape") {
-      event.preventDefault();
-      closeDialog();
-      return;
-    }
-
-    trapFocus(event);
-  }
-
-  function openDialog() {
-    if (!dialog || !dialogPanel || !dialogHost || !app) return;
-
-    lastFocusedBeforeDialog = document.activeElement;
-    dialog.hidden = false;
-    dialogHost.appendChild(app);
-    document.body.classList.add("platform-overview-dialog-open");
-    document.addEventListener("keydown", onDialogKeydown);
-    window.requestAnimationFrame(function () {
-      dialogPanel.focus();
-    });
-  }
-
   nodes.forEach(function (node) {
     node.addEventListener("click", function () {
       stopTour();
       selectNode(node.getAttribute("data-platform-node"), true);
       revealDetailPanel();
     });
+
+    node.addEventListener("mouseenter", function () {
+      if (!canHoverToPreview()) return;
+
+      stopTour();
+      selectNode(node.getAttribute("data-platform-node"), true);
+    });
   });
+
+  function updateOverviewNote() {
+    if (!noteEl) return;
+
+    if (isMobileOverviewLayout() && hasTouchScreen()) {
+      noteEl.textContent = "Tap any component to view details below.";
+      return;
+    }
+
+    noteEl.textContent = canHoverToPreview()
+      ? "Hover or select any component to update the explanation panel."
+      : "Select any component to update the explanation panel.";
+  }
 
   if (tourBtn) {
     tourBtn.addEventListener("click", function () {
@@ -461,25 +393,18 @@
     });
   }
 
-  if (expandBtn && dialog) {
-    expandBtn.addEventListener("click", function () {
-      openDialog();
-    });
-
-    Array.prototype.slice.call(dialog.querySelectorAll("[data-platform-dialog-close]")).forEach(function (closeEl) {
-      closeEl.addEventListener("click", function (event) {
-        if (event.target.hasAttribute("data-platform-dialog-close")) {
-          closeDialog();
-        }
-      });
-    });
-  }
-
   if (reduceMotionMedia && typeof reduceMotionMedia.addEventListener === "function") {
     reduceMotionMedia.addEventListener("change", function () {
       stopTour();
     });
   }
 
+  if (supportsHoverMedia && typeof supportsHoverMedia.addEventListener === "function") {
+    supportsHoverMedia.addEventListener("change", updateOverviewNote);
+  }
+
+  window.addEventListener("resize", updateOverviewNote);
+
   renderEmptyState();
+  updateOverviewNote();
 })();
