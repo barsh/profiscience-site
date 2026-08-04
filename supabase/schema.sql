@@ -307,7 +307,7 @@ values
    'Haynes Boone: Extending the Platform with the SDK',
    'case-study', 'integrations',
    'A look at how the firm tailored Profiscience to its own systems.',
-   'case-study-haynes-boone.html',
+   'case-study-haynes-boone-sdk.html',
    'assets/case-studies/haynes-boone-sdk-extension.pdf',
    false, 'published', 40, now()),
 

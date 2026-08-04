@@ -1,5 +1,8 @@
 # todo
 
+-   /clients 
+    - add explore more client stories CTA
+    - add workday client story
 - /resources page
 - REMOVE unlinked pages: solutions, features, pricing, etc
 - tour -add hover; swap instructions right to left
@@ -12,6 +15,7 @@
 ## low priority
 
 - revisit the signature line for customer quotes, Andrew recently changed from a two column layout with icon on the left to centered layout maybe commit 426023915c0630290f5fba28cafe5d873171f7ba
+- resync haynes boone sdk case study PDF
 
 ## themes to incorporate
 

@@ -1274,7 +1274,7 @@ Explore integrations
 Read more case studies
 
 ======================================================================
-case-study-haynes-boone.html
+case-study-haynes-boone-sdk.html
 ======================================================================
 
 &larr; All resources
