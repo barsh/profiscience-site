@@ -36,7 +36,14 @@
       kicker: "Visibility for the right people",
       title: "ManagerSite",
       copy: "Provide designated managers and leaders with relevant learning insight without giving them full administrative access.",
-      whyItMatters: "When leaders need visibility, should they have to request another report or rely on an administrator? ManagerSite gives appropriate access where it is useful."
+      whyItMatters: "When leaders need visibility, should they have to request another report or rely on an administrator? ManagerSite gives appropriate access where it is useful.",
+      examplesHeading: "Examples",
+      examples: [
+        "Practice area leaders",
+        "Department heads",
+        "Office managers",
+        "Learning coordinators"
+      ]
     },
     clesite: {
       kicker: "Specialized CLE administration",
