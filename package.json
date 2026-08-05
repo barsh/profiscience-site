@@ -11,16 +11,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/andrewster05/profiscience-site.git"
+    "url": "git+https://github.com/barsh/profiscience-site.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/andrewster05/profiscience-site/issues"
+    "url": "https://github.com/barsh/profiscience-site/issues"
   },
-  "homepage": "https://github.com/andrewster05/profiscience-site#readme",
+  "homepage": "https://barsh.github.io/profiscience-site/",
   "devDependencies": {
     "playwright": "^1.61.1"
   }

@@ -21,7 +21,7 @@ in the project**, ahead of any feature work.
 
 | Service | Owner | Risk if that person is unavailable |
 |---|---|---|
-| GitHub `andrewster05/profiscience-site` | Personal | Company cannot deploy or change the site |
+| GitHub `barsh/profiscience-site` | Personal | Company cannot deploy or change the site if the account holder is unavailable |
 | Supabase project `rqkbjvyxhdknbjhaszya` | Check the dashboard | Loses leads, subscribers, and chat transcripts — **real customer data** |
 | Anthropic (AI billing) | Personal, personal card | Chat stops when the card fails |
 | Pipedrive `profiscience.pipedrive.com` | Company ✅ | — |
@@ -158,7 +158,7 @@ An origin is **scheme + host + port, never a path**. A trailing
 `/profiscience-site` will never match and the widget fails silently.
 
 ```
-ALLOWED_ORIGIN=https://www.profiscience.com,https://andrewster05.github.io,http://localhost:3000
+ALLOWED_ORIGIN=https://www.profiscience.com,https://barsh.github.io,http://localhost:3000
 ```
 
 `localhost` and `127.0.0.1` are different origins to a browser. Keep the
