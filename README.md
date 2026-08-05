@@ -60,6 +60,10 @@ runs the functions directly — see [Running locally](#running-the-assistant-loc
 The site is plain files. Whatever hosts it, deploying means publishing the
 repo contents — there is nothing to compile.
 
+The current GitHub Pages host and the planned `www.profiscience.com` cutover
+are documented in [`docs/domain-cutover.md`](docs/domain-cutover.md). Keep the
+Supabase CORS change in the same deployment window as any host change.
+
 `web.config` at the root holds the IIS redirect rules that keep the old
 `.aspx` URLs working. See `migration/URL-MIGRATION.md` for the full
 old-to-new URL map and what is still outstanding.
@@ -158,7 +162,7 @@ An origin is **scheme + host + port, never a path**. A trailing
 `/profiscience-site` will never match and the widget fails silently.
 
 ```
-ALLOWED_ORIGIN=https://www.profiscience.com,https://barsh.github.io,http://localhost:3000
+ALLOWED_ORIGIN=https://www.profiscience.com,https://profiscience.com,https://new.profiscience.com,https://barsh.github.io,https://andrewster05.github.io,http://localhost:3000
 ```
 
 `localhost` and `127.0.0.1` are different origins to a browser. Keep the

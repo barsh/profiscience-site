@@ -20,7 +20,7 @@
   "bugs": {
     "url": "https://github.com/barsh/profiscience-site/issues"
   },
-  "homepage": "https://barsh.github.io/profiscience-site/",
+  "homepage": "https://www.profiscience.com/",
   "devDependencies": {
     "playwright": "^1.61.1"
   }
