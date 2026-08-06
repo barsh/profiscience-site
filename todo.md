@@ -1,6 +1,8 @@
 # todo
 
 - customer quotes should have a theme
+- CLESite case studies: gibbons, orrick, bakerlaw
+- create case study for foley about CLESite
 
 ## low priority
 

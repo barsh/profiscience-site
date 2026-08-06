@@ -143,7 +143,8 @@
   }
 
   function canHoverToPreview() {
-    return supportsHoverMedia.matches && !hasTouchScreen() && !isStackedOverviewLayout();
+    // Hybrid devices can support both touch and mouse; allow hover when a fine hover pointer exists.
+    return supportsHoverMedia.matches && !isStackedOverviewLayout();
   }
 
   function escapeHtml(text) {

@@ -2,7 +2,7 @@
 index.html
 ======================================================================
 
-Learning and CLE Technology for Law Firms
+Learning and CLE Platform for Law Firms
 # Is your firm's learning and compliance technology helping your attorneys — or creating more work for your team?
 If routine learning and CLE or CPD work still depends on manual follow-up, workarounds, spreadsheets, and email, it may be time for a different approach.
 Profiscience helps law firms move beyond long-standing CLE systems that have not kept pace, generic learning platforms that were never designed for law-firm workflows, and the spreadsheets and email that fill the gaps—with one connected platform built specifically for legal learning and compliance.
