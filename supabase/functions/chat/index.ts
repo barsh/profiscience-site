@@ -395,6 +395,7 @@ Deno.serve(async (req) => {
   let body: {
     messages?: Array<{ role: string; content: string }>;
     session_id?: unknown;
+    turn?: unknown;
   };
   try {
     body = await req.json();
@@ -424,15 +425,28 @@ Deno.serve(async (req) => {
 
   // Client-supplied and therefore untrusted: bound it and don't let it into
   // the database unchecked. It groups turns of one conversation for review;
-  // it is not an identity and is not tied to a person or an IP.
+  // it is not an identity and is not tied to a person or an IP. The browser
+  // now keeps it across page loads so a resumed conversation stays one row
+  // in chat_conversations — see the note in js/chat.js.
   const sessionId =
     typeof body.session_id === "string" && body.session_id.trim()
       ? body.session_id.trim().slice(0, 64)
       : "unknown";
 
-  // Turn number for the review views. Counts user messages in the history
-  // the client replayed, so it survives the server being stateless.
-  const turn = messages.filter((m) => m.role === "user").length;
+  // Turn number for the review views — display ordering only, never trusted
+  // for anything that matters.
+  //
+  // The client counts it, because only the client can. Deriving it here by
+  // counting the replayed history stops incrementing the moment a
+  // conversation is longer than MAX_HISTORY_TURNS, and every exchange after
+  // that logs the same number — which now happens routinely, since the
+  // browser resumes conversations across visits instead of starting over on
+  // every refresh. Fall back to counting when the value is missing or
+  // implausible, e.g. an older cached copy of chat.js.
+  const clientTurn = typeof body.turn === "number" ? Math.floor(body.turn) : NaN;
+  const turn = Number.isFinite(clientTurn) && clientTurn > 0 && clientTurn <= 1e6
+    ? clientTurn
+    : messages.filter((m) => m.role === "user").length;
 
   if (messages.length === 0 || messages[messages.length - 1].role !== "user") {
     return new Response(JSON.stringify({ error: "expected_user_message" }), {
