@@ -25,6 +25,19 @@
                linear-gradient(135deg, #0A2540 0%, #0E2E54 50%, #0E4AC9 130%);
   --grad-btn:  linear-gradient(135deg, #0E4AC9 0%, #1AA6E6 100%);
   --grad-text: linear-gradient(135deg, #0E4AC9 0%, #1AA6E6 100%);
+
+  /* Warm CTA accent. Deliberately the ONLY warm surface in the system: a click
+     target stands out by being the one thing wearing this colour, so it is not
+     shared with icons, avatars, or headline text. Both stops clear 4.5:1 contrast
+     against white label text (4.65:1 → 6.83:1), so the whole sweep passes AA. */
+  --pf-cta:      #ff6700;
+  /* Same hue as the CTA, lightened for use on the dark hero card — the fill
+     color itself only manages 1.7:1 against that blue. */
+  --pf-cta-tint: #f16f18;
+  --grad-cta:    linear-gradient(135deg, #D0440A 0%, #A82F06 100%);
+  /* Cast in a deep burnt tone rather than the button's own bright orange, and
+     kept tight — a wide blur in the fill color blooms into a haze on white. */
+  --sh-glow-cta: 0 2px 4px -1px rgba(120,32,4,.22), 0 10px 22px -10px rgba(120,32,4,.42);
   /* Brighter blue→cyan for gradient text sitting on dark surfaces,
      where the deep-royal --grad-text loses contrast. */
   --grad-text-on-dark: linear-gradient(135deg, #4D90FF 0%, #2BC4F0 100%);
@@ -46,7 +59,8 @@
   --r-xl: 28px;
 
   --container: 1200px;
-  --pf-sticky-offset: 90px;
+  /* 72px nav-inner + 1px bottom border; JS re-measures the real height on load/resize. */
+  --pf-sticky-offset: 73px;
 }
 
 * { box-sizing: border-box; }
@@ -142,13 +156,12 @@ p  { margin: 0 0 1rem; color: var(--pf-slate); }
   border-color: rgba(255,255,255,.2);
 }
 
-/* Keep the long homepage hero eyebrow on one line at phone widths. */
+/* Keep the long homepage hero eyebrow on one line at phone widths. The size it
+   uses there is set alongside the other .hero-visual .eyebrow rules, which come
+   later in this file and would otherwise win on equal specificity. */
 @media (max-width: 640px) {
   .eyebrow--hero-nowrap {
     white-space: nowrap;
-    font-size: .7rem;
-    letter-spacing: .08em;
-    padding: 5px 10px;
     max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -465,6 +478,14 @@ section.dark .gradient-text,
   gap: 10px;
   align-items: center;
 }
+/* Hold the header CTA at the base button size — in-page primaries run larger,
+   but the 72px bar has no room to grow. Declared above the width media queries
+   below so their tighter padding still wins on equal specificity. */
+.nav-cta .btn-primary,
+.nav-links a.nav-sheet-cta {
+  padding: 12px 22px;
+  font-size: .95rem;
+}
 .nav-toggle {
   display: none;
   background: transparent;
@@ -606,15 +627,25 @@ section.dark .gradient-text,
   white-space: nowrap;
 }
 .btn-primary {
-  background: var(--grad-btn);
+  background: var(--grad-cta);
   color: white;
-  box-shadow: var(--sh-glow);
+  box-shadow: var(--sh-glow-cta);
   border: none;
+  /* One size step above the rest of the button system, so the main action reads
+     as primary next to secondary buttons and text links even before color. */
+  padding: 15px 30px;
+  font-size: 1.02rem;
 }
 .btn-primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 25px 60px -15px rgba(14,74,201,.6);
+  box-shadow: 0 3px 6px -1px rgba(120,32,4,.26), 0 16px 28px -12px rgba(120,32,4,.5);
   color: white;
+}
+/* The blue page focus ring reads as decoration on a warm button; a dark halo
+   keeps the ring obvious on both the light sections and the navy hero. */
+.btn-primary:focus-visible {
+  outline-color: rgba(168,47,6,.9);
+  box-shadow: var(--sh-glow-cta), 0 0 0 3px rgba(255,255,255,.85);
 }
 .btn-secondary {
   background: white;
@@ -643,6 +674,7 @@ section.dark .gradient-text,
 /* Reusable inline button group (side-by-side on desktop, stacked + centered on mobile) */
 .btns {
   display: flex;
+  align-items: center;
   gap: 14px;
   flex-wrap: wrap;
   margin-top: 28px;
@@ -662,9 +694,24 @@ section.dark .gradient-text,
   color: white;
   background: var(--grad-hero);
   overflow: hidden;
-  padding: 90px 0 120px;
+  /* Sized so the whole hero — stat row included — lands in the first screen
+     without scrolling. svh keeps mobile honest when the browser UI is showing. */
+  display: flex;
+  align-items: center;
+  min-height: calc(100vh - var(--pf-sticky-offset));
+  min-height: calc(100svh - var(--pf-sticky-offset));
+  padding: 48px 0 48px;
 }
-.hero h1 { color: white; }
+.hero > .container { width: 100%; }
+.hero h1 {
+  color: white;
+  /* Sized to fill its column on two lines rather than wrap to three. */
+  font-size: clamp(2.1rem, 3.7vw, 3.5rem);
+  line-height: 1.08;
+}
+/* Breaks the headline between its two sentences instead of wherever the column
+   happens to run out. */
+.hero-copy h1 .gradient-text { display: block; }
 .hero p.lead {
   color: rgba(255,255,255,.85);
   font-size: 1.2rem;
@@ -672,21 +719,85 @@ section.dark .gradient-text,
 }
 .hero-grid {
   display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: 60px;
+  /* Weighted to the copy so the headline gets a measure wide enough to be set
+     large; the card reads fine at the narrower width. */
+  grid-template-columns: 1.35fr 0.85fr;
+  /* No row gap: the stat strip carries its own margin above the divider. */
+  gap: 0 48px;
   align-items: start;
 }
-.hero-full-width-head {
-  grid-column: 1 / -1;
+/* Centers the card against the taller copy column instead of top-aligning it
+   and leaving a hole above the stat row. */
+.hero-visual { align-self: center; }
+/* The label now has the card's width to fit in, not the full copy column, and
+   it carries a slow cyan breathing glow so it reads as a lit element over the
+   card rather than a plain caption. */
+.hero-visual .eyebrow {
+  /* Centered over the card rather than pinned to the column's left edge, so the
+     label reads as a caption for the card below it. */
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: .8rem;
+  letter-spacing: .08em;
+  padding: 6px 12px;
+  margin-bottom: 25px;
+  color: #DCF0FF;
+  background: linear-gradient(135deg, rgba(26,166,230,.24) 0%, rgba(80,136,236,.16) 100%);
+  border-color: rgba(120,200,255,.45);
+  text-shadow: 0 0 14px rgba(120,215,255,.45);
+  animation: eyebrowGlow 3.6s ease-in-out infinite alternate;
 }
-.page-hero .hero-full-width-head h1 {
-  max-width: inherit;
+@keyframes eyebrowGlow {
+  from { box-shadow: 0 0 0 1px rgba(26,166,230,.10), 0 4px 16px -6px rgba(26,166,230,.35); }
+  to   { box-shadow: 0 0 0 1px rgba(26,166,230,.30), 0 10px 30px -8px rgba(26,166,230,.80); }
 }
+@media (prefers-reduced-motion: reduce) {
+  .hero-visual .eyebrow {
+    animation: none;
+    box-shadow: 0 0 0 1px rgba(26,166,230,.22), 0 8px 24px -8px rgba(26,166,230,.6);
+  }
+}
+@media (min-width: 901px) and (max-width: 1180px) {
+  .hero-visual .eyebrow { font-size: .62rem; letter-spacing: .05em; padding: 5px 10px; }
+}
+@media (max-width: 640px) {
+  .hero-visual .eyebrow { font-size: .64rem; letter-spacing: .04em; padding: 5px 10px; }
+}
+.hero-copy .lead { margin-bottom: 0; }
 .hero-actions {
   display: flex;
-  gap: 14px;
+  align-items: center;
+  gap: 14px 22px;
   margin-top: 28px;
   flex-wrap: wrap;
+}
+/* Secondary hero CTA, demoted to a text link so the primary button owns the
+   click. Two equal-weight buttons split intent. */
+.hero-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 600;
+  font-size: .95rem;
+  color: rgba(255,255,255,.88);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,.28);
+  padding-bottom: 2px;
+  transition: color .2s ease, border-color .2s ease, gap .2s ease;
+}
+.hero-link::after {
+  content: "→";
+  font-size: 1rem;
+  line-height: 1;
+}
+.hero-link:hover,
+.hero-link:focus-visible {
+  color: #fff;
+  border-bottom-color: var(--pf-cyan);
+  gap: 11px;
 }
 .hero-stats {
   display: flex;
@@ -706,30 +817,28 @@ section.dark .gradient-text,
   font-size: .9rem;
 }
 
-/* Right hero column: visual stacked above the stat strip */
-.hero-visual-col {
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-}
-
-/* Hero stat strip — sits under the visual as a 2×2 grid */
+/* Hero stat strip — a full-width row across the base of both columns. Stacking
+   it under the visual instead makes the right column outweigh the copy. */
 .hero-stat-strip {
+  grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(4, 1fr);
   gap: 16px;
-  margin-top: 0;
-  align-self: start;
+  /* Leaves clearance for the float chip hanging below the card. */
+  margin-top: 38px;
+  padding-top: 26px;
+  border-top: 1px solid rgba(255,255,255,.12);
 }
+/* Compact inside the hero only — the same cards run larger on the about page. */
+.hero-stat-strip strong { font-size: 1.7rem; }
+/* Plain centered figures, not tiles — the numbers carry themselves and the
+   grid spacing does the separating. */
 .hss-item {
-  background: rgba(255,255,255,.07);
-  border: 1px solid rgba(255,255,255,.14);
-  border-radius: var(--r-lg);
-  padding: 24px 20px;
-  backdrop-filter: blur(10px);
   display: flex;
   flex-direction: column;
   gap: 6px;
+  padding: 0;
+  text-align: center;
 }
 .hss-item strong {
   font-family: var(--font-display);
@@ -871,6 +980,147 @@ section.dark .gradient-text,
   animation: fillUp 2.4s ease-out both;
 }
 @keyframes fillUp { from { width: 0; } }
+/* Hero card interior, modelled on the real CLESite compliance dashboard: a
+   percent-complete arc, its status line, then the requirement rows. */
+/* Extra bottom padding gives the float chip a strip of empty card to overlap,
+   so it never lands on a requirement row. */
+.hero-card { padding-bottom: 28px; }
+.hero-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255,255,255,.12);
+}
+.hero-card-head b {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: .95rem;
+  color: #fff;
+}
+/* The product marks each panel heading with a short accent rule. */
+.hero-card-head b::before {
+  content: "";
+  width: 3px;
+  height: 15px;
+  border-radius: 2px;
+  background: var(--pf-cyan);
+}
+.hero-gauge-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 0 4px;
+}
+.hero-gauge {
+  position: relative;
+  width: 122px;
+  flex-shrink: 0;
+}
+.hero-gauge svg { width: 100%; height: auto; overflow: visible; }
+.hero-gauge path {
+  fill: none;
+  stroke-width: 9;
+  stroke-linecap: round;
+}
+.hero-gauge-track { stroke: rgba(255,255,255,.14); }
+.hero-gauge-fill {
+  stroke: url(#heroGaugeFill);
+  /* Semicircle of r=50 is π·50 ≈ 157.1 long; the offset is the unfilled 4%. */
+  stroke-dasharray: 157.1;
+  stroke-dashoffset: 6.3;
+  filter: drop-shadow(0 0 7px rgba(43,196,240,.55));
+  animation: heroGaugeSweep 1.5s cubic-bezier(.22,.8,.3,1) both;
+}
+@keyframes heroGaugeSweep { from { stroke-dashoffset: 157.1; } }
+/* Sits in the opening of the arc, clear of where the two ends terminate. */
+.hero-gauge-read {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 9px;
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+}
+.hero-gauge-read strong {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  line-height: 1;
+  color: #fff;
+}
+.hero-gauge-read small {
+  font-size: .52rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.55);
+}
+.hero-gauge-note {
+  margin: 0;
+  font-size: .82rem;
+  line-height: 1.35;
+  color: rgba(255,255,255,.74);
+}
+.hero-reqs {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+}
+.hero-reqs li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 0;
+  border-top: 1px solid rgba(255,255,255,.09);
+}
+.hero-req-ico {
+  width: 19px;
+  height: 19px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: .64rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.is-done .hero-req-ico {
+  color: var(--pf-success);
+  background: rgba(16,185,129,.26);
+  border: 1px solid rgba(16,185,129,.52);
+  box-shadow: 0 8px 22px rgba(16,185,129,.12);
+}
+/* Part-filled ring, matching how the product shows an unmet requirement. Carries
+   the CTA hue: this row is the one thing on the card still asking for action. */
+.is-open .hero-req-ico {
+  border: 2px solid rgba(255,255,255,.18);
+  border-top-color: var(--pf-cta-tint);
+  border-right-color: var(--pf-cta-tint);
+}
+.hero-req-name {
+  flex: 1;
+  min-width: 0;
+  font-size: .8rem;
+  font-weight: 500;
+  color: rgba(255,255,255,.88);
+}
+.hero-reqs em {
+  flex-shrink: 0;
+  font-style: normal;
+  font-size: .58rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.is-done em { color: var(--pf-success); }
+.is-open em { color: var(--pf-cta-tint); }
+@media (prefers-reduced-motion: reduce) {
+  .hero-gauge-fill { animation: none; }
+}
 .hero-card .thumbs {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -896,6 +1146,7 @@ section.dark .gradient-text,
 }
 .hero-float {
   position: absolute;
+  z-index: 4;
   background: white;
   color: var(--pf-ink);
   border-radius: 14px;
@@ -911,8 +1162,20 @@ section.dark .gradient-text,
   background: var(--pf-success);
   box-shadow: 0 0 0 4px rgba(16,185,129,.2);
 }
+.hero-float b { font-size: .84rem; line-height: 1.3; }
+.hero-float small { color: var(--pf-mute); font-size: .75rem; }
 .hero-float.top { top: 245px; right: -10px; animation: floaty 5s ease-in-out infinite alternate-reverse; }
-.hero-float.bot { bottom: 20px; left: -20px; animation: floaty 7s ease-in-out infinite alternate; }
+/* Hangs off the card's bottom-left corner, sitting across the card's bottom
+   padding and the gap above the stat row. Kept narrow so it stays clear of the
+   copy column at the ~950px end of the two-column range. */
+.hero-float.bot {
+  bottom: -18px;
+  left: -34px;
+  max-width: 320px;
+  padding: 11px 15px;
+  white-space: nowrap;
+  animation: floaty 7s ease-in-out infinite alternate;
+}
 
 @media (max-width: 900px) {
   .hero { padding: 60px 0 80px; }
@@ -920,13 +1183,38 @@ section.dark .gradient-text,
      otherwise wide children force horizontal overflow on phones. */
   .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 40px; }
   .hero-float.top, .hero-float.bot { display: none; }
-  .hero-visual-col { gap: 34px; }
-  .hero-stat-strip { gap: 22px 16px; padding-top: 26px; }
+  .hero-stat-strip {
+    grid-template-columns: 1fr 1fr;
+    gap: 22px 16px;
+    margin-top: 0;
+    padding-top: 34px;
+  }
   /* Center the hero copy once it stacks above the visual */
   .hero-grid > div:first-child { text-align: center; }
   .hero p.lead { margin-left: auto; margin-right: auto; }
   .hero-actions { justify-content: center; }
+  /* Bullets center as a block, but their wrapped lines stay left-aligned
+     under the dot rather than raggedly centering. */
   .hero-trust { justify-content: center; }
+  .hero-trust span { text-align: left; }
+  /* Centers the AI badge with the stacked copy; the card keeps its own alignment. */
+  .hero-visual { text-align: center; }
+  .hero-card { text-align: left; }
+}
+
+/* Short laptop screens: tighten type and spacing so the stat row still clears
+   the fold. Two-column range only — the mobile hero scrolls by design. Must sit
+   after the base hero rules to win on equal specificity. */
+@media (min-width: 901px) and (max-height: 780px) {
+  .hero { padding: 24px 0; }
+  .hero h1 { font-size: clamp(2rem, 3.1vw, 2.95rem); }
+  .hero p.lead { font-size: 1.05rem; }
+  .hero .eyebrow { margin-bottom: 12px; }
+  .hero-actions { margin-top: 20px; }
+  .hero-trust { margin-top: 16px; padding-top: 14px; gap: 8px 20px; }
+  .hero-stat-strip { margin-top: 22px; padding-top: 18px; gap: 12px; }
+  .hero-stat-strip strong { font-size: 1.45rem; }
+  .hero-visual .eyebrow { margin-bottom: 12px; }
 }
 
 /* Hero decorative animated blobs */
@@ -2056,7 +2344,7 @@ section.dark p { color: rgba(255,255,255,.75); }
 /* =========================================================
    TESTIMONIALS
    ========================================================= */
-/* Offset anchor targets so they clear the 72px sticky nav when linked from the nav dropdowns, footer, etc. */
+/* Offset anchor targets so they land flush under the sticky nav when linked from the nav dropdowns, footer, etc. */
 [data-page-section],
 section[id],
 #what-clients-say,
@@ -2064,7 +2352,7 @@ section[id],
 #ai-knowledge-check,
 .feat-card[id],
 .platform-subsection[id] {
-  scroll-margin-top: var(--pf-sticky-offset, 90px);
+  scroll-margin-top: var(--pf-sticky-offset, 73px);
 }
 
 /* Compact page-section controller: fixed location for repeat next/prev clicks. */
@@ -4309,11 +4597,14 @@ footer .foot-admin:hover { color: #fff; }
 .bot-launcher {
   position: fixed;
   bottom: 24px; right: 24px;
-  width: 60px; height: 60px;
-  border-radius: 50%;
+  height: 60px;
+  padding: 0 24px 0 18px;
+  border-radius: 999px;
   background: var(--grad-btn);
   color: white;
-  display: grid; place-items: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
   box-shadow: var(--sh-glow);
   cursor: pointer;
   z-index: 60;
@@ -4322,6 +4613,20 @@ footer .foot-admin:hover { color: #fff; }
   transition: transform .2s ease;
 }
 .bot-launcher:hover { transform: scale(1.06); }
+.bot-launcher-label {
+  font-family: var(--font-sans);
+  font-size: .92rem;
+  font-weight: 600;
+  letter-spacing: .01em;
+  line-height: 1;
+  white-space: nowrap;
+}
+/* Back to a circle on phones — a labelled pill parks over a third of the
+   screen width for the whole session. */
+@media (max-width: 640px) {
+  .bot-launcher { width: 60px; padding: 0; justify-content: center; }
+  .bot-launcher-label { display: none; }
+}
 .bot-launcher-icon {
   width: 30px;
   height: 30px;
@@ -4333,24 +4638,6 @@ footer .foot-admin:hover { color: #fff; }
   --ai-icon-size: 1.5rem;
   color: #F4FBFF;
   filter: drop-shadow(0 0 10px rgba(116,225,255,.98));
-}
-.bot-launcher-badge {
-  position: absolute;
-  right: -3px;
-  bottom: -3px;
-  min-width: 22px;
-  height: 22px;
-  border-radius: 999px;
-  border: 2px solid var(--pf-white);
-  background: var(--pf-navy);
-  color: var(--pf-white);
-  font-size: .58rem;
-  font-weight: 700;
-  letter-spacing: .05em;
-  display: grid;
-  place-items: center;
-  line-height: 1;
-  box-shadow: 0 8px 16px -10px rgba(0,0,0,.65);
 }
 .bot-panel {
   position: fixed;

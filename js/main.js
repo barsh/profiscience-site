@@ -279,13 +279,25 @@
     var root = document.documentElement;
     var headerEl = document.querySelector(".nav");
 
+    function getHeaderHeight() {
+      var height = headerEl ? headerEl.getBoundingClientRect().height : 0;
+      return height > 1 ? Math.ceil(height) : 72;
+    }
+
+    // Scroll targets land flush under the sticky nav. Any extra padding here
+    // leaves a sliver of the previous section showing after a jump.
+    function getScrollOffset() {
+      return getHeaderHeight();
+    }
+
+    // Viewport detection needs a couple of pixels of slack so a section parked
+    // flush against the nav still counts as "passed" despite subpixel rounding.
     function getHeaderOffset() {
-      var height = headerEl ? headerEl.getBoundingClientRect().height : 72;
-      return Math.max(64, Math.round(height + 14));
+      return getScrollOffset() + 2;
     }
 
     function refreshHeaderOffsetVar() {
-      root.style.setProperty("--pf-sticky-offset", getHeaderOffset() + "px");
+      root.style.setProperty("--pf-sticky-offset", getScrollOffset() + "px");
     }
 
     refreshHeaderOffsetVar();
@@ -327,6 +339,10 @@
     var rafPending = false;
     var lockTargetId = "";
     var lockExpiresAt = 0;
+    // Scrolling alone never puts a hash in the URL. It only starts tracking once
+    // the visitor opts into hash navigation — by arriving on a section hash or
+    // by using the section navigator — so a plain "/" stays "/".
+    var hashSyncEnabled = false;
     var mobileControlQuery = window.matchMedia("(max-width: 900px)");
 
     function getIndexById(id) {
@@ -419,15 +435,23 @@
       return bestIndex;
     }
 
+    // Structured hash state (for example filter hashes like #type=Case+Study)
+    // belongs to page-specific scripts; never overwrite or clear it.
+    function hasStructuredHash() {
+      return window.location.hash.replace(/^#/, "").indexOf("=") !== -1;
+    }
+
     function replaceHashWithoutHistory(id) {
       if (!id) return;
-      // Preserve structured hash state (for example filter hashes like
-      // #type=Case+Study) used by page-specific scripts.
-      var currentRawHash = window.location.hash.replace(/^#/, "");
-      if (currentRawHash.indexOf("=") !== -1) return;
+      if (hasStructuredHash()) return;
       var nextHash = "#" + id;
       if (window.location.hash === nextHash) return;
       history.replaceState(null, "", nextHash);
+    }
+
+    function clearHashWithoutHistory() {
+      if (!window.location.hash || hasStructuredHash()) return;
+      history.replaceState(null, "", window.location.pathname + window.location.search);
     }
 
     function syncActiveFromViewport() {
@@ -442,6 +466,15 @@
         if (sections[activeIndex].id === lockTargetId || Date.now() > lockExpiresAt) {
           lockTargetId = "";
         }
+        return;
+      }
+
+      if (!hashSyncEnabled) return;
+
+      // The first section is the top of the page, which the bare URL already
+      // addresses — so drop the hash there instead of pinning it in.
+      if (activeIndex === 0) {
+        clearHashWithoutHistory();
         return;
       }
 
@@ -493,6 +526,9 @@
       var id = decodeURIComponent(rawId);
       if (getIndexById(id) === -1) return;
 
+      // Following a section link is the visitor asking for hash navigation, so
+      // the URL may track the active section from here on.
+      hashSyncEnabled = true;
       lockTargetId = id;
       lockExpiresAt = Date.now() + 1400;
 
@@ -526,6 +562,7 @@
       if (!id) return;
       var idx = getIndexById(id);
       if (idx === -1) return;
+      hashSyncEnabled = true;
       activeIndex = idx;
       syncControl();
       navigateToSection(id, false);
@@ -577,6 +614,8 @@
     var initialHash = decodeURIComponent(window.location.hash.replace(/^#/, ""));
     var initialIndex = getIndexById(initialHash);
     if (initialIndex >= 0) {
+      // Arrived on a deep link, so keep the hash current as they scroll on.
+      hashSyncEnabled = true;
       activeIndex = initialIndex;
     }
 
