@@ -30,7 +30,10 @@
      target stands out by being the one thing wearing this colour, so it is not
      shared with icons, avatars, or headline text. Both stops clear 4.5:1 contrast
      against white label text (4.65:1 → 6.83:1), so the whole sweep passes AA. */
-  --pf-cta:      #C8400A;
+  --pf-cta:      #ff6700;
+  /* Same hue as the CTA, lightened for use on the dark hero card — the fill
+     color itself only manages 1.7:1 against that blue. */
+  --pf-cta-tint: #f16f18;
   --grad-cta:    linear-gradient(135deg, #D0440A 0%, #A82F06 100%);
   /* Cast in a deep burnt tone rather than the button's own bright orange, and
      kept tight — a wide blur in the fill color blooms into a haze on white. */
@@ -1086,15 +1089,17 @@ section.dark .gradient-text,
   line-height: 1;
 }
 .is-done .hero-req-ico {
-  color: #6EE7B7;
-  background: rgba(16,185,129,.18);
-  border: 1px solid rgba(16,185,129,.42);
+  color: var(--pf-success);
+  background: rgba(16,185,129,.26);
+  border: 1px solid rgba(16,185,129,.52);
+  box-shadow: 0 8px 22px rgba(16,185,129,.12);
 }
-/* Part-filled ring, matching how the product shows an unmet requirement. */
+/* Part-filled ring, matching how the product shows an unmet requirement. Carries
+   the CTA hue: this row is the one thing on the card still asking for action. */
 .is-open .hero-req-ico {
   border: 2px solid rgba(255,255,255,.18);
-  border-top-color: #FBBF77;
-  border-right-color: #FBBF77;
+  border-top-color: var(--pf-cta-tint);
+  border-right-color: var(--pf-cta-tint);
 }
 .hero-req-name {
   flex: 1;
@@ -1111,8 +1116,8 @@ section.dark .gradient-text,
   letter-spacing: .1em;
   text-transform: uppercase;
 }
-.is-done em { color: #6EE7B7; }
-.is-open em { color: #FBBF77; }
+.is-done em { color: var(--pf-success); }
+.is-open em { color: var(--pf-cta-tint); }
 @media (prefers-reduced-motion: reduce) {
   .hero-gauge-fill { animation: none; }
 }
