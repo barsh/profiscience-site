@@ -12,6 +12,25 @@
 (function () {
   "use strict";
 
+  // --- HappierLeads visitor tracking ---
+  // Loaded from shared JS so it runs on every site page load.
+  (function () {
+    if (window.__pfHappierleadsLoaded) return;
+    window.__pfHappierleadsLoaded = true;
+
+    var e = "rest.happierleads.com/v3/script?clientId=cvQA3suh6ori1pTsaMpKCC&version=4.0.0";
+    var t = document.createElement("script");
+    window.location.protocol.split(":")[0];
+    t.src = "https://" + e;
+    t.async = true;
+    t.onload = function () {
+      new Happierleads.default();
+    };
+
+    var c = document.getElementsByTagName("script")[0];
+    c.parentNode.insertBefore(t, c);
+  })();
+
   // --- Leadfeeder / Dealfront visitor tracking ---
   // Identifies visiting companies and feeds Pipedrive. Same tracker the old
   // ASP.NET site used (MasterPage.master). Loaded once here so it applies to
