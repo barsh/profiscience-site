@@ -279,13 +279,25 @@
     var root = document.documentElement;
     var headerEl = document.querySelector(".nav");
 
+    function getHeaderHeight() {
+      var height = headerEl ? headerEl.getBoundingClientRect().height : 0;
+      return height > 1 ? Math.ceil(height) : 72;
+    }
+
+    // Scroll targets land flush under the sticky nav. Any extra padding here
+    // leaves a sliver of the previous section showing after a jump.
+    function getScrollOffset() {
+      return getHeaderHeight();
+    }
+
+    // Viewport detection needs a couple of pixels of slack so a section parked
+    // flush against the nav still counts as "passed" despite subpixel rounding.
     function getHeaderOffset() {
-      var height = headerEl ? headerEl.getBoundingClientRect().height : 72;
-      return Math.max(64, Math.round(height + 14));
+      return getScrollOffset() + 2;
     }
 
     function refreshHeaderOffsetVar() {
-      root.style.setProperty("--pf-sticky-offset", getHeaderOffset() + "px");
+      root.style.setProperty("--pf-sticky-offset", getScrollOffset() + "px");
     }
 
     refreshHeaderOffsetVar();

@@ -36,85 +36,101 @@
 <!-- HERO -->
 <section class="hero" id="learning-and-cle-technology-for-law-firms">
   <div class="container hero-grid">
-    <div class="hero-full-width-head">
-      <span class="eyebrow eyebrow--hero-nowrap">Learning and CLE Technology for Law Firms</span>
-      <h1>Is your firm's learning and compliance technology helping your attorneys<span class="gradient-text"> — or creating more work for your team?</span></h1>
-    </div>
-    <div>
-      <p class="lead">
-        If routine learning and CLE or CPD work still depends on manual follow-up, workarounds, spreadsheets, and email, it may be time for a different approach.
-      </p>
-      <p class="lead">
-        Profiscience helps law firms move beyond long-standing CLE systems that have not kept pace, generic learning platforms that were never designed for law-firm workflows, and the spreadsheets and email that fill the gaps—with one connected platform built specifically for legal learning and compliance.
-      </p>
-      <p class="lead">
-        Our team stays close to the firms we serve, helping them solve complex learning and compliance challenges and improving the platform week after week.
-      </p>
+    <div class="hero-copy">
+      <h1>Built for attorneys. <span class="gradient-text">Less work for everyone.</span></h1>
+      <p class="lead">Firm-wide learning and CLE in one platform that tracks every rule, credit, and deadline for you.</p>
+
       <div class="hero-actions">
         <a href="contact" class="btn btn-primary btn-arrow" data-cta="hero_demo">Start a Conversation</a>
+        <a href="platform" class="hero-link" data-cta="hero_platform">See how it works</a>
       </div>
+
       <div class="hero-trust">
         <span>Direct access to a USA-based team that knows your firm and your platform</span>
         <span>Helping firms solve complex learning and compliance challenges</span>
       </div>
     </div>
 
-    <!-- Hero visual + stat strip, stacked to balance the text column -->
-    <div class="hero-visual-col">
-      <div class="hero-visual">
-        <div class="ai-powered-badge reveal" role="button" tabindex="0" aria-label="Open Profiscience AI chat">
-          <span class="ai-badge-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" role="presentation" focusable="false">
-              <path d="M12 2.6L14.7 9.3L21.4 12L14.7 14.7L12 21.4L9.3 14.7L2.6 12L9.3 9.3Z"></path>
+    <div class="hero-visual">
+      <!-- Category label sits over the product card so the headline leads the
+           copy column on its own. Must stay inside the section: js/main.js reads
+           the first .eyebrow to label this section in the page navigator. -->
+      <span class="eyebrow eyebrow--hero-nowrap">Learning and CLE Technology for Law Firms</span>
+
+      <!-- Illustrative product view: an attorney's own CLE status, not an
+           admin roster. Shows the "we do the tracking" claim rather than
+           restating it. Figures are placeholders. -->
+      <div class="hero-card" role="img" aria-label="Illustration of the CLESite compliance dashboard: New York CLE 96 percent complete, with ethics and cybersecurity requirements completed and one diversity and inclusion credit still needed.">
+        <div class="hero-card-head">
+          <b>New York CLE</b>
+          <span class="cle-tag">2026 cycle</span>
+        </div>
+
+        <div class="hero-gauge-row">
+          <div class="hero-gauge">
+            <svg viewBox="0 0 120 68" aria-hidden="true" focusable="false">
+              <defs>
+                <linearGradient id="heroGaugeFill" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#4D90FF" />
+                  <stop offset="100%" stop-color="#2BC4F0" />
+                </linearGradient>
+              </defs>
+              <path class="hero-gauge-track" d="M 10 60 A 50 50 0 0 1 110 60" />
+              <path class="hero-gauge-fill" d="M 10 60 A 50 50 0 0 1 110 60" />
             </svg>
-          </span>
-          Ask Profiscience AI
-        </div>
-        <!-- <div class="hero-card">
-          <span class="pill">● Live · building compliance dashboard</span>
-          <h4>New York CLE</h4>
-          <small>Analyzing CLE rules · calculating compliance status…</small>
-          <div class="bar"><i></i></div>
-          <small>72% complete</small>
-          <div class="thumbs">
-            <div class="thumb"></div>
-            <div class="thumb"></div>
-            <div class="thumb"></div>
+            <span class="hero-gauge-read">
+              <strong>96%</strong>
+              <small>Complete</small>
+            </span>
           </div>
+          <p class="hero-gauge-note">Almost there. Just a little more to finish.</p>
         </div>
-        <div class="hero-float top">
-          <span class="dot"></span>
-          <div>
-            <b>+3 new attorneys · +4 new staffers</b><br />
-            <small style="color:#64748B">provisioned and assigned onboarding plans </small>
-          </div>
-        </div>
-        <div class="hero-float bot">
-          <span class="dot"></span>
-          <div>
-            <b>CLE credits synced</b><br />
-            <small style="color:#64748B">984 attorneys · 41 jurisdictions</small>
-          </div>
-        </div> -->
+
+        <ul class="hero-reqs">
+          <li class="is-done">
+            <span class="hero-req-ico" aria-hidden="true">✓</span>
+            <span class="hero-req-name">Ethics &amp; Professionalism</span>
+            <em>Completed</em>
+          </li>
+          <li class="is-done">
+            <span class="hero-req-ico" aria-hidden="true">✓</span>
+            <span class="hero-req-name">Cybersecurity &amp; Privacy</span>
+            <em>Completed</em>
+          </li>
+          <li class="is-open">
+            <span class="hero-req-ico" aria-hidden="true"></span>
+            <span class="hero-req-name">Diversity &amp; Inclusion</span>
+            <em>1 credit needed</em>
+          </li>
+        </ul>
       </div>
 
-      <div class="hero-stat-strip">
-        <div class="ahs-card">
-          <strong data-count="14" data-suffix="+ years">14+ years</strong>
-          <span>Average client retention</span>
+      <div class="hero-float bot">
+        <span class="dot"></span>
+        <div>
+          <b>Take the course. We file the credit.</b>
         </div>
-        <div class="hss-item">
-          <strong data-count="400" data-suffix="K+">400K+</strong>
-          <span>Law firm employees helped</span>
-        </div>
-        <div class="hss-item">
-          <strong data-count="80" data-suffix="+">80+</strong>
-          <span>CLE and CPD jurisdictions</span>
-        </div>
-        <div class="hss-item">
-          <strong data-count="500" data-suffix="+">500+</strong>
-          <span>Weekly platform updates</span>
-        </div>
+      </div>
+    </div>
+
+    <!-- Full-width row across the base of the hero, so the proof doesn't pile
+         onto the visual column and outweigh the copy. -->
+    <div class="hero-stat-strip">
+      <div class="ahs-card">
+        <strong data-count="14" data-suffix="+ years">14+ years</strong>
+        <span>Average client retention</span>
+      </div>
+      <div class="hss-item">
+        <strong data-count="400" data-suffix="K+">400K+</strong>
+        <span>Law firm employees helped</span>
+      </div>
+      <div class="hss-item">
+        <strong data-count="80" data-suffix="+">80+</strong>
+        <span>CLE and CPD jurisdictions</span>
+      </div>
+      <div class="hss-item">
+        <strong data-count="500" data-suffix="+">500+</strong>
+        <span>Weekly platform updates</span>
       </div>
     </div>
   </div>
