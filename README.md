@@ -202,6 +202,12 @@ not just the first.
 Open a row for the full transcript. If a lead was captured you also get
 their details and an **Open in Pipedrive** button.
 
+A conversation is now kept in the visitor's browser, so one row can span a
+refresh, several pages, and a return visit days later — expect longer
+transcripts with gaps in the timestamps rather than a string of one-turn
+conversations. A new row starts when they click **New chat**, clear their
+site data, or leave it alone for 30 days.
+
 **Delete conversation** removes the transcript and its lead together. The
 Pipedrive record is not touched.
 
@@ -296,6 +302,14 @@ Docker is not required. Create `.env.local` in the repo root (already
 gitignored) with `ANTHROPIC_API_KEY`, `SUPABASE_URL`, and
 `SUPABASE_SERVICE_ROLE_KEY`. Leave `PIPEDRIVE_API_TOKEN` out so test
 conversations cannot create real CRM leads.
+
+Add `ALLOWED_ORIGIN` too if you want to use the **widget** rather than
+curl — e.g. `ALLOWED_ORIGIN=http://localhost:3000`, matching whatever
+port you are serving the site on. Without it the function answers with
+`Access-Control-Allow-Origin: null`, the browser blocks the reply, and
+the panel says *"I couldn't reach the server"* — the same message it
+shows when nothing is listening at all. curl ignores CORS, so the test
+below passes while the widget stays broken.
 
 ```powershell
 deno check --node-modules-dir=none supabase/functions/chat/index.ts

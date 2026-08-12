@@ -83,6 +83,10 @@
   <div class="bot-header">
     <b>Profiscience AI</b>
     <small>Platform, CLE, or rollout questions? Get answers fast.</small>
+    <!-- Shown by js/chat.js once there is a conversation to discard. The
+         conversation is kept in this browser between visits, so there has to
+         be an obvious way to clear it. -->
+    <button type="button" class="bot-reset" aria-label="Start a new conversation" hidden>New chat</button>
     <button class="bot-close" aria-label="Close chat">&times;</button>
   </div>
   <div class="bot-body" role="log" aria-live="polite" aria-atomic="false">

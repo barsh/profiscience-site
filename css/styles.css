@@ -4420,6 +4420,28 @@ footer .foot-admin:hover { color: #fff; }
   padding: 4px 8px;
 }
 .bot-close:hover { color: white; }
+/* "New chat" — discards the conversation this browser has been keeping.
+   Sits inboard of the close button; hidden until there is something to
+   discard, which js/chat.js toggles. */
+.bot-reset {
+  position: absolute;
+  top: 15px; right: 48px;
+  background: rgba(255,255,255,.14);
+  border: 1px solid rgba(255,255,255,.28);
+  color: rgba(255,255,255,.85);
+  font-family: inherit;
+  font-size: .72rem;
+  line-height: 1;
+  border-radius: 999px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+.bot-reset:hover { background: rgba(255,255,255,.24); color: white; }
+.bot-reset:disabled { opacity: .5; cursor: default; }
+/* Explicit, because the rules above would otherwise out-specify the UA
+   stylesheet's [hidden] and leave the button on screen from the first
+   paint. */
+.bot-reset[hidden] { display: none; }
 .bot-body {
   flex: 1;
   padding: 16px;
@@ -4445,6 +4467,18 @@ footer .foot-admin:hover { color: #fff; }
 }
 .bot-msg a { color: var(--pf-blue); text-decoration: underline; }
 .bot-msg.user a { color: white; }
+
+/* Marks where a restored conversation resumes, so returning to a panel
+   that already has messages in it reads as continuity rather than as the
+   assistant talking to itself. */
+.bot-divider {
+  align-self: center;
+  max-width: 90%;
+  text-align: center;
+  font-size: .72rem;
+  color: var(--pf-mute);
+  padding: 2px 0;
+}
 
 /* Typing indicator — three dots that breathe while awaiting the model.
    Replies are not streamed, so without this the panel looks frozen. */
@@ -4548,6 +4582,12 @@ footer .foot-admin:hover { color: #fff; }
     width: 44px; height: 44px;
     display: grid; place-items: center;
     padding: 0;
+  }
+  /* Clear of the 44px close button, and tall enough to be one itself. */
+  .bot-reset {
+    top: 14px; right: 56px;
+    min-height: 32px;
+    padding: 8px 12px;
   }
 
   .bot-msg { max-width: 90%; }
