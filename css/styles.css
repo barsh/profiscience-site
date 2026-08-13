@@ -4531,6 +4531,12 @@ footer .foot-admin:hover { color: #fff; }
 /* =========================================================
    ANIMATIONS (reveal on scroll)
    ========================================================= */
+.disable-reveal .reveal {
+  transform: none !important;
+  transition: none !important;
+  opacity: 1 !important;
+}
+
 .reveal {
   opacity: 0;
   transform: translateY(24px);
