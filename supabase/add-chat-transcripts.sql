@@ -38,9 +38,13 @@
 create table if not exists public.chat_transcripts (
   id                 bigserial primary key,
 
-  -- Groups the turns of one conversation. Generated in the browser per
-  -- panel-open, so it is not an identity: it does not survive a refresh
-  -- and is deliberately not tied to a person or an IP.
+  -- Groups the turns of one conversation. Generated in the browser and
+  -- kept in that browser's localStorage, so it now spans a refresh, other
+  -- pages, and a return visit — a resumed conversation stays one row in
+  -- chat_conversations instead of arriving as unrelated fragments.
+  -- Still not an identity: never tied to a person or an IP, cleared by the
+  -- widget's "New chat" control or by clearing site data, and expiring
+  -- with the conversation (30 days idle — see js/chat.js).
   session_id         text        not null,
   turn               integer     not null,
 
