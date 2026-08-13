@@ -672,8 +672,9 @@ section.dark .gradient-text,
 }
 .hero-grid {
   display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: 60px;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 50px;
+  row-gap: 20px;  
   align-items: start;
 }
 .hero-full-width-head {
@@ -710,7 +711,7 @@ section.dark .gradient-text,
 .hero-visual-col {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 20px;
 }
 
 /* Hero stat strip — sits under the visual as a 2×2 grid */
@@ -2526,7 +2527,7 @@ footer .foot-admin:hover { color: #fff; }
    ========================================================= */
 .about-hero-grid {
   display: grid;
-  grid-template-columns: 1.1fr 1fr;
+  grid-template-columns: 1.4fr 1fr;
   gap: 60px;
   align-items: center;
   /* padding: 20px 0 10px; */
@@ -4868,9 +4869,9 @@ footer .foot-admin:hover { color: #fff; }
   flex-wrap: wrap;
   align-items: center;
   gap: 10px 20px;
-  margin-top: 26px;
-  padding-top: 22px;
-  border-top: 1px solid rgba(255,255,255,.14);
+  /* margin-top: 26px;
+  padding-top: 22px; */
+  /* border-top: 1px solid rgba(255,255,255,.14); */
 }
 .hero-trust span {
   display: inline-flex;
