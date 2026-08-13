@@ -12,6 +12,15 @@
 (function () {
   "use strict";
 
+
+  // disable reveal animations when running in a headless browser (e.g. HappierLeads session replay) so the page renders fully without waiting for scroll events
+  (function () {
+    const isHeadless = navigator.webdriver === true;
+    if (isHeadless) {
+      document.body.classList.add('disable-reveal');
+    }
+  })();
+
   // --- HappierLeads visitor tracking ---
   // Loaded from shared JS so it runs on every site page load.
   (function () {

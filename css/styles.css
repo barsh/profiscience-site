@@ -2814,7 +2814,7 @@ footer .foot-admin:hover { color: #fff; }
    ========================================================= */
 .about-hero-grid {
   display: grid;
-  grid-template-columns: 1.1fr 1fr;
+  grid-template-columns: 1.4fr 1fr;
   gap: 60px;
   align-items: center;
   /* padding: 20px 0 10px; */
@@ -4858,6 +4858,12 @@ footer .foot-admin:hover { color: #fff; }
 /* =========================================================
    ANIMATIONS (reveal on scroll)
    ========================================================= */
+.disable-reveal .reveal {
+  transform: none !important;
+  transition: none !important;
+  opacity: 1 !important;
+}
+
 .reveal {
   opacity: 0;
   transform: translateY(24px);
