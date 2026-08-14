@@ -2501,7 +2501,7 @@ body.bot-open .section-nav-control {
     top: auto;
     right: auto;
     left: 50%;
-    bottom: calc(14px + env(safe-area-inset-bottom));
+    bottom: calc(30px + env(safe-area-inset-bottom));
     transform: translateX(-50%);
     grid-template-columns: 30px auto 30px;
     align-items: center;
@@ -4604,13 +4604,22 @@ footer .foot-admin:hover { color: #fff; }
   color: white;
   display: inline-flex;
   align-items: center;
-  gap: 11px;
-  box-shadow: var(--sh-glow);
+  gap: 11px;  box-shadow: var(--sh-glow);
   cursor: pointer;
   z-index: 60;
   border: 0;
+  overflow: hidden;
   font-size: 1.4rem;
   transition: transform .2s ease;
+  animation: aiPulse 2.4s ease-in-out infinite;
+}
+.bot-launcher::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,.12) 50%, transparent 100%);
+  transform: translateX(-100%);
+  animation: aiSheen 3s ease-in-out infinite; 
 }
 .bot-launcher:hover { transform: scale(1.06); }
 .bot-launcher-label {
@@ -4626,8 +4635,7 @@ footer .foot-admin:hover { color: #fff; }
 @media (max-width: 640px) {
   .bot-launcher { width: 60px; padding: 0; justify-content: center; }
   .bot-launcher-label { display: none; }
-}
-.bot-launcher-icon {
+}.bot-launcher-icon {
   width: 30px;
   height: 30px;
   display: grid;
@@ -4638,6 +4646,31 @@ footer .foot-admin:hover { color: #fff; }
   --ai-icon-size: 1.5rem;
   color: #F4FBFF;
   filter: drop-shadow(0 0 10px rgba(116,225,255,.98));
+}
+.bot-launcher-badge {
+  position: absolute;
+  right: -3px;
+  bottom: -3px;
+  min-width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  border: 2px solid var(--pf-white);
+  background: var(--pf-navy);
+  color: var(--pf-white);
+  font-size: .58rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+  display: none;
+  place-items: center;
+  line-height: 1;
+  box-shadow: 0 8px 16px -10px rgba(0,0,0,.65);
+}
+@media (max-width: 640px) {
+  .bot-launcher-badge { display: grid; }
+  .bot-launcher-badge {
+    right: 4px;
+    bottom: 4px;
+  }
 }
 .bot-panel {
   position: fixed;
