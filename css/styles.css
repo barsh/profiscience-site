@@ -46,7 +46,7 @@
   --r-xl: 28px;
 
   --container: 1200px;
-  --pf-sticky-offset: 90px;
+  --pf-sticky-offset: 72px;
 }
 
 * { box-sizing: border-box; }
@@ -928,17 +928,6 @@ section.dark .gradient-text,
   .hero p.lead { margin-left: auto; margin-right: auto; }
   .hero-actions { justify-content: center; }
   .hero-trust { justify-content: center; }
-  /* The badge is the only thing left in the visual column once the hero
-     stacks, so left-aligning it leaves it hanging off the side of otherwise
-     centered copy. Centered as a block rather than with text-align, which
-     would also re-center anything inside .hero-card. */
-  .hero-visual .ai-powered-badge {
-    display: flex;
-    width: fit-content;
-    max-width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-  }
 }
 
 /* Hero decorative animated blobs */

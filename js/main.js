@@ -309,7 +309,7 @@
 
     function getHeaderOffset() {
       var height = headerEl ? headerEl.getBoundingClientRect().height : 72;
-      return Math.max(64, Math.round(height + 14));
+      return Math.max(64, Math.floor(height));
     }
 
     function refreshHeaderOffsetVar() {
