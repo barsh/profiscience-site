@@ -2068,6 +2068,22 @@ section[id],
   scroll-margin-top: var(--pf-sticky-offset, 90px);
 }
 
+/* Sections managed by the section navigator should fill the visible viewport
+   (accounting for the sticky header), but still grow for longer content. */
+[data-page-section] {
+  min-height: calc(100vh - var(--pf-sticky-offset, 72px));
+  min-height: calc(100svh - var(--pf-sticky-offset, 72px));
+  min-height: calc(100dvh - var(--pf-sticky-offset, 72px));
+  display: flex;
+  flex-direction: column;
+}
+
+[data-page-section] > .container {
+  width: 100%;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
 /* Compact page-section controller: fixed location for repeat next/prev clicks. */
 .section-nav-control {
   position: fixed;
