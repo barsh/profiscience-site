@@ -55,7 +55,7 @@
         "Jurisdiction-specific rules updated weekly",
         "CLE and CPD records and certificates",
         "Compliance reports for CLE and CPD globally",
-        "Legal-learning providers: PLI, NBI, CeriFy",
+        "Legal-learning providers: PLI, NBI, CeriFi",
         "Live and on-demand CLE programs",
         "Attorney access",
         "Firmwide oversight and reporting"
@@ -71,7 +71,7 @@
         "Identity and HR systems",
         "Outlook, Teams, Webex, Zoom",
         "LinkedIn Learning",
-        "Legal-learning providers: PLI, NBI, CeriFy"
+        "Legal-learning providers: PLI, NBI, CeriFi"
       ],
     },
     extensions: {
@@ -112,6 +112,7 @@
   var examplesEl = root.querySelector("[data-platform-detail-examples]");
   var detailEl = root.querySelector(".platform-overview-detail");
   var diagramEl = root.querySelector(".platform-overview-diagram");
+  var toolbarEl = root.querySelector(".platform-overview-toolbar");
   var detailBackBtn = root.querySelector("[data-platform-detail-back]");
   var liveEl = root.querySelector("[data-platform-live]");
   var tourBtn = root.querySelector("[data-platform-tour-toggle]");
@@ -145,6 +146,12 @@
   function canHoverToPreview() {
     // Hybrid devices can support both touch and mouse; allow hover when a fine hover pointer exists.
     return supportsHoverMedia.matches && !isStackedOverviewLayout();
+  }
+
+  function getStickyHeaderOffset() {
+    var value = window.getComputedStyle(document.documentElement).getPropertyValue("--pf-sticky-offset");
+    var offset = parseFloat(value) + 20; // Add 10px for spacing between the header and the target element.
+    return Number.isFinite(offset) ? offset : 72;
   }
 
   function escapeHtml(text) {
@@ -284,6 +291,19 @@
     container.scrollTop = 0;
   }
 
+  function revealToolbarPanel() {
+    if (!toolbarEl) return;
+    if (isStackedOverviewLayout()) return;
+
+    var toolbarRect = toolbarEl.getBoundingClientRect();
+    var targetTop = window.scrollY + toolbarRect.top - getStickyHeaderOffset();
+
+    window.scrollTo({
+      top: Math.max(0, targetTop),
+      behavior: reduceMotionMedia.matches ? "auto" : "smooth"
+    });
+  }
+
   function stopTour() {
     if (tourTimer) {
       window.clearInterval(tourTimer);
@@ -343,7 +363,11 @@
     node.addEventListener("click", function () {
       stopTour();
       selectNode(node.getAttribute("data-platform-node"), true);
-      revealDetailPanel();
+      if (isStackedOverviewLayout()) {
+        revealDetailPanel();
+      } else {
+        revealToolbarPanel();
+      }
     });
 
     node.addEventListener("mouseenter", function () {
@@ -351,6 +375,13 @@
 
       stopTour();
       selectNode(node.getAttribute("data-platform-node"), true);
+    });
+
+    node.addEventListener("mouseleave", function (event) {
+      if (!canHoverToPreview()) return;
+      if (event.relatedTarget && event.relatedTarget.closest("[data-platform-node]")) return;
+
+      renderEmptyState();
     });
   });
 
