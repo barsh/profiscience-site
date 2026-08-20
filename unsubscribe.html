@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://esm.sh https://sc.lfeeder.com https://rest.happierleads.com https://webforms.pipedrive.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://rqkbjvyxhdknbjhaszya.supabase.co https://sc.lfeeder.com https://rest.happierleads.com https://session-recordings.happierleads.com https://page-visits-full.pagemetry.com https://webforms.pipedrive.com http://localhost:54321; frame-src https://webforms.pipedrive.com; object-src 'none'; base-uri 'self'; form-action 'self' https://webforms.pipedrive.com" />
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
 <title>Unsubscribe — The CLE Corner | Profiscience</title>
 <meta name="description" content="Unsubscribe from The CLE Corner newsletter." />
 <meta name="robots" content="noindex, nofollow" />
@@ -48,54 +50,8 @@
 <script src="js/main.js"></script>
 <script src="js/chat.js" defer></script>
 
-<!-- Prefill from ?email= in a plain script so it works even if the module below
-     (which loads Supabase from a CDN) is slow. Never auto-submit: email clients
-     prefetch links and would unsubscribe people by accident — the visitor clicks. -->
-<script>
-  (function () {
-    var pre = new URLSearchParams(location.search).get("email");
-    if (pre) { var el = document.getElementById("unsub-email"); if (el) el.value = pre; }
-  })();
-</script>
-
-<script type="module">
-  import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-  import { SUPABASE_URL, SUPABASE_ANON_KEY, isConfigured } from "./js/supabase-config.js";
-
-  const sb = isConfigured ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
-
-  const form = document.getElementById("unsubForm");
-  const errEl = document.getElementById("unsubError");
-  const okEl = document.getElementById("unsubSuccess");
-  const btn = document.getElementById("unsubBtn");
-
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    errEl.style.display = "none";
-    const email = document.getElementById("unsub-email").value.trim();
-    if (!email) return;
-    if (!sb) {
-      errEl.textContent = "Unsubscribe isn't available right now. Please email info@profiscience.com to be removed.";
-      errEl.style.display = "block";
-      return;
-    }
-    btn.disabled = true;
-    const label = btn.textContent;
-    btn.textContent = "Processing…";
-    const { error } = await sb.rpc("unsubscribe", { p_email: email });
-    btn.disabled = false;
-    btn.textContent = label;
-    if (error) {
-      errEl.textContent = "Something went wrong. Please email info@profiscience.com to be removed.";
-      errEl.style.display = "block";
-      return;
-    }
-    // Succeeds whether or not the address was on the list (no enumeration).
-    form.style.display = "none";
-    okEl.style.display = "block";
-    if (window.pfTrack) window.pfTrack("cle_corner_unsubscribe", {});
-  });
-</script>
+<script src="js/unsubscribe-prefill.js"></script>
+<script type="module" src="js/unsubscribe.js"></script>
 
 <style>
   .unsub-card {
