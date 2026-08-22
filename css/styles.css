@@ -4362,9 +4362,17 @@ footer .foot-admin:hover { color: #fff; }
 /* Back to a circle on phones — a labelled pill parks over a third of the
    screen width for the whole session. */
 @media (max-width: 640px) {
-  .bot-launcher { width: 60px; padding: 0; justify-content: center; }
+  .bot-launcher {
+    width: 60px;
+    padding: 0;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+  }
   .bot-launcher-label { display: none; }
-}.bot-launcher-icon {
+}
+
+.bot-launcher-icon {
   width: 30px;
   height: 30px;
   display: grid;
@@ -4376,30 +4384,24 @@ footer .foot-admin:hover { color: #fff; }
   color: #F4FBFF;
   filter: drop-shadow(0 0 10px rgba(116,225,255,.98));
 }
+/* Phones only, where the "Ask Profiscience AI" label is hidden. It rides in
+   the launcher's flow under the mark instead of being pinned to a corner —
+   the launcher is a clipped circle at this width, so a corner badge loses
+   most of itself to the curve. */
 .bot-launcher-badge {
-  position: absolute;
-  right: -3px;
-  bottom: -3px;
-  min-width: 22px;
-  height: 22px;
-  border-radius: 999px;
-  border: 2px solid var(--pf-white);
-  background: var(--pf-navy);
-  color: var(--pf-white);
-  font-size: .58rem;
-  font-weight: 700;
-  letter-spacing: .05em;
   display: none;
   place-items: center;
+  color: var(--pf-white);
+  font-family: var(--font-sans);
+  font-size: .56rem;
+  font-weight: 700;
+  letter-spacing: .09em;
   line-height: 1;
-  box-shadow: 0 8px 16px -10px rgba(0,0,0,.65);
 }
 @media (max-width: 640px) {
   .bot-launcher-badge { display: grid; }
-  .bot-launcher-badge {
-    right: 4px;
-    bottom: 4px;
-  }
+  .bot-launcher-icon { width: 26px; height: 26px; }
+  .bot-launcher-icon .ai-badge-icon { --ai-icon-size: 1.25rem; }
 }
 .bot-panel {
   position: fixed;
