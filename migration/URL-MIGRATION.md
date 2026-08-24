@@ -14,6 +14,7 @@ The redirect rules below fix that.
 |---|---|---|
 | `/` | `/` (index.html) | unchanged |
 | `/products.aspx` | `/platform` | |
+| `/products` | `/platform` | bare path Google indexes/displays without the `.aspx` |
 | `/products.aspx#universitysite` | `/platform` | anchor dropped |
 | `/products.aspx#clesite` | `/platform#cle` | |
 | `/about.aspx` | `/about.html` | |

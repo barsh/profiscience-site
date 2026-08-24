@@ -1,15 +1,19 @@
 (function () {
   var path = window.location.pathname.replace(/\/+$/, '') || '/';
+  var pathLower = path.toLowerCase();
 
+  // Keys are lowercase because pathLower is matched against them below —
+  // old links get capitalized inconsistently (e.g. /Products, /About.aspx).
   var exactRedirects = {
     '/products.aspx': '/platform',
+    '/products': '/platform',
     '/about.aspx': '/about',
     '/contact.aspx': '/contact',
     '/request-demo.aspx': '/contact',
     '/testimonials.aspx': '/clients#what-clients-say',
     '/opt-in.aspx': '/stay-clever#the-cle-corner',
     '/opt-out.aspx': '/unsubscribe',
-    '/UniversitySite-Public-API-Documentation': 'https://documenter.getpostman.com/view/3947254/2sB3dVLmrv'
+    '/universitysite-public-api-documentation': 'https://documenter.getpostman.com/view/3947254/2sB3dVLmrv'
   };
 
   var caseStudyRedirects = [
@@ -62,8 +66,8 @@
     return;
   }
 
-  if (Object.prototype.hasOwnProperty.call(exactRedirects, path)) {
-    go(exactRedirects[path]);
+  if (Object.prototype.hasOwnProperty.call(exactRedirects, pathLower)) {
+    go(exactRedirects[pathLower]);
     return;
   }
 
