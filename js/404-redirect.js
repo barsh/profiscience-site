@@ -26,6 +26,37 @@
     window.location.replace(target);
   }
 
+  // Stay CLEver book: chapter pages -> the matching accordion card on the new
+  // landing page. Old numbering (chapter0 = Intro, chapter1-12, chapter13 =
+  // Conclusion, chapter14 = Appendix A) maps onto the new page's chapter-card ids.
+  var chapterMatch = /^\/stay-clever-book\/chapter(1[0-2]|[1-9])\.aspx$/i.exec(path);
+  if (chapterMatch) {
+    go('/stay-clever#chapter' + chapterMatch[1]);
+    return;
+  }
+  if (/^\/stay-clever-book\/chapter0\.aspx$/i.test(path)) {
+    go('/stay-clever#chapter-intro');
+    return;
+  }
+  if (/^\/stay-clever-book\/chapter13\.aspx$/i.test(path)) {
+    go('/stay-clever#chapter-conclusion');
+    return;
+  }
+  if (/^\/stay-clever-book\/chapter14\.aspx$/i.test(path)) {
+    go('/stay-clever#chapter-appendix-a');
+    return;
+  }
+  if (/^\/stay-clever-book\/Chapters\.aspx$/i.test(path)) {
+    go('/stay-clever#chapter-by-chapter');
+    return;
+  }
+  if (/^\/stay-clever-book\/CLE-Corner\.aspx$/i.test(path)) {
+    go('/stay-clever#the-cle-corner');
+    return;
+  }
+
+  // Anything else under the book folder (Default.aspx, contact.aspx,
+  // images/downloads) -> the landing page.
   if (/^\/stay-clever-book(?:\/.*)?$/i.test(path)) {
     go('/stay-clever');
     return;

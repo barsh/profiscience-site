@@ -2064,7 +2064,8 @@ section[id],
 .feature-detail,
 #ai-knowledge-check,
 .feat-card[id],
-.platform-subsection[id] {
+.platform-subsection[id],
+.chapter-card[id] {
   scroll-margin-top: var(--pf-sticky-offset, 90px);
 }
 

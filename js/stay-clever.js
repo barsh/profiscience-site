@@ -2,12 +2,42 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { SUPABASE_URL, SUPABASE_ANON_KEY, isConfigured } from "./supabase-config.js";
 
 // Chapter accordions
+function openChapter(card) {
+  card.classList.add("open");
+  card.querySelector(".chapter-head")?.setAttribute("aria-expanded", "true");
+}
+
 document.querySelectorAll(".chapter-head").forEach((btn) => {
   btn.addEventListener("click", () => {
     const card = btn.closest(".chapter-card");
     const open = card.classList.toggle("open");
     btn.setAttribute("aria-expanded", open ? "true" : "false");
   });
+});
+
+// Deep link to a chapter (e.g. #chapter2) expands and scrolls to its card.
+// Waits for "load" so the header partial has finished injecting and
+// --pf-sticky-offset (used by the card's scroll-margin-top) is accurate.
+window.addEventListener("load", () => {
+  const id = decodeURIComponent(location.hash.slice(1));
+  const card = id && document.getElementById(id);
+  if (!card || !card.classList.contains("chapter-card")) return;
+
+  // The chapter grid is still sitting in its unrevealed .reveal position
+  // (translateY(24px)) at this point. Left alone, the scroll-triggered
+  // IntersectionObserver would reveal it a moment after we scroll, dragging
+  // the card up and sliding its top under the sticky header. Reveal it
+  // instantly instead, with no transition, so the scroll lands on its final position.
+  const revealParent = card.closest(".reveal");
+  if (revealParent && !revealParent.classList.contains("in")) {
+    revealParent.style.transition = "none";
+    revealParent.classList.add("in");
+    void revealParent.offsetHeight;
+    revealParent.style.transition = "";
+  }
+
+  openChapter(card);
+  card.scrollIntoView({ block: "start", behavior: "smooth" });
 });
 
 // Generic modal open / close (works for any .modal-overlay)
