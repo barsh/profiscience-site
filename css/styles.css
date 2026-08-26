@@ -4648,6 +4648,8 @@ footer .foot-admin:hover { color: #fff; }
 .cs-prose h2 { font-size: 1.7rem; margin: 44px 0 16px; }
 .cs-prose h2:first-child { margin-top: 0; }
 .cs-prose .eyebrow {
+  display: inline-block;
+  width: fit-content;
   font-size: .8rem;
   line-height: 1.2;
   margin-top: 34px;

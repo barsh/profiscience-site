@@ -21,6 +21,19 @@
   ],
   "articles": [
     {
+      "id": "am-law-50-vilms-case-study",
+      "title": "From viLMS to a More Usable Learning and CLE Experience",
+      "type": "Case Study",
+      "subject": "Platform Flexibility",
+      "excerpt": "How an Am Law 50 firm moved from Aderant viLMS to UniversitySite and CLESite to simplify learning administration and CLE operations across 40 jurisdictions.",
+      "readTime": "",
+      "image": "assets/clients/am-law-50-firm.svg",
+      "imageAlt": "Am Law 50 firm logo",
+      "url": "case-study-am-law-50-vilms.html",
+      "pdf": "",
+      "featured": true
+    },
+    {
       "id": "steptoe-johnson-case-study",
       "title": "Responding Quickly Without Adding Another System",
       "type": "Case Study",
