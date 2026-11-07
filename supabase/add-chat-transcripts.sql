@@ -201,15 +201,13 @@ create or replace view public.chat_conversations
   with (security_invoker = true) as
   select
     t.session_id,
-    min(t.created_at)                                       as started_at,
-    max(t.created_at)                                       as last_at,
-    count(*)::int                                           as turns,
-    -- Preview text for the list: what they opened with.
-    (array_agg(t.question order by t.turn, t.created_at))[1] as first_question,
-    bool_or(t.tool_called = 'capture_lead')                  as captured_lead,
-    bool_or(t.tool_called = 'route_to_support')              as routed_support,
-    sum(coalesce(t.input_tokens, 0)
-      + coalesce(t.output_tokens, 0))::bigint                as tokens,
+    t.started_at,
+    t.last_at,
+    t.turns,
+    t.first_question,
+    t.captured_lead,
+    t.routed_support,
+    t.tokens,
     l.id                                                     as lead_id,
     l.name                                                   as lead_name,
     l.work_email                                             as lead_email,
@@ -219,12 +217,33 @@ create or replace view public.chat_conversations
     l.summary                                                as lead_summary,
     l.pipedrive_lead_id,
     l.pipedrive_synced
-  from public.chat_transcripts t
-  left join public.chat_leads l on l.session_id = t.session_id
-  group by
-    t.session_id, l.id, l.name, l.work_email, l.firm_name, l.firm_size,
-    l.interest, l.summary, l.pipedrive_lead_id, l.pipedrive_synced
-  order by max(t.created_at) desc;
+  from (
+    select
+      session_id,
+      min(created_at)                                       as started_at,
+      max(created_at)                                       as last_at,
+      count(*)::int                                         as turns,
+      -- Preview text for the list: what they opened with.
+      (array_agg(question order by turn, created_at))[1]    as first_question,
+      bool_or(tool_called = 'capture_lead')                 as captured_lead,
+      bool_or(tool_called = 'route_to_support')             as routed_support,
+      sum(coalesce(input_tokens, 0)
+        + coalesce(output_tokens, 0))::bigint               as tokens
+    from public.chat_transcripts
+    group by session_id
+  ) t
+  -- At most ONE lead per conversation. A plain join here once listed a
+  -- conversation once per lead row, and the agent used to write a new lead
+  -- row every time it called capture_lead — so one chat could appear four
+  -- times. The newest row is the most complete one.
+  left join lateral (
+    select *
+    from public.chat_leads l
+    where l.session_id = t.session_id
+    order by l.created_at desc
+    limit 1
+  ) l on true
+  order by t.last_at desc;
 
 -- ---------------------------------------------------------
 -- Delete one conversation, transcript and lead together.

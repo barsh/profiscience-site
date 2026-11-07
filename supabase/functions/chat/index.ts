@@ -136,7 +136,7 @@ const tools: Anthropic.Tool[] = [
   {
     name: "capture_lead",
     description:
-      "Record a qualified sales lead and hand it to the Profiscience team. Call this ONLY when someone is evaluating Profiscience AND has given at least a name and work email. Never call it for existing-client support requests.",
+      "Record a qualified sales lead and hand it to the Profiscience team. Call this ONLY when someone is evaluating Profiscience AND has given at least a name and work email. Call it once per conversation; calling it again only updates the same lead. Never call it for existing-client support requests.",
     input_schema: {
       type: "object",
       properties: {
@@ -207,15 +207,50 @@ async function captureLead(input: Record<string, unknown>, sessionId: string) {
     pipedrive_synced: false,
   };
 
-  const { data, error } = await supabase.from("chat_leads").insert(row).select("id").single();
-  if (error) console.error("[chat] supabase insert failed:", error.message);
+  // One lead per conversation. The model calls capture_lead again whenever
+  // the visitor adds a detail (firm size, what's driving the search), and
+  // each call used to insert a fresh row — and push a fresh Pipedrive
+  // lead — so one conversation showed up in the admin once per call.
+  // Update the existing row instead, and only push to Pipedrive if this
+  // conversation's lead hasn't been synced yet.
+  const { data: existing, error: lookupError } = await supabase
+    .from("chat_leads")
+    .select("id, pipedrive_synced")
+    .eq("session_id", sessionId)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (lookupError) console.error("[chat] supabase lead lookup failed:", lookupError.message);
+
+  let leadId: string | undefined;
+  let error = lookupError;
+  if (existing) {
+    // Don't let a later, sparser call blank out details given earlier.
+    const changes = Object.fromEntries(
+      Object.entries(row).filter(
+        ([k, v]) => k !== "pipedrive_synced" && !(typeof v === "string" && v === ""),
+      ),
+    );
+    const res = await supabase.from("chat_leads").update(changes).eq("id", existing.id);
+    if (res.error) console.error("[chat] supabase lead update failed:", res.error.message);
+    error = res.error;
+    leadId = existing.id;
+    if (existing.pipedrive_synced) {
+      return "Lead details updated. They've already been told a specialist will follow up; just keep answering their questions.";
+    }
+  } else {
+    const res = await supabase.from("chat_leads").insert(row).select("id").single();
+    if (res.error) console.error("[chat] supabase insert failed:", res.error.message);
+    error = res.error;
+    leadId = res.data?.id;
+  }
 
   const pipedriveLeadId = await pushToPipedrive(row);
-  if (pipedriveLeadId && data?.id) {
+  if (pipedriveLeadId && leadId) {
     await supabase
       .from("chat_leads")
       .update({ pipedrive_synced: true, pipedrive_lead_id: pipedriveLeadId })
-      .eq("id", data.id);
+      .eq("id", leadId);
   }
   const synced = Boolean(pipedriveLeadId);
 
