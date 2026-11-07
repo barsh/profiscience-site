@@ -310,6 +310,27 @@ function leadNoteHtml(row: Record<string, string | boolean>, conversation: ChatL
 }
 
 /**
+ * The same content as the note, as plain text, for the custom lead field
+ * the sales email inserts. Plain text because it is merged into an email
+ * template, and Pipedrive caps a large-text field well above any chat this
+ * function allows (MAX_HISTORY_TURNS × MAX_MESSAGE_CHARS), but trim anyway.
+ */
+function leadChatText(row: Record<string, string | boolean>, conversation: ChatLine[]): string {
+  const field = (v: unknown) => String(v ?? "") || "not given";
+  const lines = [
+    `Firm size: ${field(row.firm_size)}`,
+    `Interest: ${field(row.interest)}`,
+    `Summary: ${field(row.summary)}`,
+    "",
+    "Conversation:",
+    ...conversation.map(
+      (m) => `${m.role === "user" ? String(row.name) || "Visitor" : "Profiscience agent"}: ${m.content}`,
+    ),
+  ];
+  return lines.join("\n").slice(0, 60000);
+}
+
+/**
  * Pipedrive's REST shape: create a Person, then a Lead pointing at it.
  * Written against the v1 API. Verify against current Pipedrive docs before
  * relying on it — this is the part most likely to drift.
@@ -324,6 +345,9 @@ async function pushToPipedrive(
     return null;
   }
   const base = "https://api.pipedrive.com/v1";
+  // API key of the custom lead field "Chat transcript" (a 40-char hash,
+  // see README). Optional: without it the chat still lands on the note.
+  const chatFieldKey = Deno.env.get("PIPEDRIVE_CHAT_FIELD_KEY")?.trim();
   try {
     const personRes = await fetch(`${base}/persons?api_token=${token}`, {
       method: "POST",
@@ -346,7 +370,15 @@ async function pushToPipedrive(
     const leadRes = await fetch(`${base}/leads?api_token=${token}`, {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ title, person_id: person.data.id }),
+      body: JSON.stringify({
+        title,
+        person_id: person.data.id,
+        // The "Lead added" automation emails sales the moment the lead is
+        // created, and its template can insert lead fields but not notes.
+        // So the chat goes in a custom long-text field, set in this same
+        // call so it's already there when the email goes out.
+        ...(chatFieldKey ? { [chatFieldKey]: leadChatText(row, conversation) } : {}),
+      }),
     });
     const lead = await leadRes.json();
     if (!leadRes.ok || !lead?.data?.id) {

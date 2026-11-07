@@ -150,11 +150,27 @@ none of them are ever sent to a browser.
 | `ANTHROPIC_API_KEY` | **Yes** | Pays for the assistant. Console → Settings → API keys |
 | `ALLOWED_ORIGIN` | **Yes** | Comma-separated list of sites allowed to call the functions |
 | `PIPEDRIVE_API_TOKEN` | No | Pushes leads to the CRM. Without it, leads are still saved in Supabase |
+| `PIPEDRIVE_CHAT_FIELD_KEY` | No | API key of the custom lead field that holds the chat transcript, so the "Lead added" email to sales can include it. See below |
 | `ANTHROPIC_ADMIN_KEY` | No | Cost reporting only. Requires an **organization** account |
 | `ANTHROPIC_WORKSPACE_ID` | No | Scopes cost reporting to the chat widget alone |
 
 `SUPABASE_URL`, `SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY` are
 injected automatically — do not set them.
+
+### About `PIPEDRIVE_CHAT_FIELD_KEY`
+
+The Pipedrive automation that emails sales when a lead is added can only
+insert lead fields, not notes. To get the chat into that email:
+
+1. In Pipedrive, go to **Settings → Data fields**, open the Leads/Deals tab (leads share deal fields), and add a field
+   named "Chat transcript" of type **Large text**.
+2. Copy that field's API key (field menu → *Copy API key*; it is a
+   40-character hash) and set it:
+   `supabase secrets set PIPEDRIVE_CHAT_FIELD_KEY=<key>`
+3. In **Automations → Send email for new leads**, add the
+   "Chat transcript" lead field to the email body.
+
+The full chat is also always added as a note on the lead.
 
 ### About `ALLOWED_ORIGIN`
 
