@@ -345,9 +345,12 @@ async function pushToPipedrive(
     return null;
   }
   const base = "https://api.pipedrive.com/v1";
-  // API key of the custom lead field "Chat transcript" (a 40-char hash,
-  // see README). Optional: without it the chat still lands on the note.
-  const chatFieldKey = Deno.env.get("PIPEDRIVE_CHAT_FIELD_KEY")?.trim();
+  // API key of the custom lead field "Chat transcript" in Profiscience's
+  // Pipedrive (a field identifier, not a credential; see README). The
+  // secret overrides it, e.g. for a different Pipedrive account.
+  const chatFieldKey =
+    Deno.env.get("PIPEDRIVE_CHAT_FIELD_KEY")?.trim() ||
+    "d6e9de8ac2d6b3ec6c6845df0e70e19b7b184a04";
   try {
     const personRes = await fetch(`${base}/persons?api_token=${token}`, {
       method: "POST",
