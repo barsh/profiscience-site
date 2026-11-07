@@ -192,7 +192,11 @@ const tools: Anthropic.Tool[] = [
  * and can be replayed. Losing a qualified lead to a third-party 500 is
  * the one failure mode worth engineering against here.
  */
-async function captureLead(input: Record<string, unknown>, sessionId: string) {
+async function captureLead(
+  input: Record<string, unknown>,
+  sessionId: string,
+  conversation: ChatLine[],
+) {
   const row = {
     name: String(input.name ?? ""),
     work_email: String(input.work_email ?? ""),
@@ -245,7 +249,7 @@ async function captureLead(input: Record<string, unknown>, sessionId: string) {
     leadId = res.data?.id;
   }
 
-  const pipedriveLeadId = await pushToPipedrive(row);
+  const pipedriveLeadId = await pushToPipedrive(row, conversation);
   if (pipedriveLeadId && leadId) {
     await supabase
       .from("chat_leads")
@@ -261,6 +265,50 @@ async function captureLead(input: Record<string, unknown>, sessionId: string) {
     : "Could not record the lead. Apologise briefly and ask them to email sales@profiscience.com directly.";
 }
 
+/** One plain-text line of the conversation, as the visitor saw it. */
+type ChatLine = { role: "user" | "assistant"; content: string };
+
+/**
+ * Pipedrive notes are HTML, and everything here except our own labels is
+ * text a visitor typed (or the model wrote from it), so all of it is
+ * escaped before it goes in.
+ */
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+/**
+ * The note on the Pipedrive lead: who they are, the agent's summary, and
+ * the full chat, so whoever picks it up (and Pipedrive's new-lead email)
+ * has the actual conversation, not just a one-line summary of it.
+ */
+function leadNoteHtml(row: Record<string, string | boolean>, conversation: ChatLine[]): string {
+  const field = (v: unknown) => escapeHtml(String(v ?? "") || "not given");
+  const transcript = conversation
+    .map(
+      (m) =>
+        `<b>${m.role === "user" ? escapeHtml(String(row.name) || "Visitor") : "Profiscience agent"}:</b> ` +
+        escapeHtml(m.content).replace(/\n/g, "<br>"),
+    )
+    .join("<br><br>");
+  return (
+    `<b>From site chat</b><br>` +
+    `Name: ${field(row.name)}<br>` +
+    `Email: ${field(row.work_email)}<br>` +
+    `Firm: ${field(row.firm_name)}<br>` +
+    `Size: ${field(row.firm_size)}<br>` +
+    `Interest: ${field(row.interest)}<br>` +
+    `Chat session: ${field(row.session_id)}<br><br>` +
+    `<b>Summary</b><br>${field(row.summary)}` +
+    (transcript ? `<br><br><b>Conversation</b><br>${transcript}` : "")
+  );
+}
+
 /**
  * Pipedrive's REST shape: create a Person, then a Lead pointing at it.
  * Written against the v1 API. Verify against current Pipedrive docs before
@@ -268,6 +316,7 @@ async function captureLead(input: Record<string, unknown>, sessionId: string) {
  */
 async function pushToPipedrive(
   row: Record<string, string | boolean>,
+  conversation: ChatLine[],
 ): Promise<string | null> {
   const token = Deno.env.get("PIPEDRIVE_API_TOKEN");
   if (!token) {
@@ -311,9 +360,7 @@ async function pushToPipedrive(
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
         lead_id: lead.data.id,
-        content:
-          `<b>From site chat</b><br>Firm: ${row.firm_name || "not given"}<br>` +
-          `Size: ${row.firm_size || "not given"}<br>Interest: ${row.interest}<br><br>${row.summary}`,
+        content: leadNoteHtml(row, conversation),
       }),
     });
     // The lead id, not just success: the admin uses it to deep-link into
@@ -520,7 +567,17 @@ Deno.serve(async (req) => {
         toolCalled = block.name;
         const out =
           block.name === "capture_lead"
-            ? await captureLead(block.input as Record<string, unknown>, sessionId)
+            ? await captureLead(
+                block.input as Record<string, unknown>,
+                sessionId,
+                // The chat so far, as plain text: the replayed history plus
+                // this turn's question. Tool-call blocks are left out.
+                messages.flatMap((m) =>
+                  typeof m.content === "string"
+                    ? [{ role: m.role, content: m.content }]
+                    : []
+                ),
+              )
             : block.name === "route_to_support"
             ? routeToSupport()
             : `Unknown tool: ${block.name}`;
