@@ -136,7 +136,7 @@ const tools: Anthropic.Tool[] = [
   {
     name: "capture_lead",
     description:
-      "Record a qualified sales lead and hand it to the Profiscience team. Call this ONLY when someone is evaluating Profiscience AND has given at least a name and work email. Never call it for existing-client support requests.",
+      "Record a qualified sales lead and hand it to the Profiscience team. Call this ONLY when someone is evaluating Profiscience AND has given at least a name and work email. Call it once per conversation; calling it again only updates the same lead. Never call it for existing-client support requests.",
     input_schema: {
       type: "object",
       properties: {
@@ -192,7 +192,11 @@ const tools: Anthropic.Tool[] = [
  * and can be replayed. Losing a qualified lead to a third-party 500 is
  * the one failure mode worth engineering against here.
  */
-async function captureLead(input: Record<string, unknown>, sessionId: string) {
+async function captureLead(
+  input: Record<string, unknown>,
+  sessionId: string,
+  conversation: ChatLine[],
+) {
   const row = {
     name: String(input.name ?? ""),
     work_email: String(input.work_email ?? ""),
@@ -207,15 +211,50 @@ async function captureLead(input: Record<string, unknown>, sessionId: string) {
     pipedrive_synced: false,
   };
 
-  const { data, error } = await supabase.from("chat_leads").insert(row).select("id").single();
-  if (error) console.error("[chat] supabase insert failed:", error.message);
+  // One lead per conversation. The model calls capture_lead again whenever
+  // the visitor adds a detail (firm size, what's driving the search), and
+  // each call used to insert a fresh row — and push a fresh Pipedrive
+  // lead — so one conversation showed up in the admin once per call.
+  // Update the existing row instead, and only push to Pipedrive if this
+  // conversation's lead hasn't been synced yet.
+  const { data: existing, error: lookupError } = await supabase
+    .from("chat_leads")
+    .select("id, pipedrive_synced")
+    .eq("session_id", sessionId)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (lookupError) console.error("[chat] supabase lead lookup failed:", lookupError.message);
 
-  const pipedriveLeadId = await pushToPipedrive(row);
-  if (pipedriveLeadId && data?.id) {
+  let leadId: string | undefined;
+  let error = lookupError;
+  if (existing) {
+    // Don't let a later, sparser call blank out details given earlier.
+    const changes = Object.fromEntries(
+      Object.entries(row).filter(
+        ([k, v]) => k !== "pipedrive_synced" && !(typeof v === "string" && v === ""),
+      ),
+    );
+    const res = await supabase.from("chat_leads").update(changes).eq("id", existing.id);
+    if (res.error) console.error("[chat] supabase lead update failed:", res.error.message);
+    error = res.error;
+    leadId = existing.id;
+    if (existing.pipedrive_synced) {
+      return "Lead details updated. They've already been told a specialist will follow up; just keep answering their questions.";
+    }
+  } else {
+    const res = await supabase.from("chat_leads").insert(row).select("id").single();
+    if (res.error) console.error("[chat] supabase insert failed:", res.error.message);
+    error = res.error;
+    leadId = res.data?.id;
+  }
+
+  const pipedriveLeadId = await pushToPipedrive(row, conversation);
+  if (pipedriveLeadId && leadId) {
     await supabase
       .from("chat_leads")
       .update({ pipedrive_synced: true, pipedrive_lead_id: pipedriveLeadId })
-      .eq("id", data.id);
+      .eq("id", leadId);
   }
   const synced = Boolean(pipedriveLeadId);
 
@@ -226,6 +265,71 @@ async function captureLead(input: Record<string, unknown>, sessionId: string) {
     : "Could not record the lead. Apologise briefly and ask them to email sales@profiscience.com directly.";
 }
 
+/** One plain-text line of the conversation, as the visitor saw it. */
+type ChatLine = { role: "user" | "assistant"; content: string };
+
+/**
+ * Pipedrive notes are HTML, and everything here except our own labels is
+ * text a visitor typed (or the model wrote from it), so all of it is
+ * escaped before it goes in.
+ */
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+/**
+ * The note on the Pipedrive lead: who they are, the agent's summary, and
+ * the full chat, so whoever picks it up (and Pipedrive's new-lead email)
+ * has the actual conversation, not just a one-line summary of it.
+ */
+function leadNoteHtml(row: Record<string, string | boolean>, conversation: ChatLine[]): string {
+  const field = (v: unknown) => escapeHtml(String(v ?? "") || "not given");
+  const transcript = conversation
+    .map(
+      (m) =>
+        `<b>${m.role === "user" ? escapeHtml(String(row.name) || "Visitor") : "Profiscience agent"}:</b> ` +
+        escapeHtml(m.content).replace(/\n/g, "<br>"),
+    )
+    .join("<br><br>");
+  return (
+    `<b>From site chat</b><br>` +
+    `Name: ${field(row.name)}<br>` +
+    `Email: ${field(row.work_email)}<br>` +
+    `Firm: ${field(row.firm_name)}<br>` +
+    `Size: ${field(row.firm_size)}<br>` +
+    `Interest: ${field(row.interest)}<br>` +
+    `Chat session: ${field(row.session_id)}<br><br>` +
+    `<b>Summary</b><br>${field(row.summary)}` +
+    (transcript ? `<br><br><b>Conversation</b><br>${transcript}` : "")
+  );
+}
+
+/**
+ * The same content as the note, as plain text, for the custom lead field
+ * the sales email inserts. Plain text because it is merged into an email
+ * template, and Pipedrive caps a large-text field well above any chat this
+ * function allows (MAX_HISTORY_TURNS × MAX_MESSAGE_CHARS), but trim anyway.
+ */
+function leadChatText(row: Record<string, string | boolean>, conversation: ChatLine[]): string {
+  const field = (v: unknown) => String(v ?? "") || "not given";
+  const lines = [
+    `Firm size: ${field(row.firm_size)}`,
+    `Interest: ${field(row.interest)}`,
+    `Summary: ${field(row.summary)}`,
+    "",
+    "Conversation:",
+    ...conversation.map(
+      (m) => `${m.role === "user" ? String(row.name) || "Visitor" : "Profiscience agent"}: ${m.content}`,
+    ),
+  ];
+  return lines.join("\n").slice(0, 60000);
+}
+
 /**
  * Pipedrive's REST shape: create a Person, then a Lead pointing at it.
  * Written against the v1 API. Verify against current Pipedrive docs before
@@ -233,6 +337,7 @@ async function captureLead(input: Record<string, unknown>, sessionId: string) {
  */
 async function pushToPipedrive(
   row: Record<string, string | boolean>,
+  conversation: ChatLine[],
 ): Promise<string | null> {
   const token = Deno.env.get("PIPEDRIVE_API_TOKEN");
   if (!token) {
@@ -240,6 +345,12 @@ async function pushToPipedrive(
     return null;
   }
   const base = "https://api.pipedrive.com/v1";
+  // API key of the custom lead field "Chat transcript" in Profiscience's
+  // Pipedrive (a field identifier, not a credential; see README). The
+  // secret overrides it, e.g. for a different Pipedrive account.
+  const chatFieldKey =
+    Deno.env.get("PIPEDRIVE_CHAT_FIELD_KEY")?.trim() ||
+    "d6e9de8ac2d6b3ec6c6845df0e70e19b7b184a04";
   try {
     const personRes = await fetch(`${base}/persons?api_token=${token}`, {
       method: "POST",
@@ -262,7 +373,15 @@ async function pushToPipedrive(
     const leadRes = await fetch(`${base}/leads?api_token=${token}`, {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ title, person_id: person.data.id }),
+      body: JSON.stringify({
+        title,
+        person_id: person.data.id,
+        // The "Lead added" automation emails sales the moment the lead is
+        // created, and its template can insert lead fields but not notes.
+        // So the chat goes in a custom long-text field, set in this same
+        // call so it's already there when the email goes out.
+        ...(chatFieldKey ? { [chatFieldKey]: leadChatText(row, conversation) } : {}),
+      }),
     });
     const lead = await leadRes.json();
     if (!leadRes.ok || !lead?.data?.id) {
@@ -276,9 +395,7 @@ async function pushToPipedrive(
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
         lead_id: lead.data.id,
-        content:
-          `<b>From site chat</b><br>Firm: ${row.firm_name || "not given"}<br>` +
-          `Size: ${row.firm_size || "not given"}<br>Interest: ${row.interest}<br><br>${row.summary}`,
+        content: leadNoteHtml(row, conversation),
       }),
     });
     // The lead id, not just success: the admin uses it to deep-link into
@@ -485,7 +602,17 @@ Deno.serve(async (req) => {
         toolCalled = block.name;
         const out =
           block.name === "capture_lead"
-            ? await captureLead(block.input as Record<string, unknown>, sessionId)
+            ? await captureLead(
+                block.input as Record<string, unknown>,
+                sessionId,
+                // The chat so far, as plain text: the replayed history plus
+                // this turn's question. Tool-call blocks are left out.
+                messages.flatMap((m) =>
+                  typeof m.content === "string"
+                    ? [{ role: m.role, content: m.content }]
+                    : []
+                ),
+              )
             : block.name === "route_to_support"
             ? routeToSupport()
             : `Unknown tool: ${block.name}`;
