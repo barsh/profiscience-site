@@ -7,7 +7,7 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "node scripts/verify-static-site.mjs"
+    "test": "node scripts/verify-static-site.mjs && node --test scripts/test-chat-abuse.mjs"
   },
   "repository": {
     "type": "git",

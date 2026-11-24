@@ -34,7 +34,7 @@
     ? "http://localhost:54321/functions/v1/chat"
     : PROD_ENDPOINT;
 
-  var MAX_TURNS = 24; // trim client-side too; the server enforces its own cap
+  var MAX_TURNS = 24; // replay window only; the server caps the session
 
   // Groups this conversation's turns together in the transcript table so a
   // reviewer can read an exchange in order. Deliberately NOT an identity:
@@ -69,6 +69,7 @@
     // isn't told it already said something it didn't.
     var history = [];
     var busy = false;
+    var ended = false;
     // Whether the visitor still had the field focused when a request began —
     // disabling an input blurs it, so it has to be captured before that.
     var wasFocused = false;
@@ -195,6 +196,20 @@
         .then(function (res) {
           typing.remove();
 
+          // Turn cap, repeated probes, and daily ceilings end the session.
+          // Lock the composer so a person isn't invited to keep typing at
+          // a chat that will only repeat the closing line. A burst limit
+          // does not set closed — that one clears in a minute.
+          if (res.data && res.data.closed) {
+            ended = true;
+            addMessage(
+              res.data.reply ||
+                "This chat has ended. Email sales@profiscience.com and someone will follow up.",
+              "bot"
+            );
+            return;
+          }
+
           // The server distinguishes "slow down" from "closed for the day",
           // so prefer its wording over a generic one.
           if (res.status === 429) {
@@ -228,7 +243,14 @@
           );
         })
         .finally(function () {
-          setBusy(false);
+          if (ended) {
+            busy = false;
+            input.disabled = true;
+            sendBtn.disabled = true;
+            input.placeholder = "This chat has ended";
+          } else {
+            setBusy(false);
+          }
         });
     });
   }
