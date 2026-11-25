@@ -30,6 +30,21 @@ import {
   quotaClosesComposer,
   quotaReply,
 } from "./abuse.mjs";
+import {
+  HANDOFF_THANKS,
+  handoffLeadFields,
+  responseOffersHandoff,
+  sessionIsSuspectedBot,
+  validateHandoff,
+  visitorWantsPerson,
+  withHandoffOffer,
+} from "./handoff.mjs";
+import {
+  conversationFromTranscript,
+  leadChatText,
+  leadNoteHtml,
+  shouldSendLeadEmail,
+} from "./lead-email.mjs";
 import { KNOWLEDGE } from "./knowledge.ts";
 
 const MODEL = "claude-opus-4-8";
@@ -143,13 +158,18 @@ async function checkQuota(ip: string, sessionId: string): Promise<{ allowed: boo
  * real length, so trimming the window can't hide a long session.
  */
 async function loadSessionPrior(sessionId: string): Promise<{
-  prior: Array<{ question: string; created_at: string; stop_reason: string | null }>;
+  prior: Array<{
+    question: string;
+    reply: string;
+    created_at: string;
+    stop_reason: string | null;
+  }>;
   totalTurns: number;
 } | null> {
   try {
     const { data, error, count } = await supabase
       .from("chat_transcripts")
-      .select("question, created_at, stop_reason", { count: "exact" })
+      .select("question, reply, created_at, stop_reason", { count: "exact" })
       .eq("session_id", sessionId)
       .order("created_at", { ascending: false })
       .limit(Math.max(LIMITS.maxSessionTurns, 40));
@@ -159,6 +179,7 @@ async function loadSessionPrior(sessionId: string): Promise<{
     }
     const prior = (data ?? []).slice().reverse().map((row) => ({
       question: String(row.question ?? ""),
+      reply: String(row.reply ?? ""),
       created_at: String(row.created_at ?? ""),
       stop_reason: row.stop_reason == null ? null : String(row.stop_reason),
     }));
@@ -167,6 +188,103 @@ async function loadSessionPrior(sessionId: string): Promise<{
     console.error("[chat] session guard threw:", err);
     return null;
   }
+}
+
+const EMPTY_USAGE = {
+  input_tokens: 0,
+  output_tokens: 0,
+  cache_read_input_tokens: 0,
+  cache_creation_input_tokens: 0,
+} as Anthropic.Usage;
+
+/**
+ * The contact form. Runs even after the turn cap has locked the chat,
+ * and does not call the model. A suspected-bot session is refused
+ * before anything is written. The row is a normal lead, so the admin
+ * Chats outcome and the Pipedrive notification are the ones capture_lead
+ * already uses.
+ */
+async function handleHandoff(
+  raw: unknown,
+  sessionId: string,
+  ip: string,
+  cors: Record<string, string>,
+) {
+  const parsed = validateHandoff(raw);
+  if (!parsed.ok) {
+    return new Response(JSON.stringify({ error: "invalid_handoff", reply: parsed.error }), {
+      status: 400,
+      headers: { ...cors, "content-type": "application/json" },
+    });
+  }
+
+  const session = await loadSessionPrior(sessionId);
+  if (!session) {
+    return new Response(
+      JSON.stringify({ error: "quota_unavailable", reply: quotaReply("quota_unavailable") }),
+      { status: 429, headers: { ...cors, "content-type": "application/json" } },
+    );
+  }
+
+  // Suspected-bot sessions never become leads, so they never send the
+  // sales email. The turn cap is not this case.
+  if (!shouldSendLeadEmail(session.prior) || sessionIsSuspectedBot(session.prior)) {
+    return new Response(
+      JSON.stringify({
+        error: "abuse_repeat",
+        handoff: false,
+        reply: "This chat can't take a contact request. Email sales@profiscience.com if you still need a person.",
+      }),
+      { headers: { ...cors, "content-type": "application/json" } },
+    );
+  }
+
+  const quota = await checkQuota(ip, sessionId);
+  if (!quota.allowed) {
+    return new Response(
+      JSON.stringify({
+        error: quota.reason,
+        reply: quotaReply(quota.reason),
+        closed: quotaClosesComposer(quota.reason),
+        handoff: false,
+      }),
+      { status: 429, headers: { ...cors, "content-type": "application/json" } },
+    );
+  }
+
+  const fields = handoffLeadFields(parsed.value);
+  // The form note is part of the conversation the email quotes, after
+  // the turns already stored, in the order the visitor had them.
+  const conversation: ChatLine[] = [
+    ...conversationFromTranscript(session.prior),
+    { role: "user", content: parsed.value.note },
+    { role: "assistant", content: HANDOFF_THANKS },
+  ];
+  const saved = await captureLead(fields, sessionId, conversation, fields.source);
+  if (!saved.ok) {
+    return new Response(
+      JSON.stringify({
+        error: "lead_failed",
+        reply: "I couldn't save that. Email sales@profiscience.com and someone will pick it up.",
+      }),
+      { status: 502, headers: { ...cors, "content-type": "application/json" } },
+    );
+  }
+
+  await logTranscript({
+    session_id: sessionId,
+    turn: session.totalTurns + 1,
+    question: `Handoff (${parsed.value.route}): ${parsed.value.note}`,
+    reply: HANDOFF_THANKS,
+    tool_called: "capture_lead",
+    stop_reason: "handoff",
+    usage: EMPTY_USAGE,
+  });
+
+  return new Response(
+    JSON.stringify({ reply: HANDOFF_THANKS, handoff_received: true, handoff: false }),
+    { headers: { ...cors, "content-type": "application/json" } },
+  );
 }
 
 /**
@@ -225,9 +343,12 @@ Work out which of three situations you're in, and don't ask for an email until y
 
 1. **Evaluating Profiscience** (comparing platforms, replacing an LMS, asking what it does for their firm). Answer their question first and substantively. Once there's genuine interest, collect name, work email, firm name, rough firm size, and what's driving the search — then call \`capture_lead\`. Ask for those conversationally across turns, not as a form dump. If they decline to share details, keep helping anyway.
 
-2. **Already a Profiscience client with a problem or question about their account.** Call \`route_to_support\`. Do NOT collect their details and do NOT call \`capture_lead\` — support requests must not become sales leads.
+2. **Already a Profiscience client with a problem or question about their account.** Call \`route_to_support\`. Do NOT collect their details and do NOT call \`capture_lead\` — support requests must not become sales leads. A form will offer to have someone contact them; a person decides whether that is support or sales.
 
 3. **Just browsing or asking a general question.** Answer it. Point at the relevant page. Don't push for contact details; mention the contact page only if it's genuinely useful.
+
+## Reaching a person
+When you cannot resolve a question, or the visitor asks to speak with a person, sales, or support, say that someone from the team can contact them. Do not quiz them for a name and email — the form next to the chat collects that, including whether it is sales, support, or they are not sure. If they have already given a name and work email in the conversation, you may still call \`capture_lead\`.
 
 ## Tone
 Direct and knowledgeable, the way a competent solutions engineer talks. These are legal-industry professionals — no exclamation marks, no hard-sell, no "Great question!". Keep replies to a few sentences; this is a chat widget, not a document. When a product question is beyond you, hand it off warmly rather than declining flatly. Off-topic tasks are the exception, and they are declined as above rather than answered.`;
@@ -319,7 +440,8 @@ async function captureLead(
   input: Record<string, unknown>,
   sessionId: string,
   conversation: ChatLine[],
-) {
+  source = "site_chat",
+): Promise<{ ok: boolean; message: string }> {
   const row = {
     name: String(input.name ?? ""),
     work_email: String(input.work_email ?? ""),
@@ -327,7 +449,7 @@ async function captureLead(
     firm_size: String(input.firm_size ?? ""),
     interest: String(input.interest ?? "other"),
     summary: String(input.summary ?? ""),
-    source: "site_chat",
+    source,
     // Ties the lead to the conversation that produced it, so the admin can
     // show the actual exchange next to the agent's summary of it.
     session_id: sessionId,
@@ -363,7 +485,11 @@ async function captureLead(
     error = res.error;
     leadId = existing.id;
     if (existing.pipedrive_synced) {
-      return "Lead details updated. They've already been told a specialist will follow up; just keep answering their questions.";
+      return {
+        ok: true,
+        message:
+          "Lead details updated. They've already been told a specialist will follow up; just keep answering their questions.",
+      };
     }
   } else {
     const res = await supabase.from("chat_leads").insert(row).select("id").single();
@@ -372,86 +498,37 @@ async function captureLead(
     leadId = res.data?.id;
   }
 
-  const pipedriveLeadId = await pushToPipedrive(row, conversation);
+  // Phone is not a chat_leads column. It rides along only for the
+  // notification text; the summary also quotes it for the admin.
+  const pipedriveLeadId = await pushToPipedrive(
+    { ...row, phone: String(input.phone ?? "") },
+    conversation,
+  );
   if (pipedriveLeadId && leadId) {
     await supabase
       .from("chat_leads")
       .update({ pipedrive_synced: true, pipedrive_lead_id: pipedriveLeadId })
       .eq("id", leadId);
   }
-  const synced = Boolean(pipedriveLeadId);
-
   // The model only needs to know whether to promise a follow-up. It must
   // not learn about our storage internals, so the result stays coarse.
-  return synced || !error
-    ? "Lead recorded. Tell them a Profiscience specialist will follow up by email, and offer to keep answering questions in the meantime."
-    : "Could not record the lead. Apologise briefly and ask them to email sales@profiscience.com directly.";
+  // ok follows the row in Postgres, not the CRM push: a Pipedrive miss is
+  // replayable, a failed insert is not.
+  return !error
+    ? {
+        ok: true,
+        message:
+          "Lead recorded. Tell them a Profiscience specialist will follow up by email, and offer to keep answering questions in the meantime.",
+      }
+    : {
+        ok: false,
+        message:
+          "Could not record the lead. Apologise briefly and ask them to email sales@profiscience.com directly.",
+      };
 }
 
 /** One plain-text line of the conversation, as the visitor saw it. */
 type ChatLine = { role: "user" | "assistant"; content: string };
-
-/**
- * Pipedrive notes are HTML, and everything here except our own labels is
- * text a visitor typed (or the model wrote from it), so all of it is
- * escaped before it goes in.
- */
-function escapeHtml(text: string): string {
-  return text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
-
-/**
- * The note on the Pipedrive lead: who they are, the agent's summary, and
- * the full chat, so whoever picks it up (and Pipedrive's new-lead email)
- * has the actual conversation, not just a one-line summary of it.
- */
-function leadNoteHtml(row: Record<string, string | boolean>, conversation: ChatLine[]): string {
-  const field = (v: unknown) => escapeHtml(String(v ?? "") || "not given");
-  const transcript = conversation
-    .map(
-      (m) =>
-        `<b>${m.role === "user" ? escapeHtml(String(row.name) || "Visitor") : "Profiscience agent"}:</b> ` +
-        escapeHtml(m.content).replace(/\n/g, "<br>"),
-    )
-    .join("<br><br>");
-  return (
-    `<b>From site chat</b><br>` +
-    `Name: ${field(row.name)}<br>` +
-    `Email: ${field(row.work_email)}<br>` +
-    `Firm: ${field(row.firm_name)}<br>` +
-    `Size: ${field(row.firm_size)}<br>` +
-    `Interest: ${field(row.interest)}<br>` +
-    `Chat session: ${field(row.session_id)}<br><br>` +
-    `<b>Summary</b><br>${field(row.summary)}` +
-    (transcript ? `<br><br><b>Conversation</b><br>${transcript}` : "")
-  );
-}
-
-/**
- * The same content as the note, as plain text, for the custom lead field
- * the sales email inserts. Plain text because it is merged into an email
- * template, and Pipedrive caps a large-text field well above any chat this
- * function allows (MAX_HISTORY_TURNS × MAX_MESSAGE_CHARS), but trim anyway.
- */
-function leadChatText(row: Record<string, string | boolean>, conversation: ChatLine[]): string {
-  const field = (v: unknown) => String(v ?? "") || "not given";
-  const lines = [
-    `Firm size: ${field(row.firm_size)}`,
-    `Interest: ${field(row.interest)}`,
-    `Summary: ${field(row.summary)}`,
-    "",
-    "Conversation:",
-    ...conversation.map(
-      (m) => `${m.role === "user" ? String(row.name) || "Visitor" : "Profiscience agent"}: ${m.content}`,
-    ),
-  ];
-  return lines.join("\n").slice(0, 60000);
-}
 
 /**
  * Pipedrive's REST shape: create a Person, then a Lead pointing at it.
@@ -621,6 +698,7 @@ Deno.serve(async (req) => {
   let body: {
     messages?: Array<{ role: string; content: string }>;
     session_id?: unknown;
+    handoff?: unknown;
   };
   try {
     body = await req.json();
@@ -655,6 +733,13 @@ Deno.serve(async (req) => {
     typeof body.session_id === "string" && body.session_id.trim()
       ? body.session_id.trim().slice(0, 64)
       : "unknown";
+
+  // The contact form is not a chat turn. It has to work after the turn
+  // cap has stopped the composer, and it must not be a way to sneak
+  // another model call in by attaching messages.
+  if (body.handoff != null) {
+    return handleHandoff(body.handoff, sessionId, ip, cors);
+  }
 
   // Turn number for the review views. Counts user messages in the history
   // the client replayed, so it survives the server being stateless.
@@ -692,24 +777,25 @@ Deno.serve(async (req) => {
     limits: LIMITS,
   });
   if (decision.block) {
+    const handoff = responseOffersHandoff({
+      message: question,
+      prior: session.prior,
+      blockedReason: decision.reason,
+    });
+    const reply = handoff ? withHandoffOffer(decision.reply) : decision.reply;
     if (decision.log) {
       await logTranscript({
         session_id: sessionId,
         turn: session.totalTurns + 1,
         question,
-        reply: decision.reply,
+        reply,
         tool_called: null,
         stop_reason: decision.reason,
-        usage: {
-          input_tokens: 0,
-          output_tokens: 0,
-          cache_read_input_tokens: 0,
-          cache_creation_input_tokens: 0,
-        } as Anthropic.Usage,
+        usage: EMPTY_USAGE,
       });
     }
     return new Response(
-      JSON.stringify({ reply: decision.reply, closed: true, error: decision.reason }),
+      JSON.stringify({ reply, closed: true, handoff, error: decision.reason }),
       { headers: { ...cors, "content-type": "application/json" } },
     );
   }
@@ -770,17 +856,19 @@ Deno.serve(async (req) => {
         toolCalled = block.name;
         const out =
           block.name === "capture_lead"
-            ? await captureLead(
-                block.input as Record<string, unknown>,
-                sessionId,
-                // The chat so far, as plain text: the replayed history plus
-                // this turn's question. Tool-call blocks are left out.
-                messages.flatMap((m) =>
-                  typeof m.content === "string"
-                    ? [{ role: m.role, content: m.content }]
-                    : []
-                ),
-              )
+            ? (
+                await captureLead(
+                  block.input as Record<string, unknown>,
+                  sessionId,
+                  // The chat so far, as plain text: the replayed history plus
+                  // this turn's question. Tool-call blocks are left out.
+                  messages.flatMap((m) =>
+                    typeof m.content === "string"
+                      ? [{ role: m.role, content: m.content }]
+                      : []
+                  ),
+                )
+              ).message
             : block.name === "route_to_support"
             ? routeToSupport()
             : `Unknown tool: ${block.name}`;
@@ -800,7 +888,7 @@ Deno.serve(async (req) => {
       response.usage;
     console.log(`[chat] cache read=${read ?? 0} write=${written ?? 0}`);
 
-    const reply =
+    const drafted =
       response.stop_reason === "refusal"
         ? "I can't help with that one. For anything else about UniversitySite or CLESite, ask away."
         : response.content
@@ -808,6 +896,15 @@ Deno.serve(async (req) => {
           .map((b) => b.text)
           .join("\n")
           .trim() || "Sorry — I didn't catch that. Could you rephrase?";
+
+    const handoff = responseOffersHandoff({
+      message: question,
+      prior: session.prior,
+      reply: drafted,
+      toolCalled,
+      stopReason: response.stop_reason,
+    });
+    const reply = handoff ? withHandoffOffer(drafted) : drafted;
 
     // Awaited rather than fired-and-forgotten: the Edge Function's runtime
     // can be torn down as soon as the response is returned, which would
@@ -823,16 +920,21 @@ Deno.serve(async (req) => {
       usage: response.usage,
     });
 
-    return new Response(JSON.stringify({ reply }), {
+    return new Response(JSON.stringify({ reply, handoff }), {
       headers: { ...cors, "content-type": "application/json" },
     });
   } catch (err) {
     console.error("[chat] anthropic call failed:", err);
+    const handoff =
+      visitorWantsPerson(question) && !sessionIsSuspectedBot(session.prior);
+    const reply = withHandoffOffer(
+      "I'm having trouble responding right now. Email sales@profiscience.com and someone will pick it up.",
+    );
     return new Response(
       JSON.stringify({
         error: "upstream",
-        reply:
-          "I'm having trouble responding right now. Email sales@profiscience.com and someone will pick it up.",
+        reply: handoff ? reply : "I'm having trouble responding right now. Email sales@profiscience.com and someone will pick it up.",
+        handoff,
       }),
       { status: 502, headers: { ...cors, "content-type": "application/json" } },
     );

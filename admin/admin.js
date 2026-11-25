@@ -802,6 +802,7 @@ function boot() {
     if (reason === "abuse_turn_cap") return "Ended — turn cap";
     if (reason === "abuse_repeat") return "Ended — repeated messages";
     if (reason === "abuse_fast") return "Ended — messages arrived too fast";
+    if (reason === "handoff") return "Handoff form submitted";
     return "";
   }
 
@@ -922,6 +923,13 @@ function boot() {
     $(id).addEventListener("change", renderChats);
   });
 
+  function interestText(value) {
+    if (value === "sales") return "Sales";
+    if (value === "support") return "Support";
+    if (value === "not_sure") return "Not sure";
+    return value;
+  }
+
   function leadCard(c) {
     if (!c || !c.captured_lead) return "";
 
@@ -946,7 +954,7 @@ function boot() {
       ["Email", c.lead_email, c.lead_email ? emailValue : null],
       ["Firm", c.lead_firm, null],
       ["Size", c.lead_firm_size, null],
-      ["Interest", c.lead_interest, null],
+      ["Interest", interestText(c.lead_interest), null],
     ]
       .filter((r) => r[1])
       .map(
@@ -979,7 +987,9 @@ function boot() {
 
     return (
       '<div class="chat-lead">' +
-      "<h3>Lead captured</h3>" +
+      "<h3>" +
+      (c.lead_source === "site_chat_handoff" ? "Handoff requested" : "Lead captured") +
+      "</h3>" +
       rows +
       (c.lead_summary
         ? '<p class="chat-lead-summary">' + esc(c.lead_summary) + "</p>"
@@ -1004,7 +1014,7 @@ function boot() {
       (convo && convo.suspected_bot
         ? '<p class="adm-note error">Suspected bot — repeated messages, or turns too fast to be someone reading.</p>'
         : convo && convo.hit_turn_cap
-          ? '<p class="adm-note info">Ended at the turn cap. The visitor was given the sales contact.</p>'
+          ? '<p class="adm-note info">Ended at the turn cap. The visitor can still ask the team to make contact.</p>'
           : "") + leadCard(convo);
     $("chatThread").innerHTML = '<p class="adm-note info">Loading…</p>';
     show($("chatScrim"));

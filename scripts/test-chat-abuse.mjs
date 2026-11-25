@@ -84,6 +84,7 @@ describe("near duplicates", () => {
     assert.equal(decision.reason, "abuse_repeat");
     assert.equal(decision.log, true);
     assert.equal(decision.closed, true);
+    assert.equal(decision.handoff, false);
     assert.match(decision.reply, /sales@profiscience.com/);
     assert.doesNotMatch(decision.reply, /bot/i);
   });
@@ -119,7 +120,8 @@ describe("assessSession", () => {
     });
     assert.equal(decision.reason, "abuse_turn_cap");
     assert.equal(decision.reply, TURN_CAP_REPLY);
-    assert.match(decision.reply, /walkthrough/);
+    assert.match(decision.reply, /someone from our team/);
+    assert.equal(decision.handoff, true);
     assert.equal(decision.log, true);
   });
 
@@ -135,6 +137,7 @@ describe("assessSession", () => {
     });
     assert.equal(decision.reason, "abuse_repeat");
     assert.equal(decision.log, false);
+    assert.equal(decision.handoff, false);
   });
 
   it("ends a session whose turns are arriving faster than a person can read", () => {
@@ -164,6 +167,7 @@ describe("assessSession", () => {
       now: Date.parse(prior[prior.length - 1].created_at) + 400,
     });
     assert.equal(decision.reason, "abuse_fast");
+    assert.equal(decision.handoff, false);
   });
 
   it("does not flag a quick single follow-up", () => {

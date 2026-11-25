@@ -47,7 +47,7 @@ export const DEFAULTS = {
 };
 
 export const TURN_CAP_REPLY =
-  "That's as far as I can take a conversation in this chat. If you'd like a walkthrough of UniversitySite or CLESite, email sales@profiscience.com or use the contact page and a specialist will follow up.";
+  "That's as far as I can take a conversation in this chat. Want someone from our team to contact you? They'll sort out whether this is a sales question or something for support.";
 
 export const REPEAT_REPLY =
   "I'm going to stop this chat here. I can help with questions about UniversitySite and CLESite, and a person is the right next step — email sales@profiscience.com or use the contact page and someone will follow up.";
@@ -173,6 +173,10 @@ function block(reason, log) {
     reply: REPLIES[reason],
     log,
     closed: true,
+    // The turn cap is a long conversation, not a bot. The form stays
+    // available after the composer locks. Repeated and too-fast
+    // sessions are the suspected-bot flag and do not get the form.
+    handoff: reason === "abuse_turn_cap",
   };
 }
 

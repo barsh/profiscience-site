@@ -171,7 +171,11 @@ insert lead fields, not notes. To get the chat into that email:
 3. In **Automations → Send email for new leads**, add the
    "Chat transcript" lead field to the email body.
 
-The full chat is also always added as a note on the lead.
+The full chat is also always added as a note on the lead. The field itself
+lists name, email, firm, phone when one was given, and — for a handoff —
+whether they said sales, support, or not sure, then the conversation in
+order. A suspected-bot session does not create a lead, so it does not
+send this email.
 
 ### About `ALLOWED_ORIGIN`
 
@@ -215,8 +219,9 @@ Lists conversations newest-first with the opening question, turn count,
 estimated cost, and outcome. A lead and a support handoff are the
 business outcomes. **Suspected bot** means the session was stopped for
 repeated or too-fast messages. **Turn cap** is separate: the visitor
-used the allowance and was given the sales contact, which a long real
-conversation can do. Filter by period, by outcome, or search — search
+used the allowance and was offered the contact form, which a long real
+conversation can do. A submitted form shows up as a lead. Sessions
+flagged **Suspected bot** are not offered the form. Filter by period, by outcome, or search — search
 covers every message in every conversation, not just the first.
 
 Open a row for the full transcript. If a lead was captured you also get
@@ -266,9 +271,12 @@ The assistant costs a few dollars a day at most. Safeguards, all enforced
 in the Edge Function (defaults in `supabase/functions/chat/abuse.mjs`,
 overridable with env vars — see that file):
 
-- **Per conversation** — 24 visitor messages, then a closing note with the
-  sales address. Repeated or near-identical messages, and a burst of turns
-  too fast to be someone reading, end the session sooner.
+- **Per conversation** — 24 visitor messages, then the chat locks and offers
+  a contact form (name, email, optional firm and phone, a short note, and
+  sales / support / not sure). That form is saved as a lead and pushed to
+  Pipedrive the same way a captured lead is. Repeated or near-identical
+  messages, and a burst of turns too fast to be someone reading, end the
+  session without the form.
 - **Per IP** — 10 messages per minute, 40 per day, and 12 new conversations
   per day (a refresh only counts once a message is sent).
 - **A hard daily cap** — 150 requests. Past that the widget politely refers

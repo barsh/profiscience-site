@@ -214,7 +214,9 @@ create or replace view public.chat_conversations
     t.last_at,
     t.turns,
     t.first_question,
-    t.captured_lead,
+    -- A form handoff writes chat_leads directly. The tool flag covers the
+    -- model's capture_lead calls; the joined row covers the form.
+    (t.captured_lead or l.id is not null)                    as captured_lead,
     t.routed_support,
     t.tokens,
     l.id                                                     as lead_id,
@@ -227,7 +229,8 @@ create or replace view public.chat_conversations
     l.pipedrive_lead_id,
     l.pipedrive_synced,
     t.suspected_bot,
-    t.hit_turn_cap
+    t.hit_turn_cap,
+    l.source                                                 as lead_source
   from (
     select
       session_id,
