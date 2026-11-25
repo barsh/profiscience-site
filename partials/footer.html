@@ -88,6 +88,28 @@
   <div class="bot-body" role="log" aria-live="polite" aria-atomic="false">
     <div class="bot-msg bot">Hi, I'm Profiscience AI. I can answer platform and CLE questions or connect you with the right person. What are you exploring?</div>
   </div>
+  <form class="bot-handoff" hidden novalidate>
+    <p class="bot-handoff-lead">Want someone from our team to contact you?</p>
+    <div class="bot-handoff-row">
+      <label>Name <input name="name" type="text" autocomplete="name" maxlength="120" required /></label>
+      <label>Email <input name="email" type="email" autocomplete="email" maxlength="200" required /></label>
+    </div>
+    <div class="bot-handoff-row">
+      <label>Firm <span>optional</span> <input name="firm" type="text" autocomplete="organization" maxlength="160" /></label>
+      <label>Phone <span>optional</span> <input name="phone" type="tel" autocomplete="tel" maxlength="40" /></label>
+    </div>
+    <label>What do you need?
+      <textarea name="note" rows="2" maxlength="1000" required></textarea>
+    </label>
+    <fieldset>
+      <legend>This is about</legend>
+      <label><input type="radio" name="route" value="sales" /> Sales</label>
+      <label><input type="radio" name="route" value="support" /> Support</label>
+      <label><input type="radio" name="route" value="not_sure" checked /> Not sure</label>
+    </fieldset>
+    <button type="submit">Request contact</button>
+    <p class="bot-handoff-error" hidden></p>
+  </form>
   <form class="bot-foot">
     <input type="text" placeholder="Ask Profiscience AI..." aria-label="Ask Profiscience AI" autocomplete="off" maxlength="2000" />
     <button type="submit" aria-label="Send">Send</button>

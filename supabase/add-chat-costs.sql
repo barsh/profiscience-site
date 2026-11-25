@@ -148,7 +148,13 @@ create or replace view public.chat_conversation_costs
 -- What the admin Chats tab actually lists: the conversation index from
 -- add-chat-transcripts.sql with its cost attached.
 -- ---------------------------------------------------------
-create or replace view public.chat_conversations_with_cost
+-- Dropped and recreated, not replaced. chat_conversations may have grown
+-- a column (suspected_bot) since this view was first created, and
+-- PostgreSQL freezes `c.*` at creation time. CREATE OR REPLACE would
+-- also reject the new column because it lands before est_cost_usd
+-- rather than at the end of this view's existing column list.
+drop view if exists public.chat_conversations_with_cost;
+create view public.chat_conversations_with_cost
   with (security_invoker = true) as
   select
     c.*,
@@ -156,19 +162,36 @@ create or replace view public.chat_conversations_with_cost
   from public.chat_conversations c
   left join public.chat_conversation_costs k on k.session_id = c.session_id;
 
+grant select on public.chat_conversations_with_cost to authenticated, service_role;
+
 -- ---------------------------------------------------------
 -- The monthly bill.
 --
 --   select * from public.chat_costs_monthly;
 --
--- `est_cache_write_usd` is the line to watch. It should be a small fraction of
--- the total: the cached prefix is ~8,200 tokens sent on every single
--- request, so a month where writes rival reads means the cache is being
--- invalidated and you are paying roughly ten times over for the same
--- prompt. See the note in add-chat-quota.sql.
+-- `followup_cache_write_tokens` is the line to watch, not the dollar
+-- totals. A 1-hour cache write costs 20× a read, and the first turn of
+-- every conversation is a write whenever the cache is cold, so a quiet
+-- month of one-question chats makes write dollars exceed read dollars
+-- even when the prefix is stable. Follow-up turns (the 2nd message and
+-- after in a session) should be reads. When those writes exceed those
+-- reads, the prefix is actually being invalidated.
+--
+-- Run this file AFTER add-chat-transcripts.sql. The admin reads
+-- chat_conversations_with_cost, and that view's column list is fixed
+-- when it is created — it will not grow suspected_bot on its own.
 -- ---------------------------------------------------------
 create or replace view public.chat_costs_monthly
   with (security_invoker = true) as
+  with priced as (
+    select
+      e.*,
+      row_number() over (
+        partition by e.session_id
+        order by e.created_at, e.id
+      ) as session_turn
+    from public.chat_exchange_costs e
+  )
   select
     date_trunc('month', created_at)::date        as month,
     count(*)::int                                 as exchanges,
@@ -178,8 +201,12 @@ create or replace view public.chat_costs_monthly
     round(sum(est_cache_read_usd), 2)                 as est_cache_read_usd,
     round(sum(est_cache_write_usd), 2)                as est_cache_write_usd,
     round(sum(est_cost_usd), 2)                       as est_total_usd,
-    round(avg(est_cost_usd), 4)                       as avg_per_exchange_usd
-  from public.chat_exchange_costs
+    round(avg(est_cost_usd), 4)                       as avg_per_exchange_usd,
+    sum(case when session_turn > 1 then coalesce(cache_read_tokens, 0) else 0 end)::bigint
+                                                          as followup_cache_read_tokens,
+    sum(case when session_turn > 1 then coalesce(cache_write_tokens, 0) else 0 end)::bigint
+                                                          as followup_cache_write_tokens
+  from priced
   group by 1
   order by 1 desc;
 

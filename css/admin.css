@@ -215,6 +215,8 @@ a.chat-mailto:hover { text-decoration: underline; }
 }
 .chat-pill.lead    { background: rgba(16,185,129,.12); color: #0B7A5B; }
 .chat-pill.support { background: rgba(20,99,255,.10);  color: var(--pf-navy); }
+.chat-pill.bot     { background: rgba(217,119,6,.14);  color: #9A3412; }
+.chat-pill.cap     { background: rgba(120,113,108,.12); color: #57534E; }
 
 /* ---- conversation drawer ---- */
 .chat-lead {

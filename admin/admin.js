@@ -671,12 +671,27 @@ function boot() {
           esc(String(prev.month).slice(0, 7)) +
           "</div>"
         : "") +
-      // Cache writes should be a rounding error against reads. When they
-      // are not, the prefix is being invalidated and the same prompt is
-      // being paid for at roughly ten times the rate.
-      (cur && Number(cur.est_cache_write_usd) > Number(cur.est_cache_read_usd)
+      // Same rule as cachePrefixLooksInvalidated in
+      // supabase/functions/chat/abuse.mjs. Follow-up turns of a
+      // conversation should read the cached prefix. Comparing write
+      // dollars to read dollars false-alarms: a 1-hour write costs 20×
+      // a read, and the first turn of a chat is a write whenever the
+      // cache is cold. The prefix itself is the static system blocks in
+      // functions/chat — nothing per-visitor is interpolated into it.
+      (cachePrefixLooksInvalidated(cur)
         ? '<div class="chat-spend-warn">Cache writes exceed reads — prefix is being invalidated</div>'
         : "");
+  }
+
+  function cachePrefixLooksInvalidated(cur) {
+    if (!cur) return false;
+    if (cur.followup_cache_write_tokens == null && cur.followup_cache_read_tokens == null) {
+      return false;
+    }
+    const written = Number(cur.followup_cache_write_tokens) || 0;
+    const read = Number(cur.followup_cache_read_tokens) || 0;
+    if (written === 0 && read === 0) return false;
+    return written > read;
   }
 
   function visibleChats() {
@@ -694,6 +709,8 @@ function boot() {
       if (lead === "lead" && !c.captured_lead) return false;
       if (lead === "nolead" && c.captured_lead) return false;
       if (lead === "support" && !c.routed_support) return false;
+      if (lead === "bot" && !c.suspected_bot) return false;
+      if (lead === "capped" && !c.hit_turn_cap) return false;
       if (matched && !matched.has(c.session_id)) return false;
       return true;
     });
@@ -781,22 +798,37 @@ function boot() {
     copyText(btn.getAttribute("data-copy"), btn);
   });
 
+  function endedNote(reason) {
+    if (reason === "abuse_turn_cap") return "Ended — turn cap";
+    if (reason === "abuse_repeat") return "Ended — repeated messages";
+    if (reason === "abuse_fast") return "Ended — messages arrived too fast";
+    if (reason === "handoff") return "Handoff form submitted";
+    return "";
+  }
+
   function outcomeLabel(c) {
-    if (c.captured_lead) {
-      return '<span class="chat-pill lead">Lead</span>';
-    }
-    if (c.routed_support) return '<span class="chat-pill support">Support</span>';
-    return '<span class="chat-pill">—</span>';
+    const pills = [];
+    if (c.captured_lead) pills.push('<span class="chat-pill lead">Lead</span>');
+    if (c.suspected_bot) pills.push('<span class="chat-pill bot">Suspected bot</span>');
+    if (c.hit_turn_cap) pills.push('<span class="chat-pill cap">Turn cap</span>');
+    if (c.routed_support) pills.push('<span class="chat-pill support">Support</span>');
+    if (!pills.length) return '<span class="chat-pill">—</span>';
+    return pills.join(" ");
   }
 
   function renderChats() {
     const items = visibleChats();
     const total = state.chats.length;
     const leads = state.chats.filter((c) => c.captured_lead).length;
+    const bots = state.chats.filter((c) => c.suspected_bot).length;
     $("chatCount").textContent =
       total === 0
         ? "No conversations yet."
-        : total + " conversations · " + leads + " produced a lead";
+        : total +
+          " conversations · " +
+          leads +
+          " produced a lead" +
+          (bots ? " · " + bots + " suspected bot" : "");
 
     const rows = $("chatRows");
     if (!items.length) {
@@ -891,6 +923,13 @@ function boot() {
     $(id).addEventListener("change", renderChats);
   });
 
+  function interestText(value) {
+    if (value === "sales") return "Sales";
+    if (value === "support") return "Support";
+    if (value === "not_sure") return "Not sure";
+    return value;
+  }
+
   function leadCard(c) {
     if (!c || !c.captured_lead) return "";
 
@@ -915,7 +954,7 @@ function boot() {
       ["Email", c.lead_email, c.lead_email ? emailValue : null],
       ["Firm", c.lead_firm, null],
       ["Size", c.lead_firm_size, null],
-      ["Interest", c.lead_interest, null],
+      ["Interest", interestText(c.lead_interest), null],
     ]
       .filter((r) => r[1])
       .map(
@@ -948,7 +987,9 @@ function boot() {
 
     return (
       '<div class="chat-lead">' +
-      "<h3>Lead captured</h3>" +
+      "<h3>" +
+      (c.lead_source === "site_chat_handoff" ? "Handoff requested" : "Lead captured") +
+      "</h3>" +
       rows +
       (c.lead_summary
         ? '<p class="chat-lead-summary">' + esc(c.lead_summary) + "</p>"
@@ -969,14 +1010,19 @@ function boot() {
       fmtDate(convo && convo.started_at) +
       (convo ? " · " + fmtUsd(convo.est_cost_usd) : "");
     $("chatDrawerNote").textContent = "";
-    $("chatLeadCard").innerHTML = leadCard(convo);
+    $("chatLeadCard").innerHTML =
+      (convo && convo.suspected_bot
+        ? '<p class="adm-note error">Suspected bot — repeated messages, or turns too fast to be someone reading.</p>'
+        : convo && convo.hit_turn_cap
+          ? '<p class="adm-note info">Ended at the turn cap. The visitor can still ask the team to make contact.</p>'
+          : "") + leadCard(convo);
     $("chatThread").innerHTML = '<p class="adm-note info">Loading…</p>';
     show($("chatScrim"));
     show($("chatDrawer"));
 
     const { data, error } = await sb
       .from("chat_transcripts")
-      .select("turn,created_at,question,reply,tool_called")
+      .select("turn,created_at,question,reply,tool_called,stop_reason")
       .eq("session_id", sessionId)
       .order("turn", { ascending: true })
       .order("created_at", { ascending: true });
@@ -999,6 +1045,9 @@ function boot() {
           "</div>" +
           (t.tool_called
             ? '<div class="chat-tool">called ' + esc(t.tool_called) + "</div>"
+            : "") +
+          (endedNote(t.stop_reason)
+            ? '<div class="chat-tool">' + esc(endedNote(t.stop_reason)) + "</div>"
             : "") +
           "</div>",
       )

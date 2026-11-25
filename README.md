@@ -121,9 +121,9 @@ you apply changes.
 | 2 | `supabase/add-subscribers.sql` | Newsletter signups |
 | 3 | `supabase/add-unsubscribe.sql` | Unsubscribe handling |
 | 4 | `supabase/add-chat-leads.sql` | Leads captured by the assistant |
-| 5 | `supabase/add-chat-quota.sql` | Rate limits and the daily spend ceiling |
-| 6 | `supabase/add-chat-transcripts.sql` | Conversation log and the admin review views |
-| 7 | `supabase/add-chat-costs.sql` | Cost estimates and reconciliation |
+| 5 | `supabase/add-chat-quota.sql` | Rate limits and the daily spend ceiling. Re-run after pulling abuse-limit changes so per-session burst and conversations-per-day exist |
+| 6 | `supabase/add-chat-transcripts.sql` | Conversation log and the admin review views. Re-run so `suspected_bot` is on the conversation index |
+| 7 | `supabase/add-chat-costs.sql` | Cost estimates and reconciliation. Re-run after the transcripts file so the admin view picks up `suspected_bot` and the corrected cache warning |
 
 The remaining `supabase/*.sql` files are one-off content imports, not setup.
 
@@ -171,7 +171,11 @@ insert lead fields, not notes. To get the chat into that email:
 3. In **Automations → Send email for new leads**, add the
    "Chat transcript" lead field to the email body.
 
-The full chat is also always added as a note on the lead.
+The full chat is also always added as a note on the lead. The field itself
+lists name, email, firm, phone when one was given, and — for a handoff —
+whether they said sales, support, or not sure, then the conversation in
+order. A suspected-bot session does not create a lead, so it does not
+send this email.
 
 ### About `ALLOWED_ORIGIN`
 
@@ -212,9 +216,13 @@ Sign in with a Supabase Auth account whose email is in `public.editors`.
 ### The Chats tab
 
 Lists conversations newest-first with the opening question, turn count,
-estimated cost, and whether it produced a lead. Filter by period, by
-outcome, or search — search covers every message in every conversation,
-not just the first.
+estimated cost, and outcome. A lead and a support handoff are the
+business outcomes. **Suspected bot** means the session was stopped for
+repeated or too-fast messages. **Turn cap** is separate: the visitor
+used the allowance and was offered the contact form, which a long real
+conversation can do. A submitted form shows up as a lead. Sessions
+flagged **Suspected bot** are not offered the form. Filter by period, by outcome, or search — search
+covers every message in every conversation, not just the first.
 
 Open a row for the full transcript. If a lead was captured you also get
 their details and an **Open in Pipedrive** button.
@@ -259,12 +267,30 @@ since the knowledge base was last reviewed — useful before a release.
 
 ## Costs
 
-The assistant costs a few dollars a day at most. Two safeguards:
+The assistant costs a few dollars a day at most. Safeguards, all enforced
+in the Edge Function (defaults in `supabase/functions/chat/abuse.mjs`,
+overridable with env vars — see that file):
 
-- **A hard daily cap** — 150 requests, set in `add-chat-quota.sql`. Past
-  that the widget politely refers people to email for the rest of the day.
-- **Prompt caching** — the assistant's ~8,200-token briefing is billed at
-  a tenth of the normal rate after the first request each hour.
+- **Per conversation** — 24 visitor messages, then the chat locks and offers
+  a contact form (name, email, optional firm and phone, a short note, and
+  sales / support / not sure). That form is saved as a lead and pushed to
+  Pipedrive the same way a captured lead is. Repeated or near-identical
+  messages, and a burst of turns too fast to be someone reading, end the
+  session without the form.
+- **Per IP** — 10 messages per minute, 40 per day, and 12 new conversations
+  per day (a refresh only counts once a message is sent).
+- **A hard daily cap** — 150 requests. Past that the widget politely refers
+  people to email for the rest of the day.
+- **Prompt caching** — the assistant's ~8,200-token briefing is static
+  (knowledge, then instructions, tools unchanged) and billed at a tenth of
+  the normal rate after the first request each hour.
+- **Output cap** — 1024 tokens, including adaptive thinking.
+
+Optional Supabase secrets, only when a default above is wrong:
+`CHAT_MAX_SESSION_TURNS`, `CHAT_REPEAT_LIMIT`, `CHAT_FAST_TURN_MS`,
+`CHAT_FAST_TURN_STREAK`, `CHAT_PER_MINUTE_IP`, `CHAT_PER_MINUTE_SESSION`,
+`CHAT_PER_DAY_IP`, `CHAT_CONVERSATIONS_PER_DAY_IP`, `CHAT_PER_DAY_GLOBAL`,
+`CHAT_MAX_OUTPUT_TOKENS`. Unset means the default. A non-integer is ignored.
 
 In the admin, the Chats tab header shows estimated spend this month. In
 SQL:
@@ -288,11 +314,14 @@ See the comments in `add-chat-costs.sql`.
 | Symptom | Cause | Fix |
 |---|---|---|
 | "Chat is unavailable right now." | Daily cap hit, or the database is unreachable | Check `select * from public.chat_usage_today;`. If the cap is the issue, raise `p_per_day_global` in `add-chat-quota.sql` and re-run it |
-| "You're sending messages faster than I can answer" | Per-visitor burst limit | Normal. Self-clears in a minute |
+| "You're sending messages faster than I can answer" | Per-IP or per-session burst limit | Normal. Self-clears in a minute |
+| "You've reached today's limit for this chat." | Per-IP daily messages, or too many new conversations from one IP | Expected for a script. A real visitor can email sales |
+| "That's as far as I can take a conversation" | The 24-message session cap | Expected. The closing message has the contact path |
+| Chats tab shows "Suspected bot" | The session was ended for the turn cap, repeated messages, or speed | Read the transcript. Re-run `add-chat-transcripts.sql` then `add-chat-costs.sql` if the pill never appears after a deploy |
 | Widget does nothing on the live site | `ALLOWED_ORIGIN` does not list that site | Add the origin (no path!) and redeploy both functions |
 | Assistant invents limitations, or says "I don't know" | Missing information | Read `chat_denials_recent` and `chat_handoffs_recent`, then add the facts to `knowledge.ts` |
 | Assistant quotes a price or a statistic | Guardrail regression | Should never happen. Check the "Never state" section of `knowledge.ts` |
-| Costs higher than expected | Prompt cache being invalidated | `select * from public.chat_cache_health;` — writes should be a small fraction of reads |
+| Costs higher than expected | Prompt cache being invalidated on follow-up turns | `select * from public.chat_cache_health;` — within a multi-turn chat, writes should be a small fraction of reads. The admin warning uses follow-up turns only, so a month of single questions does not trip it. The cached text is `knowledge.ts` plus the system prompt; do not interpolate a timestamp, session id, or visitor data into either |
 | Admin shows no data after signing in | Email not in `public.editors` | Add it (see [Database setup](#database-setup)) |
 | Sync actual button fails | `sync-costs` not deployed, or CORS | Optional feature — see the notes in `supabase/functions/sync-costs/index.ts` |
 

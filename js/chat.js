@@ -34,7 +34,7 @@
     ? "http://localhost:54321/functions/v1/chat"
     : PROD_ENDPOINT;
 
-  var MAX_TURNS = 24; // trim client-side too; the server enforces its own cap
+  var MAX_TURNS = 24; // replay window only; the server caps the session
 
   // Groups this conversation's turns together in the transcript table so a
   // reviewer can read an exchange in order. Deliberately NOT an identity:
@@ -62,6 +62,9 @@
     var input = form.querySelector("input");
     var sendBtn = form.querySelector("button");
     var closeBtn = panel.querySelector(".bot-close");
+    var handoffForm = panel.querySelector(".bot-handoff");
+    var handoffError = handoffForm && handoffForm.querySelector(".bot-handoff-error");
+    var handoffDone = false;
     var chatBadges = document.querySelectorAll(".ai-powered-badge");
 
     // Transcript sent to the model. The greeting in the markup is
@@ -69,6 +72,7 @@
     // isn't told it already said something it didn't.
     var history = [];
     var busy = false;
+    var ended = false;
     // Whether the visitor still had the field focused when a request began —
     // disabling an input blurs it, so it has to be captured before that.
     var wasFocused = false;
@@ -100,6 +104,42 @@
       body.appendChild(el);
       scroll();
       return el;
+    }
+
+    function showHandoff() {
+      if (!handoffForm || handoffDone) return;
+      handoffForm.hidden = false;
+      panel.classList.add("has-handoff");
+    }
+
+    function hideHandoff() {
+      if (!handoffForm) return;
+      handoffForm.hidden = true;
+      panel.classList.remove("has-handoff");
+    }
+
+    function setHandoffError(text) {
+      if (!handoffError) return;
+      handoffError.hidden = !text;
+      handoffError.textContent = text || "";
+    }
+
+    // The form opens when the server says so. A suspected-bot close
+    // removes it. A normal reply that doesn't mention a handoff leaves
+    // an already-open form alone, so a later product question doesn't
+    // hide the request the visitor started filling in.
+    function syncHandoff(data) {
+      if (!data) return;
+      if (data.handoff_received) {
+        handoffDone = true;
+        hideHandoff();
+        return;
+      }
+      if (data.error === "abuse_repeat" || data.error === "abuse_fast") {
+        hideHandoff();
+        return;
+      }
+      if (data.handoff) showHandoff();
     }
 
     function setBusy(state) {
@@ -195,6 +235,21 @@
         .then(function (res) {
           typing.remove();
 
+          // Turn cap, repeated probes, and daily ceilings end the session.
+          // Lock the composer so a person isn't invited to keep typing at
+          // a chat that will only repeat the closing line. A burst limit
+          // does not set closed — that one clears in a minute.
+          if (res.data && res.data.closed) {
+            ended = true;
+            addMessage(
+              res.data.reply ||
+                "This chat has ended. Email sales@profiscience.com and someone will follow up.",
+              "bot"
+            );
+            syncHandoff(res.data);
+            return;
+          }
+
           // The server distinguishes "slow down" from "closed for the day",
           // so prefer its wording over a generic one.
           if (res.status === 429) {
@@ -203,6 +258,7 @@
                 "You're sending messages faster than I can answer — give it a moment.",
               "error"
             );
+            syncHandoff(res.data);
             return;
           }
 
@@ -216,6 +272,7 @@
           }
 
           addMessage(reply, "bot");
+          syncHandoff(res.data);
           // Only record turns the model actually produced, so the history
           // we replay matches what it believes it said.
           if (res.ok) history.push({ role: "assistant", content: reply });
@@ -228,9 +285,81 @@
           );
         })
         .finally(function () {
-          setBusy(false);
+          if (ended) {
+            busy = false;
+            input.disabled = true;
+            sendBtn.disabled = true;
+            input.placeholder = "This chat has ended";
+          } else {
+            setBusy(false);
+          }
         });
     });
+
+    if (handoffForm) {
+      handoffForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        if (handoffDone) return;
+
+        var name = handoffForm.name.value.trim();
+        var email = handoffForm.email.value.trim();
+        var note = handoffForm.note.value.trim();
+        var routeEl = handoffForm.querySelector('input[name="route"]:checked');
+        var route = routeEl ? routeEl.value : "";
+        if (!name) return setHandoffError("Please enter your name.");
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          return setHandoffError("Please enter a valid email address.");
+        }
+        if (note.length < 3) return setHandoffError("Tell us briefly what you need.");
+        if (route !== "sales" && route !== "support" && route !== "not_sure") {
+          return setHandoffError("Choose sales, support, or not sure.");
+        }
+
+        setHandoffError("");
+        var submitBtn = handoffForm.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+
+        fetch(CHAT_ENDPOINT, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            session_id: SESSION_ID,
+            handoff: {
+              name: name,
+              email: email,
+              firm: handoffForm.firm.value.trim(),
+              phone: handoffForm.phone.value.trim(),
+              note: note,
+              route: route,
+            },
+          }),
+        })
+          .then(function (r) {
+            return r.json().then(function (data) {
+              return { ok: r.ok, data: data || {} };
+            });
+          })
+          .then(function (res) {
+            var data = res.data;
+            if (!res.ok || data.error) {
+              setHandoffError(data.reply || "Please check the form and try again.");
+              submitBtn.disabled = !!data.closed;
+              if (data.error === "abuse_repeat" || data.error === "abuse_fast") hideHandoff();
+              return;
+            }
+            handoffDone = true;
+            hideHandoff();
+            addMessage(
+              data.reply || "Thanks. Someone from the team will contact you.",
+              "bot"
+            );
+          })
+          .catch(function () {
+            setHandoffError("I couldn't reach the server. Email sales@profiscience.com.");
+            submitBtn.disabled = false;
+          });
+      });
+    }
   }
 
   // The launcher ships inside partials/footer.html, which main.js injects

@@ -4492,6 +4492,93 @@ footer .foot-admin:hover { color: #fff; }
   .bot-launcher { transition: none; }
 }
 
+/* Contact form. Hidden until the assistant offers a person. It sits
+   above the composer so it stays usable after the turn cap locks chat. */
+.bot-handoff {
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid var(--pf-line);
+  background: white;
+  font-size: .82rem;
+}
+.bot-handoff:not([hidden]) { display: flex; }
+.bot-panel.has-handoff {
+  height: min(740px, calc(100vh - 120px));
+}
+.bot-handoff-lead {
+  margin: 0;
+  font-weight: 600;
+  color: var(--pf-ink);
+}
+.bot-handoff-row { display: flex; gap: 8px; }
+.bot-handoff-row label { flex: 1; min-width: 0; }
+.bot-handoff label {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  color: var(--pf-mute);
+  font-size: .72rem;
+  font-weight: 600;
+}
+.bot-handoff label span { font-weight: 500; }
+.bot-handoff input,
+.bot-handoff textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--pf-line);
+  border-radius: 8px;
+  padding: 7px 9px;
+  font: inherit;
+  font-size: .85rem;
+  font-weight: 400;
+  color: var(--pf-ink);
+}
+.bot-handoff textarea { resize: vertical; min-height: 44px; }
+.bot-handoff input:focus,
+.bot-handoff textarea:focus { outline: 0; border-color: var(--pf-blue); }
+.bot-handoff fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+}
+.bot-handoff legend {
+  padding: 0;
+  margin-right: 4px;
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--pf-mute);
+}
+.bot-handoff fieldset label {
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--pf-ink);
+}
+.bot-handoff fieldset input { width: auto; }
+.bot-handoff button {
+  border: 0;
+  background: var(--grad-btn);
+  color: white;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-weight: 600;
+  cursor: pointer;
+  align-self: flex-start;
+}
+.bot-handoff button:disabled { opacity: .55; cursor: default; }
+.bot-handoff-error {
+  margin: 0;
+  color: #991B1B;
+  font-size: .78rem;
+}
 .bot-foot {
   display: flex; gap: 8px;
   padding: 12px;
@@ -4575,6 +4662,8 @@ footer .foot-admin:hover { color: #fff; }
      leaves the site scaled up after the keyboard closes. This is the one
      place the font size is not a free choice. */
   .bot-foot input { font-size: 16px; }
+  .bot-handoff input,
+  .bot-handoff textarea { font-size: 16px; }
   /* Clear the home indicator on gesture-nav phones. */
   .bot-foot { padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }
   .bot-foot button { padding: 0 18px; min-height: 44px; }

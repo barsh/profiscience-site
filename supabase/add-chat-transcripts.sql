@@ -196,6 +196,15 @@ create or replace view public.chat_cache_health
 --
 -- LEFT JOIN, not INNER: most conversations never produce a lead, and
 -- those are exactly the ones worth reading.
+--
+-- The two flags are appended at the end on purpose: CREATE OR REPLACE
+-- VIEW can add columns there and nowhere else.
+--   suspected_bot — repeated or impossibly fast messages (abuse_repeat,
+--                   abuse_fast). A long genuine conversation is not this.
+--   hit_turn_cap  — the session used its message allowance (abuse_turn_cap).
+-- Re-run add-chat-costs.sql after this file so chat_conversations_with_cost,
+-- which the admin actually selects, picks the new columns up. A view's
+-- `c.*` is frozen at the time that view was created.
 -- ---------------------------------------------------------
 create or replace view public.chat_conversations
   with (security_invoker = true) as
@@ -205,7 +214,9 @@ create or replace view public.chat_conversations
     t.last_at,
     t.turns,
     t.first_question,
-    t.captured_lead,
+    -- A form handoff writes chat_leads directly. The tool flag covers the
+    -- model's capture_lead calls; the joined row covers the form.
+    (t.captured_lead or l.id is not null)                    as captured_lead,
     t.routed_support,
     t.tokens,
     l.id                                                     as lead_id,
@@ -216,7 +227,10 @@ create or replace view public.chat_conversations
     l.interest                                               as lead_interest,
     l.summary                                                as lead_summary,
     l.pipedrive_lead_id,
-    l.pipedrive_synced
+    l.pipedrive_synced,
+    t.suspected_bot,
+    t.hit_turn_cap,
+    l.source                                                 as lead_source
   from (
     select
       session_id,
@@ -227,6 +241,10 @@ create or replace view public.chat_conversations
       (array_agg(question order by turn, created_at))[1]    as first_question,
       bool_or(tool_called = 'capture_lead')                 as captured_lead,
       bool_or(tool_called = 'route_to_support')             as routed_support,
+      coalesce(bool_or(stop_reason in ('abuse_repeat', 'abuse_fast')), false)
+                                                            as suspected_bot,
+      coalesce(bool_or(stop_reason = 'abuse_turn_cap'), false)
+                                                            as hit_turn_cap,
       sum(coalesce(input_tokens, 0)
         + coalesce(output_tokens, 0))::bigint               as tokens
     from public.chat_transcripts
